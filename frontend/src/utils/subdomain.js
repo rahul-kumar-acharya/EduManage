@@ -8,7 +8,7 @@ export const getSubdomain = () => {
   }
 
   // Exact main domain matches
-  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === 'xyz.com') {
+  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === 'edumanage.acharyaworks.in') {
     return null;
   }
 
@@ -19,7 +19,7 @@ export const getSubdomain = () => {
     return parts[0] === 'www' ? null : parts[0];
   }
 
-  // e.g. abcschool.xyz.com -> ['abcschool', 'xyz', 'com']
+  // e.g. abcschool.edumanage.acharyaworks.in -> ['abcschool', 'edumanage', 'acharyaworks', 'in']
   if (parts.length >= 3) {
     if (parts[0] === 'www') return null;
     return parts[0];

@@ -143,7 +143,7 @@ const RegisterSchool = () => {
                 <strong className="text-[#1A1918]">{successResult.name}</strong> is ready on subdomain:
               </p>
               <div className="inline-block px-4 py-2 bg-[#F7F5F0] rounded-lg border border-[#E5E0D8] text-[#1B2A4A] font-mono font-bold text-base">
-                {successResult.subdomain}.xyz.com
+                {successResult.subdomain}.edumanage.acharyaworks.in
               </div>
             </div>
 
@@ -216,7 +216,7 @@ const RegisterSchool = () => {
                   <Globe className="w-5 h-5 text-[#1B2A4A] shrink-0 mt-0.5" />
                   <div className="space-y-0.5">
                     <h4 className="font-['Newsreader'] font-bold text-base text-[#1A1918]">Dedicated Subdomain</h4>
-                    <p className="text-xs text-[#64748B] leading-relaxed">Your school gets its own unique portal URL (e.g., yourschool.xyz.com) for students, staff, and parents.</p>
+                    <p className="text-xs text-[#64748B] leading-relaxed">Your school gets its own unique portal URL (e.g., yourschool.edumanage.acharyaworks.in) for students, staff, and parents.</p>
                   </div>
                 </div>
 
@@ -313,9 +313,9 @@ const RegisterSchool = () => {
                         value={formData.subdomain}
                         onChange={handleChange}
                         required
-                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-4 pr-24 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-4 pr-44 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
                       />
-                      <span className="absolute right-3 text-xs font-mono text-[#64748B] font-medium">.xyz.com</span>
+                      <span className="absolute right-3 text-xs font-mono text-[#64748B] font-medium">.edumanage.acharyaworks.in</span>
                     </div>
 
                     {formData.subdomain && (

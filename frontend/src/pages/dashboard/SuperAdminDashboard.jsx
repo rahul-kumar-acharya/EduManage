@@ -70,7 +70,7 @@ const SuperAdminDashboard = () => {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 font-mono text-xs text-blue-600 hover:underline font-bold"
         >
-          {row.subdomain}.xyz.com <ExternalLink className="w-3 h-3 text-blue-600" />
+          {row.subdomain}.edumanage.acharyaworks.in <ExternalLink className="w-3 h-3 text-blue-600" />
         </a>
       )
     },

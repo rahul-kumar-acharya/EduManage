@@ -46,7 +46,7 @@ const Contact = () => {
               <div className="space-y-3 text-sm text-[#1A1918]">
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
                   <Mail className="w-5 h-5 text-[#1B2A4A] shrink-0" />
-                  <span className="font-semibold text-xs sm:text-sm">support@xyz.com</span>
+                  <span className="font-semibold text-xs sm:text-sm">support.edumanage@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
                   <Phone className="w-5 h-5 text-[#1B2A4A] shrink-0" />

@@ -90,7 +90,7 @@ const Home = () => {
         ) : (
           <form 
             onSubmit={handleSubdomainCheck} 
-            className="max-w-xl mx-auto flex flex-col sm:flex-row gap-3 p-2 bg-white rounded-xl border border-[#E5E0D8] shadow-sm"
+            className="max-w-2xl mx-auto flex flex-col sm:flex-row gap-3 p-2 bg-white rounded-xl border border-[#E5E0D8] shadow-sm"
           >
             <div className="flex-1 flex items-center px-4 bg-[#F7F5F0] rounded-lg border border-[#E5E0D8]">
               <Globe className="w-5 h-5 text-[#1B2A4A] mr-2 shrink-0" />
@@ -102,7 +102,7 @@ const Home = () => {
                 className="w-full bg-transparent py-3 text-sm text-[#1A1918] placeholder-slate-400 focus:outline-none"
                 required
               />
-              <span className="text-sm font-mono text-[#64748B] font-medium">.edumanage.com</span>
+              <span className="text-sm font-mono text-[#64748B] font-medium">.edumanage.acharyaworks.in</span>
             </div>
             <button 
               type="submit" 
@@ -322,7 +322,7 @@ const Home = () => {
           {[
             {
               q: "How does custom subdomain provisioning work?",
-              a: "When you register your school name, our automated DNS router instantly allocates an isolated tenant instance under your chosen domain (e.g. stmarys.xyz.com)."
+              a: "When you register your school name, our automated DNS router instantly allocates an isolated tenant instance under your chosen domain (e.g. stmarys.edumanage.acharyaworks.in)."
             },
             {
               q: "Can parents pay fees online securely?",

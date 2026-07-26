@@ -25,7 +25,7 @@ class Command(BaseCommand):
 
         # 2. SuperAdmin
         if not User.objects.filter(role=UserRole.SUPER_ADMIN).exists():
-            admin_email = 'admin@xyz.com'
+            admin_email = 'support.edumanage@gmail.com'
             admin_user = User.objects.create_superuser(
                 username=admin_email,
                 email=admin_email,

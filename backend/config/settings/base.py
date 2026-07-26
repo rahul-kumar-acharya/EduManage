@@ -152,4 +152,4 @@ CORS_ALLOW_HEADERS = [
     'x-tenant-subdomain',
 ]
 
-MAIN_DOMAIN = os.getenv('MAIN_DOMAIN', 'xyz.com')
+MAIN_DOMAIN = os.getenv('MAIN_DOMAIN', 'edumanage.acharyaworks.in')
