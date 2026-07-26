@@ -1,0 +1,455 @@
+import React, { useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import { authService } from '../../services/authService';
+import Button from '../../components/ui/Button';
+import Input from '../../components/ui/Input';
+import Modal from '../../components/ui/Modal';
+import { User, Key, Save, CheckCircle2, ShieldAlert, Camera, Crop } from 'lucide-react';
+
+const ProfileSettings = () => {
+  const { user, refreshUser, updateLocalAvatar } = useAuth();
+  
+  const [formData, setFormData] = useState({
+    first_name: user?.first_name || '',
+    last_name: user?.last_name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    password: '',
+    confirm_password: '',
+  });
+
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  // Cropper states
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [rawImage, setRawImage] = useState(null);
+  const [zoom, setZoom] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [imageSize, setImageSize] = useState({ width: 300, height: 300 });
+
+  const handleImageLoad = (e) => {
+    const img = e.target;
+    const containerSize = 300;
+    let fitWidth = containerSize;
+    let fitHeight = containerSize;
+    const aspect = img.naturalWidth / img.naturalHeight;
+    if (aspect > 1) {
+      fitHeight = containerSize / aspect;
+    } else {
+      fitWidth = containerSize * aspect;
+    }
+    setImageSize({ width: fitWidth, height: fitHeight });
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setRawImage(reader.result);
+        setZoom(1);
+        setPosition({ x: 0, y: 0 });
+        setCropModalOpen(true);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemovePicture = async () => {
+    localStorage.removeItem('local_avatar');
+    updateLocalAvatar(null);
+    try {
+      const updated = await authService.updateProfile({ profile_picture: null });
+      refreshUser(updated);
+    } catch (err) {
+      console.error("Failed to sync profile picture deletion on server:", err);
+    }
+  };
+
+  // Drag handlers
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    setPosition({
+      x: e.clientX - dragStart.x,
+      y: e.clientY - dragStart.y
+    });
+  };
+
+  const handleTouchStart = (e) => {
+    setIsDragging(true);
+    const touch = e.touches[0];
+    setDragStart({ x: touch.clientX - position.x, y: touch.clientY - position.y });
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    setPosition({
+      x: touch.clientX - dragStart.x,
+      y: touch.clientY - dragStart.y
+    });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleApplyCrop = () => {
+    const img = new Image();
+    img.src = rawImage;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 160;
+      canvas.height = 160;
+      const ctx = canvas.getContext('2d');
+
+      const visualWidth = imageSize.width * zoom;
+      const visualHeight = imageSize.height * zoom;
+      const scaleX = img.naturalWidth / visualWidth;
+      const scaleY = img.naturalHeight / visualHeight;
+
+      // Crop frame relative to container center
+      const cropLeftVisual = visualWidth / 2 - position.x - 80;
+      const cropTopVisual = visualHeight / 2 - position.y - 80;
+
+      // Crop box natural source dimensions
+      const sx = cropLeftVisual * scaleX;
+      const sy = cropTopVisual * scaleY;
+      const sWidth = 160 * scaleX;
+      const sHeight = 160 * scaleY;
+
+      // Draw onto 160x160 output
+      ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, 160, 160);
+
+      const croppedBase64 = canvas.toDataURL('image/jpeg', 0.9);
+      updateLocalAvatar(croppedBase64);
+      setCropModalOpen(false);
+      setRawImage(null);
+    };
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(false);
+    setMessage('');
+    setError('');
+
+    if (formData.password && formData.password !== formData.confirm_password) {
+      setError("New passwords do not match. Please verify.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const payload = {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        email: formData.email,
+        phone: formData.phone,
+      };
+
+      if (formData.password) {
+        payload.password = formData.password;
+      }
+
+      const updated = await authService.updateProfile(payload);
+      refreshUser(updated);
+      setMessage("Profile and security settings saved successfully!");
+      setFormData((prev) => ({
+        ...prev,
+        password: '',
+        confirm_password: '',
+      }));
+    } catch (err) {
+      console.error("Failed to update profile settings:", err);
+      if (err.response && err.response.data) {
+        const errorData = err.response.data;
+        if (errorData.email) {
+          setError(Array.isArray(errorData.email) ? errorData.email.join(' ') : errorData.email);
+        } else {
+          setError("Failed to update settings. Please verify details.");
+        }
+      } else {
+        setError("Failed to update settings. Please check your network connection.");
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918] max-w-4xl">
+      
+      {/* Category Pill Indicator */}
+      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">
+        <User className="w-3.5 h-3.5 text-[#5C1D24]" />
+        <span>Personal Profile Manager</span>
+      </div>
+
+      <div className="border-b border-[#E5E0D8] pb-4">
+        <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Profile & Security Settings</h1>
+        <p className="text-xs text-[#64748B] mt-1">Configure your personal contact details, workspace fields, and authentication passwords.</p>
+      </div>
+
+      {message && (
+        <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-lg flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" /> {message}
+        </div>
+      )}
+
+      {error && (
+        <div className="p-4 bg-red-50 border border-red-200 text-red-800 text-xs font-bold rounded-lg flex items-center gap-2">
+          <ShieldAlert className="w-4 h-4 text-red-600 shrink-0" /> {error}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        {/* Left column: Overview Info (Read only) */}
+        <div className="bg-[#F7F5F0] p-6 rounded-xl border border-[#E5E0D8] flex flex-col justify-between space-y-6">
+          <div className="space-y-5 flex flex-col items-center md:items-start text-center md:text-left">
+            
+            {/* Avatar block with choice button */}
+            <div className="flex flex-col items-center gap-3">
+              <div className="relative w-20 h-20 group">
+                {user?.profile_picture ? (
+                  <img
+                    src={user.profile_picture}
+                    alt="Profile"
+                    className="w-20 h-20 rounded-full object-cover border border-[#E5E0D8] shadow-sm"
+                  />
+                ) : (
+                  <div className="w-20 h-20 rounded-full bg-[#1B2A4A] text-white flex items-center justify-center text-3xl font-bold font-['Newsreader'] shadow-sm">
+                    {user?.first_name?.[0]?.toUpperCase() || 'U'}
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col gap-1 w-full text-center">
+                <label 
+                  htmlFor="profile-pic-input" 
+                  className="bg-white hover:bg-[#F7F5F0] text-[#1A1918] border border-[#E5E0D8] px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-sm text-center inline-block select-none"
+                >
+                  Choose Picture
+                </label>
+                {user?.profile_picture && (
+                  <button
+                    type="button"
+                    onClick={handleRemovePicture}
+                    className="text-[#5C1D24] hover:underline text-[10px] font-bold mt-1"
+                  >
+                    Remove Picture
+                  </button>
+                )}
+                <input
+                  type="file"
+                  id="profile-pic-input"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1 w-full pt-2">
+              <h3 className="text-base font-bold text-[#1A1918]">{user?.first_name} {user?.last_name}</h3>
+              <p className="text-xs text-[#64748B] truncate w-full max-w-[200px]">{user?.email}</p>
+            </div>
+            
+            <div className="flex flex-wrap gap-2 pt-2 justify-center md:justify-start">
+              <span className="px-2.5 py-0.5 rounded bg-[#1B2A4A]/10 text-[#1B2A4A] border border-[#1B2A4A]/20 text-[10px] font-bold uppercase tracking-wider">
+                {user?.role === 'SUPER_ADMIN' ? 'Super Admin' :
+                 user?.role === 'SCHOOL_ADMIN' ? 'School Admin' :
+                 user?.role === 'TEACHER' ? 'Class Teacher' :
+                 user?.role === 'ACCOUNTANT' ? 'Accountant' :
+                 user?.role === 'STUDENT' ? 'Student' :
+                 user?.role === 'PARENT' ? 'Parent' : user?.role}
+              </span>
+              {user?.school?.name && (
+                <span className="px-2.5 py-0.5 rounded bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-[10px] font-bold uppercase tracking-wider">
+                  {user.school.name}
+                </span>
+              )}
+            </div>
+          </div>
+          
+          <div className="text-[11px] text-[#64748B] font-semibold leading-relaxed pt-4 border-t border-[#E5E0D8]">
+            For changing your account role authorizations, please contact your workspace School Administrator.
+          </div>
+        </div>
+
+        {/* Right Columns: Edit inputs */}
+        <div className="md:col-span-2 bg-white p-6 rounded-xl border border-[#E5E0D8] space-y-6 shadow-sm">
+          
+          {/* Section 1: Profile Details */}
+          <div className="space-y-4">
+            <h4 className="text-xs font-bold text-[#5C1D24] uppercase tracking-wider border-b border-[#F7F5F0] pb-2">
+              Personal Information
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="First Name"
+                value={formData.first_name}
+                onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+                required
+              />
+              <Input
+                label="Last Name"
+                value={formData.last_name}
+                onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+                required
+              />
+            </div>
+            <Input
+              label="Email Address"
+              type="email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+            />
+            <Input
+              label="Contact Phone"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              placeholder="e.g. +91 98765 43210"
+            />
+          </div>
+
+          {/* Section 2: Password Details */}
+          <div className="space-y-4 pt-4 border-t border-[#F7F5F0]">
+            <div className="flex items-center gap-2 text-xs font-bold text-[#5C1D24] uppercase tracking-wider border-b border-[#F7F5F0] pb-2">
+              <Key className="w-4 h-4 text-[#5C1D24]" />
+              <span>Change Security Password</span>
+            </div>
+            <p className="text-[11px] text-[#64748B] font-semibold">
+              Fill these fields only if you wish to reset your account password. Otherwise, leave them blank to keep your current password.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="New Password"
+                type="password"
+                placeholder="Minimum 8 characters"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              />
+              <Input
+                label="Confirm New Password"
+                type="password"
+                placeholder="Confirm password"
+                value={formData.confirm_password}
+                onChange={(e) => setFormData({ ...formData, confirm_password: e.target.value })}
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-4">
+            <Button
+              type="submit"
+              variant="primary"
+              className="gap-2 shadow-sm px-6 py-2.5"
+              loading={submitting}
+            >
+              <Save className="w-4 h-4" /> Save Profile Settings
+            </Button>
+          </div>
+
+        </div>
+
+      </form>
+
+      {/* Picture Crop Adjustment Modal */}
+      <Modal isOpen={cropModalOpen} onClose={() => setCropModalOpen(false)} title="Adjust & Crop Profile Picture">
+        <div className="space-y-5">
+          <p className="text-xs text-[#64748B]">
+            Drag the image inside the circular boundary frame to reposition, and use the slider below to zoom.
+          </p>
+
+          {/* Visual Crop Container */}
+          <div 
+            className="w-[300px] h-[300px] bg-slate-950 overflow-hidden relative rounded-xl mx-auto cursor-move select-none border border-[#E5E0D8] shadow-inner"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleMouseUp}
+          >
+            {rawImage && (
+              <img
+                src={rawImage}
+                alt="Raw Preview"
+                onLoad={handleImageLoad}
+                draggable={false}
+                className="absolute origin-center max-w-none pointer-events-none select-none"
+                style={{
+                  width: `${imageSize.width}px`,
+                  height: `${imageSize.height}px`,
+                  transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)) scale(${zoom})`,
+                  top: '50%',
+                  left: '50%',
+                  transition: isDragging ? 'none' : 'transform 0.1s ease-out',
+                }}
+              />
+            )}
+            
+            {/* Visual Mask Overlay */}
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+              <div className="w-[160px] h-[160px] rounded-full border-2 border-white shadow-[0_0_0_9999px_rgba(15,23,42,0.65)]" />
+            </div>
+          </div>
+
+          {/* Scale Control */}
+          <div className="space-y-2 max-w-[300px] mx-auto">
+            <div className="flex items-center justify-between text-xs text-[#64748B] font-semibold">
+              <span>Zoom Scale</span>
+              <span>{Math.round(zoom * 100)}%</span>
+            </div>
+            <input
+              type="range"
+              min="1"
+              max="3"
+              step="0.05"
+              value={zoom}
+              onChange={(e) => setZoom(parseFloat(e.target.value))}
+              className="w-full h-1 bg-[#F7F5F0] rounded-lg appearance-none cursor-pointer accent-[#1B2A4A] border border-[#E5E0D8]"
+            />
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#F7F5F0]">
+            <button
+              type="button"
+              onClick={() => {
+                setCropModalOpen(false);
+                setRawImage(null);
+              }}
+              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#F7F5F0] text-[#64748B] hover:bg-[#E5E0D8] transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleApplyCrop}
+              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#1B2A4A] text-white hover:bg-[#5C1D24] transition-colors shadow-sm flex items-center gap-1.5"
+            >
+              <Crop className="w-3.5 h-3.5" /> Apply Crop
+            </button>
+          </div>
+
+        </div>
+      </Modal>
+
+    </div>
+  );
+};
+
+export default ProfileSettings;
