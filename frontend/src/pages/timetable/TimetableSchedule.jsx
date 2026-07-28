@@ -332,7 +332,7 @@ const TimetableSchedule = () => {
 
       {/* Routine Banner Info Header */}
       {selectedSection === 'MY_SCHEDULE' ? (
-        <div className="bg-gradient-to-r from-[#F7F5F0] to-[#E5E0D8]/40 p-5 rounded-xl border border-[#E5E0D8] shadow-xs flex flex-col md:flex-row items-center justify-between gap-4 print:border-none print:shadow-none print:bg-transparent">
+        <div className="bg-linear-to-r from-[#F7F5F0] to-[#E5E0D8]/40 p-5 rounded-xl border border-[#E5E0D8] shadow-xs flex flex-col md:flex-row items-center justify-between gap-4 print:border-none print:shadow-none print:bg-transparent">
           <div>
             <div className="text-[10px] font-bold text-[#5C1D24] uppercase tracking-widest">
               Faculty Routine Summary
@@ -348,7 +348,7 @@ const TimetableSchedule = () => {
           </div>
         </div>
       ) : selectedSectionDetails && (
-        <div className="bg-gradient-to-r from-[#F7F5F0] to-[#E5E0D8]/40 p-5 rounded-xl border border-[#E5E0D8] shadow-xs flex flex-col md:flex-row items-center justify-between gap-4 print:border-none print:shadow-none print:bg-transparent">
+        <div className="bg-linear-to-r from-[#F7F5F0] to-[#E5E0D8]/40 p-5 rounded-xl border border-[#E5E0D8] shadow-xs flex flex-col md:flex-row items-center justify-between gap-4 print:border-none print:shadow-none print:bg-transparent">
           <div>
             <div className="text-[10px] font-bold text-[#5C1D24] uppercase tracking-widest">
               Weekly Routine Presentation
@@ -382,16 +382,16 @@ const TimetableSchedule = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-left min-w-[1000px] table-fixed">
+            <table className="w-full border-collapse text-left min-w-250 table-fixed">
               <thead>
                 <tr className="bg-[#F7F5F0] border-b border-[#E5E0D8] print:bg-gray-100 print:border-black">
-                  <th className="px-4 py-3.5 text-xs font-bold text-[#1B2A4A] border-r border-[#E5E0D8] w-[140px] print:text-black print:border-black">
+                  <th className="px-4 py-3.5 text-xs font-bold text-[#1B2A4A] border-r border-[#E5E0D8] w-35 print:text-black print:border-black">
                     Day / Time
                   </th>
                   {PERIOD_TEMPLATES.map((slot, index) => {
                     if (slot.isBreak) {
                       return (
-                        <th key={index} className="px-4 py-3.5 text-center border-r border-[#E5E0D8] w-[95px] bg-amber-500/10 print:bg-gray-200 print:border-black">
+                        <th key={index} className="px-4 py-3.5 text-center border-r border-[#E5E0D8] w-24 bg-amber-500/10 print:bg-gray-200 print:border-black">
                           <div className="text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider print:text-black">
                             LUNCH
                           </div>
@@ -455,7 +455,7 @@ const TimetableSchedule = () => {
                         return (
                           <td
                             key={sIdx}
-                            className="p-2 border-r border-[#E5E0D8] last:border-r-0 text-center relative group min-h-[75px] print:border-black"
+                            className="p-2 border-r border-[#E5E0D8] last:border-r-0 text-center relative group min-h-18 print:border-black"
                           >
                             {period ? (
                               <div className="bg-[#1B2A4A]/5 border border-[#1B2A4A]/15 rounded-xl p-2.5 space-y-1 relative group-hover:bg-[#1B2A4A]/10 hover:shadow-xs transition-all print:bg-transparent print:border-none">
@@ -487,7 +487,7 @@ const TimetableSchedule = () => {
                               canManageCurrentSection ? (
                                 <button
                                   onClick={() => openBulkScheduler(day.code)}
-                                  className="w-full h-full min-h-[48px] rounded-lg border border-dashed border-[#E5E0D8] hover:border-[#1B2A4A]/40 flex items-center justify-center text-[#64748B] hover:text-[#1B2A4A] hover:bg-[#1B2A4A]/5 transition-all group/btn print:hidden"
+                                  className="w-full h-full min-h-12 rounded-lg border border-dashed border-[#E5E0D8] hover:border-[#1B2A4A]/40 flex items-center justify-center text-[#64748B] hover:text-[#1B2A4A] hover:bg-[#1B2A4A]/5 transition-all group/btn print:hidden"
                                   title={`Schedule Day Routine for ${day.name}`}
                                 >
                                   <Plus className="w-4 h-4 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
