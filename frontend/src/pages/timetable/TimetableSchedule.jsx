@@ -51,27 +51,27 @@ const TimetableSchedule = () => {
 
   const fetchDropdowns = async () => {
     try {
-      const secParams = user?.role === 'TEACHER' ? { class_teacher_only: 'true' } : {};
-      const secRes = await academicService.getSections(secParams);
+      const secRes = await academicService.getSections();
       const secList = secRes.results || secRes;
       setSections(secList);
       
-      let initialSection = '';
-      if (secList.length > 0) {
-        initialSection = secList[0].id.toString();
-        setSelectedSection(initialSection);
-      }
-
-      const firstSec = secList[0];
-      const subParams = firstSec ? { class_level: firstSec.class_level } : {};
-      
       const [subRes, teachRes] = await Promise.all([
-        academicService.getSubjects(subParams),
+        academicService.getSubjects(),
         teacherService.getTeachers(),
       ]);
 
+      const teacherList = teachRes.results || teachRes;
       setSubjects(subRes.results || subRes);
-      setTeachers(teachRes.results || teachRes);
+      setTeachers(teacherList);
+
+      let initialSection = '';
+      if (user?.role === 'TEACHER') {
+        initialSection = 'MY_SCHEDULE';
+      } else if (secList.length > 0) {
+        initialSection = secList[0].id.toString();
+      }
+
+      setSelectedSection(initialSection);
     } catch (err) {
       console.error("Failed to fetch dropdowns:", err);
     }
@@ -81,7 +81,20 @@ const TimetableSchedule = () => {
     if (!selectedSection) return;
     setLoading(true);
     try {
-      const data = await timetableService.getPeriods({ section: selectedSection });
+      let params = {};
+      if (selectedSection === 'MY_SCHEDULE') {
+        let tId = user?.teacher_profile_id;
+        if (!tId) {
+          const currentTeacher = teachers.find((t) => t.user?.id === user?.id);
+          tId = currentTeacher?.id;
+        }
+        if (tId) {
+          params = { teacher: tId };
+        }
+      } else {
+        params = { section: selectedSection };
+      }
+      const data = await timetableService.getPeriods(params);
       setPeriods(data.results || data);
     } catch (err) {
       console.error("Failed to fetch periods:", err);
@@ -95,13 +108,15 @@ const TimetableSchedule = () => {
   }, []);
 
   useEffect(() => {
-    fetchPeriods();
-  }, [selectedSection]);
+    if (selectedSection) {
+      fetchPeriods();
+    }
+  }, [selectedSection, teachers]);
 
   // Reload subjects dynamically when selected section changes to ensure class level subjects are shown
   useEffect(() => {
     const loadSubjectsForSection = async () => {
-      if (!selectedSection || sections.length === 0) return;
+      if (!selectedSection || selectedSection === 'MY_SCHEDULE' || sections.length === 0) return;
       const activeSec = sections.find(s => s.id.toString() === selectedSection);
       if (activeSec) {
         try {
@@ -219,19 +234,26 @@ const TimetableSchedule = () => {
     }));
   };
 
+  const isUserAdmin = user?.role === 'SCHOOL_ADMIN' || user?.role === 'SUPER_ADMIN';
+  const isClassTeacherOfSelectedSec = user?.class_teacher_sections?.some(
+    (s) => s.id.toString() === selectedSection
+  );
+  const canManageCurrentSection = isUserAdmin || (user?.role === 'TEACHER' && isClassTeacherOfSelectedSec);
+
   return (
     <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918] print:p-8 print:bg-white print:text-black">
       
       {/* Category Pill Indicator */}
       <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider print:hidden">
         <Clock className="w-3.5 h-3.5 text-[#5C1D24]" />
-        <span>Timetable Scheduler Calendar</span>
+        <span>Academic Timetable Engine</span>
       </div>
 
+      {/* Main Title & Action Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4 print:hidden">
         <div>
           <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Class Timetable Schedule</h1>
-          <p className="text-xs text-[#64748B] mt-1">Schedule daily subject periods and assigned faculty for each class section.</p>
+          <p className="text-xs text-[#64748B] mt-1">Manage daily subject routines, faculty assignments, and weekly class periods.</p>
         </div>
         <div className="flex items-center gap-3">
           {periods.length > 0 && (
@@ -239,7 +261,7 @@ const TimetableSchedule = () => {
               <Printer className="w-4 h-4" /> Print Routine
             </Button>
           )}
-          {canManageTimetable && (
+          {canManageCurrentSection && (
             <Button variant="primary" size="sm" onClick={() => openBulkScheduler('MON')} className="gap-2 shadow-sm">
               <Plus className="w-4 h-4" /> Schedule Day Routine
             </Button>
@@ -247,47 +269,107 @@ const TimetableSchedule = () => {
         </div>
       </div>
 
-      {/* Selectors Bar */}
-      {user?.role !== 'TEACHER' && (
-        <div className="bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-sm max-w-sm print:hidden">
-          <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
-            Select Section Timetable
-          </label>
-          <select
-            value={selectedSection}
-            onChange={(e) => setSelectedSection(e.target.value)}
-            className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
-          >
-            {sections.map((sec) => (
-              <option key={sec.id} value={sec.id}>
-                {sec.class_name} - {sec.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
-
-      {/* Routine Presentation Header - Don Bosco Routine Style */}
-      {selectedSectionDetails && (
-        <div className="bg-[#F7F5F0] p-6 rounded-xl border border-[#E5E0D8] space-y-2 text-center max-w-4xl mx-auto shadow-sm print:border-none print:shadow-none print:bg-transparent">
-          <h2 className="text-xl font-bold uppercase tracking-wider text-[#1B2A4A] font-['Newsreader'] print:text-black">
-            {user?.school?.name || "School Timetable"}
-          </h2>
-          <div className="text-xs font-bold text-[#5C1D24] uppercase tracking-widest print:text-black">
-            Weekly Class Routine / Timetable
+      {/* Segmented View Switcher & Filter Bar */}
+      <div className="bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4 print:hidden">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          
+          {/* Tab Switcher */}
+          <div className="flex items-center p-1 bg-[#F7F5F0] rounded-xl border border-[#E5E0D8]">
+            {user?.role === 'TEACHER' && (
+              <button
+                type="button"
+                onClick={() => setSelectedSection('MY_SCHEDULE')}
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                  selectedSection === 'MY_SCHEDULE'
+                    ? 'bg-[#1B2A4A] text-white shadow-sm'
+                    : 'text-[#64748B] hover:text-[#1A1918]'
+                }`}
+              >
+                ⭐ My Teaching Routine
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => {
+                if (selectedSection === 'MY_SCHEDULE' && sections.length > 0) {
+                  setSelectedSection(sections[0].id.toString());
+                }
+              }}
+              className={`px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                selectedSection !== 'MY_SCHEDULE'
+                  ? 'bg-[#1B2A4A] text-white shadow-sm'
+                  : 'text-[#64748B] hover:text-[#1A1918]'
+              }`}
+            >
+              🏫 Class Section Routines
+            </button>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3 border-t border-[#E5E0D8] mt-3 text-xs font-semibold text-[#64748B] print:text-black print:border-black">
-            <div>
-              CLASS SECTION: <span className="font-bold text-[#1A1918] print:text-black">{selectedSectionDetails.class_name} - {selectedSectionDetails.name}</span>
+
+          {/* Section Selector Dropdown (when inspecting Class Routines) */}
+          {selectedSection !== 'MY_SCHEDULE' && (
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <label className="text-xs font-bold text-[#1A1918] uppercase tracking-wider whitespace-nowrap">
+                Select Class:
+              </label>
+              <select
+                value={selectedSection}
+                onChange={(e) => setSelectedSection(e.target.value)}
+                className="w-full md:w-72 bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2 text-xs font-bold text-[#1B2A4A] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+              >
+                {sections.map((sec) => {
+                  const isMyHomeroom = user?.class_teacher_sections?.some(s => s.id === sec.id);
+                  return (
+                    <option key={sec.id} value={sec.id.toString()}>
+                      {sec.class_name} - Section {sec.name} {isMyHomeroom ? '⭐ (My Homeroom)' : ''}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
-            <div>
-              CLASS TEACHER: <span className="font-bold text-[#1A1918] print:text-black">
-                {selectedSectionDetails.class_teacher_name || "Not Assigned"}
+          )}
+        </div>
+      </div>
+
+      {/* Routine Banner Info Header */}
+      {selectedSection === 'MY_SCHEDULE' ? (
+        <div className="bg-gradient-to-r from-[#F7F5F0] to-[#E5E0D8]/40 p-5 rounded-xl border border-[#E5E0D8] shadow-xs flex flex-col md:flex-row items-center justify-between gap-4 print:border-none print:shadow-none print:bg-transparent">
+          <div>
+            <div className="text-[10px] font-bold text-[#5C1D24] uppercase tracking-widest">
+              Faculty Routine Summary
+            </div>
+            <h2 className="text-xl font-bold text-[#1B2A4A] font-['Newsreader']">
+              Personal Teaching Schedule — {user?.first_name} {user?.last_name}
+            </h2>
+          </div>
+          <div className="flex items-center gap-3">
+            <Badge variant="primary" className="text-xs font-bold">
+              {periods.length} Total Periods Taught
+            </Badge>
+          </div>
+        </div>
+      ) : selectedSectionDetails && (
+        <div className="bg-gradient-to-r from-[#F7F5F0] to-[#E5E0D8]/40 p-5 rounded-xl border border-[#E5E0D8] shadow-xs flex flex-col md:flex-row items-center justify-between gap-4 print:border-none print:shadow-none print:bg-transparent">
+          <div>
+            <div className="text-[10px] font-bold text-[#5C1D24] uppercase tracking-widest">
+              Weekly Routine Presentation
+            </div>
+            <h2 className="text-xl font-bold text-[#1B2A4A] font-['Newsreader']">
+              {selectedSectionDetails.class_name} — Section {selectedSectionDetails.name}
+            </h2>
+            <div className="text-xs text-[#64748B] mt-0.5">
+              Class Teacher: <span className="font-semibold text-[#1A1918]">{selectedSectionDetails.class_teacher_name || 'Not Assigned'}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {canManageCurrentSection ? (
+              <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 text-xs font-bold">
+                ✓ Homeroom Management Active
               </span>
-            </div>
-            <div className="col-span-2 sm:col-span-1">
-              ACADEMIC SESSION: <span className="font-bold text-[#1A1918] print:text-black">2026 - 2027</span>
-            </div>
+            ) : (
+              <span className="px-3 py-1 rounded-full bg-slate-500/10 border border-slate-500/30 text-slate-700 text-xs font-bold">
+                🔒 Read-Only Overview
+              </span>
+            )}
           </div>
         </div>
       )}
@@ -296,7 +378,7 @@ const TimetableSchedule = () => {
       <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm overflow-hidden print:border-black">
         {loading ? (
           <div className="py-20 text-center text-xs text-[#64748B] font-semibold animate-pulse print:hidden">
-            Loading scheduled periods and mapping layout matrix...
+            Synchronizing class schedules and routine matrix...
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -309,7 +391,7 @@ const TimetableSchedule = () => {
                   {PERIOD_TEMPLATES.map((slot, index) => {
                     if (slot.isBreak) {
                       return (
-                        <th key={index} className="px-4 py-3.5 text-center border-r border-[#E5E0D8] w-[90px] bg-amber-50/50 print:bg-gray-200 print:border-black">
+                        <th key={index} className="px-4 py-3.5 text-center border-r border-[#E5E0D8] w-[95px] bg-amber-500/10 print:bg-gray-200 print:border-black">
                           <div className="text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider print:text-black">
                             LUNCH
                           </div>
@@ -339,11 +421,11 @@ const TimetableSchedule = () => {
                     <tr key={day.code} className="border-b border-[#E5E0D8] last:border-b-0 hover:bg-[#F7F5F0]/20 transition-colors print:border-black">
                       {/* Day Column */}
                       <td className="px-4 py-4 font-bold text-[#1A1918] bg-[#F7F5F0]/50 border-r border-[#E5E0D8] flex-col justify-center print:bg-gray-50 print:text-black print:border-black">
-                        <div className="text-xs">{day.name}</div>
-                        <div className="text-[9px] text-[#64748B] font-normal mt-0.5 font-mono print:text-black">
-                          {dayPeriods.length} active slots
+                        <div className="text-xs font-bold text-[#1B2A4A]">{day.name}</div>
+                        <div className="text-[9px] text-[#64748B] font-medium mt-0.5 font-mono print:text-black">
+                          {dayPeriods.length} slots
                         </div>
-                        {canManageTimetable && (
+                        {canManageCurrentSection && (
                           <button
                             onClick={() => openBulkScheduler(day.code)}
                             className="text-[9px] text-[#5C1D24] hover:underline block mt-2 print:hidden font-bold"
@@ -359,7 +441,7 @@ const TimetableSchedule = () => {
                           return (
                             <td
                               key={sIdx}
-                              className="p-2 border-r border-[#E5E0D8] bg-amber-50/20 text-center font-bold text-[10px] text-[#5C1D24] uppercase tracking-widest select-none font-mono print:border-black print:bg-gray-50"
+                              className="p-2 border-r border-[#E5E0D8] bg-amber-500/5 text-center font-bold text-[10px] text-[#5C1D24] uppercase tracking-widest select-none font-mono print:border-black print:bg-gray-50"
                             >
                               LUNCH
                             </td>
@@ -376,16 +458,22 @@ const TimetableSchedule = () => {
                             className="p-2 border-r border-[#E5E0D8] last:border-r-0 text-center relative group min-h-[75px] print:border-black"
                           >
                             {period ? (
-                              <div className="bg-[#1B2A4A]/5 border border-[#1B2A4A]/10 rounded-lg p-2 space-y-1 relative group-hover:bg-[#1B2A4A]/10 transition-colors print:bg-transparent print:border-none">
+                              <div className="bg-[#1B2A4A]/5 border border-[#1B2A4A]/15 rounded-xl p-2.5 space-y-1 relative group-hover:bg-[#1B2A4A]/10 hover:shadow-xs transition-all print:bg-transparent print:border-none">
                                 <div className="text-xs font-bold text-[#1B2A4A] print:text-black">
                                   {period.subject_details?.name || 'Subject'}
                                 </div>
-                                <div className="text-[9px] text-[#64748B] font-medium print:text-black">
-                                  {period.teacher_details?.user?.first_name} {period.teacher_details?.user?.last_name?.[0]}.
-                                </div>
+                                {selectedSection === 'MY_SCHEDULE' ? (
+                                  <div className="text-[10px] font-bold text-[#5C1D24]">
+                                    {period.section_details?.class_name || 'Class'} - Sec {period.section_details?.name || ''}
+                                  </div>
+                                ) : (
+                                  <div className="text-[9px] text-[#64748B] font-medium print:text-black">
+                                    {period.teacher_details?.user?.first_name} {period.teacher_details?.user?.last_name?.[0]}.
+                                  </div>
+                                )}
 
                                 {/* Floating delete button visible on hover */}
-                                {canManageTimetable && (
+                                {canManageCurrentSection && (
                                   <button
                                     onClick={() => handleDelete(period.id)}
                                     className="absolute -top-1.5 -right-1.5 bg-[#5C1D24] text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm print:hidden"
@@ -396,7 +484,7 @@ const TimetableSchedule = () => {
                                 )}
                               </div>
                             ) : (
-                              canManageTimetable ? (
+                              canManageCurrentSection ? (
                                 <button
                                   onClick={() => openBulkScheduler(day.code)}
                                   className="w-full h-full min-h-[48px] rounded-lg border border-dashed border-[#E5E0D8] hover:border-[#1B2A4A]/40 flex items-center justify-center text-[#64748B] hover:text-[#1B2A4A] hover:bg-[#1B2A4A]/5 transition-all group/btn print:hidden"
@@ -421,17 +509,22 @@ const TimetableSchedule = () => {
       </div>
 
       {/* Bulk Day Routine Modal */}
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={`Schedule Routine for ${DAYS.find((d) => d.code === bulkFormData.day_of_week)?.name}`}>
-        <form onSubmit={handleBulkSubmit} className="space-y-4 max-h-[80vh] overflow-y-auto px-1">
+      <Modal 
+        isOpen={modalOpen} 
+        onClose={() => setModalOpen(false)} 
+        maxWidth="max-w-5xl"
+        title={`Schedule Routine for ${DAYS.find((d) => d.code === bulkFormData.day_of_week)?.name}`}
+      >
+        <form onSubmit={handleBulkSubmit} className="space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-[#E5E0D8]">
-            <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
-                Selecting Target Day
+            <div className="flex items-center gap-3">
+              <label className="text-xs font-bold text-[#1A1918] uppercase tracking-wider">
+                Selecting Target Day:
               </label>
               <select
                 value={bulkFormData.day_of_week}
                 onChange={(e) => populateBulkForm(e.target.value)}
-                className="bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2 text-xs font-bold text-[#1B2A4A] focus:outline-none"
+                className="bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-1.5 text-xs font-bold text-[#1B2A4A] focus:outline-none focus:border-[#1B2A4A]"
               >
                 {DAYS.map((d) => (
                   <option key={d.code} value={d.code}>
@@ -440,60 +533,116 @@ const TimetableSchedule = () => {
                 ))}
               </select>
             </div>
-            <div className="text-[10px] text-[#64748B] font-semibold italic text-right max-w-[200px]">
+            <div className="text-[11px] text-[#64748B] font-semibold italic">
               Note: Saving will overwrite any existing timetable slots for this day.
             </div>
           </div>
 
-          <div className="space-y-3.5 divide-y divide-[#F7F5F0]">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => {
-              const slot = PERIOD_TEMPLATES.find((s) => s.num === num);
-              const pData = bulkFormData.periods[num] || { subject: '', teacher: '' };
+          {/* 2-Column Grid: Morning (1-4) & Afternoon (5-8) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Morning Session Column (Periods 1-4) */}
+            <div className="space-y-2.5 bg-[#F7F5F0]/40 p-3 rounded-xl border border-[#E5E0D8]">
+              <div className="text-xs font-bold text-[#1B2A4A] uppercase tracking-wider border-b border-[#E5E0D8] pb-1.5 flex items-center justify-between">
+                <span>Morning Session</span>
+                <span className="text-[10px] text-[#64748B] font-normal">Periods 1 – 4</span>
+              </div>
+              {[1, 2, 3, 4].map((num) => {
+                const slot = PERIOD_TEMPLATES.find((s) => s.num === num);
+                const pData = bulkFormData.periods[num] || { subject: '', teacher: '' };
 
-              return (
-                <div key={num} className="pt-3.5 first:pt-0 grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
-                  <div className="sm:col-span-3">
-                    <div className="text-xs font-bold text-[#1B2A4A]">Period {num}</div>
-                    <div className="text-[10px] text-[#64748B] font-mono mt-0.5">{slot.start} - {slot.end}</div>
-                  </div>
-                  
-                  <div className="sm:col-span-5">
-                    <select
-                      value={pData.subject}
-                      onChange={(e) => handleBulkPeriodChange(num, 'subject', e.target.value)}
-                      className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
-                    >
-                      <option value="">No Class Scheduled</option>
-                      {subjects.map((sub) => (
-                        <option key={sub.id} value={sub.id}>
-                          {sub.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                return (
+                  <div key={num} className="bg-white p-2.5 rounded-lg border border-[#E5E0D8] space-y-1.5 shadow-2xs">
+                    <div className="flex items-center justify-between text-xs font-bold text-[#1B2A4A]">
+                      <span>Period {num}</span>
+                      <span className="text-[10px] text-[#64748B] font-mono font-medium">{slot.start} - {slot.end}</span>
+                    </div>
 
-                  <div className="sm:col-span-4">
-                    <select
-                      value={pData.teacher}
-                      onChange={(e) => handleBulkPeriodChange(num, 'teacher', e.target.value)}
-                      className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
-                      disabled={!pData.subject}
-                    >
-                      <option value="">Assign Teacher</option>
-                      {teachers.map((t) => (
-                        <option key={t.id} value={t.id}>
-                          {t.user?.first_name} {t.user?.last_name}
-                        </option>
-                      ))}
-                    </select>
+                    <div className="grid grid-cols-2 gap-2">
+                      <select
+                        value={pData.subject}
+                        onChange={(e) => handleBulkPeriodChange(num, 'subject', e.target.value)}
+                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                      >
+                        <option value="">No Class</option>
+                        {subjects.map((sub) => (
+                          <option key={sub.id} value={sub.id}>
+                            {sub.name}
+                          </option>
+                        ))}
+                      </select>
+
+                      <select
+                        value={pData.teacher}
+                        onChange={(e) => handleBulkPeriodChange(num, 'teacher', e.target.value)}
+                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                        disabled={!pData.subject}
+                      >
+                        <option value="">Assign Teacher</option>
+                        {teachers.map((t) => (
+                          <option key={t.id} value={t.id}>
+                            {t.user?.first_name} {t.user?.last_name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
+
+            {/* Afternoon Session Column (Periods 5-8) */}
+            <div className="space-y-2.5 bg-[#F7F5F0]/40 p-3 rounded-xl border border-[#E5E0D8]">
+              <div className="text-xs font-bold text-[#1B2A4A] uppercase tracking-wider border-b border-[#E5E0D8] pb-1.5 flex items-center justify-between">
+                <span>Afternoon Session</span>
+                <span className="text-[10px] text-[#64748B] font-normal">Periods 5 – 8</span>
+              </div>
+              {[5, 6, 7, 8].map((num) => {
+                const slot = PERIOD_TEMPLATES.find((s) => s.num === num);
+                const pData = bulkFormData.periods[num] || { subject: '', teacher: '' };
+
+                return (
+                  <div key={num} className="bg-white p-2.5 rounded-lg border border-[#E5E0D8] space-y-1.5 shadow-2xs">
+                    <div className="flex items-center justify-between text-xs font-bold text-[#1B2A4A]">
+                      <span>Period {num}</span>
+                      <span className="text-[10px] text-[#64748B] font-mono font-medium">{slot.start} - {slot.end}</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <select
+                        value={pData.subject}
+                        onChange={(e) => handleBulkPeriodChange(num, 'subject', e.target.value)}
+                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                      >
+                        <option value="">No Class</option>
+                        {subjects.map((sub) => (
+                          <option key={sub.id} value={sub.id}>
+                            {sub.name}
+                          </option>
+                        ))}
+                      </select>
+
+                      <select
+                        value={pData.teacher}
+                        onChange={(e) => handleBulkPeriodChange(num, 'teacher', e.target.value)}
+                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                        disabled={!pData.subject}
+                      >
+                        <option value="">Assign Teacher</option>
+                        {teachers.map((t) => (
+                          <option key={t.id} value={t.id}>
+                            {t.user?.first_name} {t.user?.last_name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
-          <Button type="submit" variant="primary" className="w-full mt-4 gap-2" loading={submitting}>
-            <Save className="w-4 h-4" /> Save day Routine
+          <Button type="submit" variant="primary" className="w-full mt-3 gap-2 shadow-sm" loading={submitting}>
+            <Save className="w-4 h-4" /> Save Day Routine
           </Button>
         </form>
       </Modal>

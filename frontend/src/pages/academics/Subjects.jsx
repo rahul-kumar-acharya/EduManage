@@ -13,10 +13,11 @@ const Subjects = () => {
 
   const [subjects, setSubjects] = useState([]);
   const [classLevels, setClassLevels] = useState([]);
+  const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editId, setEditId] = useState(null);
-  const [filterClassLevel, setFilterClassLevel] = useState('');
+  const [filterSection, setFilterSection] = useState('');
 
   // Custom delete modal confirmation states
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -28,12 +29,14 @@ const Subjects = () => {
   const fetchSubjects = async () => {
     setLoading(true);
     try {
-      const [subData, classRes] = await Promise.all([
+      const [subData, classRes, secRes] = await Promise.all([
         academicService.getSubjects(),
         academicService.getClasses(),
+        academicService.getSections(),
       ]);
       setSubjects(subData.results || subData);
       setClassLevels(classRes.results || classRes);
+      setSections(secRes.results || secRes);
     } catch (err) {
       console.error("Failed to fetch subjects:", err);
     } finally {
@@ -45,6 +48,19 @@ const Subjects = () => {
     fetchSubjects();
   }, []);
 
+  useEffect(() => {
+    if (user?.role === 'TEACHER' && user.class_teacher_sections?.length > 0) {
+      setFilterSection(user.class_teacher_sections[0].id.toString());
+    }
+  }, [user]);
+
+  const getDisplaySubjects = () => {
+    if (!filterSection) return subjects;
+    const targetSec = sections.find((s) => s.id.toString() === filterSection);
+    if (!targetSec) return subjects;
+    return subjects.filter((sub) => sub.class_level === targetSec.class_level);
+  };
+
   const getFormClassLevels = () => {
     if (user?.role !== 'TEACHER') {
       return classLevels;
@@ -54,7 +70,7 @@ const Subjects = () => {
       if (!assignedLevels.some((lvl) => lvl.id === sec.class_level_id)) {
         assignedLevels.push({
           id: sec.class_level_id,
-          name: sec.class_level_name,
+          name: `${sec.class_level_name} - Section ${sec.section_name}`,
         });
       }
     });
@@ -141,9 +157,33 @@ const Subjects = () => {
       )
     },
     {
-      header: 'Class Level',
+      header: 'Class & Section',
       accessor: 'class_level_name',
-      render: (row) => <span className="font-semibold text-xs text-[#64748B]">{row.class_level_name || 'All Classes'}</span>
+      render: (row) => {
+        let secNames = '';
+        if (filterSection) {
+          const selSec = sections.find((s) => s.id.toString() === filterSection);
+          if (selSec) {
+            secNames = selSec.name;
+          }
+        }
+        if (!secNames) {
+          const classSecs = sections.filter((s) => s.class_level === row.class_level);
+          secNames = classSecs.length > 0 ? classSecs.map((s) => s.name).join(', ') : '';
+        }
+        return (
+          <div className="flex flex-col">
+            <span className="font-bold text-xs text-[#1B2A4A]">
+              {row.class_level_name || 'All Classes'}
+            </span>
+            {secNames && (
+              <span className="text-[10px] font-semibold text-[#64748B]">
+                Section {secNames}
+              </span>
+            )}
+          </div>
+        );
+      }
     },
     {
       header: 'Subject Code',
@@ -154,8 +194,21 @@ const Subjects = () => {
       header: 'Actions',
       accessor: 'actions',
       render: (row) => {
-        const isAssigned = user?.class_teacher_sections?.some((sec) => sec.class_level_id === row.class_level);
-        const canEditRow = isUserAdmin || (user?.role === 'TEACHER' && isAssigned);
+        let canEditRow = false;
+
+        if (isUserAdmin) {
+          canEditRow = true;
+        } else if (user?.role === 'TEACHER') {
+          if (filterSection) {
+            canEditRow = user?.class_teacher_sections?.some(
+              (sec) => sec.id.toString() === filterSection
+            );
+          } else {
+            canEditRow = user?.class_teacher_sections?.some(
+              (sec) => sec.class_level_id === row.class_level
+            );
+          }
+        }
 
         if (!canEditRow) {
           return <span className="text-[10px] text-[#64748B] italic select-none">Read-Only</span>;
@@ -206,19 +259,27 @@ const Subjects = () => {
       {/* Filters Bar */}
       <div className="bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-sm max-w-sm flex items-center gap-3">
         <label className="text-xs font-bold text-[#1A1918] uppercase tracking-wider whitespace-nowrap">
-          Filter Class Level:
+          Filter Grade & Section:
         </label>
         <select
-          value={filterClassLevel}
-          onChange={(e) => setFilterClassLevel(e.target.value)}
+          value={filterSection}
+          onChange={(e) => setFilterSection(e.target.value)}
           className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
         >
-          <option value="">All Class Levels</option>
-          {classLevels.map((lvl) => (
-            <option key={lvl.id} value={lvl.id}>
-              {lvl.name}
-            </option>
-          ))}
+          <option value="">All Grades & Sections</option>
+          {sections.length > 0 ? (
+            sections.map((sec) => (
+              <option key={sec.id} value={sec.id.toString()}>
+                {sec.class_name} - Section {sec.name}
+              </option>
+            ))
+          ) : (
+            classLevels.map((lvl) => (
+              <option key={lvl.id} value={lvl.id.toString()}>
+                {lvl.name}
+              </option>
+            ))
+          )}
         </select>
       </div>
 
@@ -231,7 +292,7 @@ const Subjects = () => {
         ) : (
           <Table 
             columns={columns} 
-            data={filterClassLevel ? subjects.filter((sub) => sub.class_level?.toString() === filterClassLevel) : subjects} 
+            data={getDisplaySubjects()} 
             emptyMessage="No subjects configured yet." 
           />
         )}

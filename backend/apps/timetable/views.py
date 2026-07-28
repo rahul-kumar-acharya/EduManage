@@ -17,6 +17,9 @@ class TimetablePeriodViewSet(BaseTenantViewSet):
         section_id = self.request.query_params.get('section')
         if section_id:
             qs = qs.filter(section_id=section_id)
+        teacher_id = self.request.query_params.get('teacher')
+        if teacher_id:
+            qs = qs.filter(teacher_id=teacher_id)
         day = self.request.query_params.get('day_of_week')
         if day:
             qs = qs.filter(day_of_week=day)
