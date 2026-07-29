@@ -8,6 +8,8 @@ class TimetablePeriod(TenantModel):
     day_of_week = models.CharField(max_length=15, choices=[('MON', 'Monday'), ('TUE', 'Tuesday'), ('WED', 'Wednesday'), ('THU', 'Thursday'), ('FRI', 'Friday'), ('SAT', 'Saturday')])
     start_time = models.TimeField()
     end_time = models.TimeField()
+    room_number = models.CharField(max_length=50, default='Main Classroom', blank=True)
 
     def __str__(self):
         return f"{self.section.name} - {self.subject.name} ({self.day_of_week})"
+

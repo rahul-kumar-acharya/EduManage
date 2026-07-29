@@ -13,4 +13,9 @@ export const timetableService = {
     const res = await api.delete(`/timetable/periods/${id}/`);
     return res.data;
   },
+  getFreeTeachers: async (params = {}) => {
+    const res = await api.get('/timetable/periods/free-teachers/', { params });
+    return res.data;
+  },
 };
+

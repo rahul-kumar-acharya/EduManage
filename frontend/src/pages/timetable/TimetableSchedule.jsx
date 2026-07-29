@@ -7,7 +7,7 @@ import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Modal from '../../components/ui/Modal';
 import Badge from '../../components/ui/Badge';
-import { Clock, Plus, Trash2, Calendar, Printer, Save } from 'lucide-react';
+import { Clock, Plus, Trash2, Calendar, Printer, Save, MapPin, Search, AlertCircle, UserCheck } from 'lucide-react';
 
 const DAYS = [
   { code: 'MON', name: 'Monday' },
@@ -42,12 +42,25 @@ const TimetableSchedule = () => {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [conflictError, setConflictError] = useState(null);
+
+  // Free Period / Substitute Teacher Finder State
+  const [substituteModalOpen, setSubstituteModalOpen] = useState(false);
+  const [substituteQuery, setSubstituteQuery] = useState({
+    day_of_week: 'MON',
+    period_num: 1,
+    start_time: '08:00',
+    end_time: '08:45'
+  });
+  const [freeTeachers, setFreeTeachers] = useState([]);
+  const [loadingFreeTeachers, setLoadingFreeTeachers] = useState(false);
 
   // Bulk Day Routine Form Data
   const [bulkFormData, setBulkFormData] = useState({
     day_of_week: 'MON',
-    periods: {} // Map period numbers (1-8) to { subject: '', teacher: '' }
+    periods: {} // Map period numbers (1-8) to { subject: '', teacher: '', room_number: 'Main Classroom' }
   });
+
 
   const fetchDropdowns = async () => {
     try {
@@ -155,9 +168,11 @@ const TimetableSchedule = () => {
       newPeriodsData[num] = {
         subject: matched ? matched.subject?.toString() : '',
         teacher: matched ? matched.teacher?.toString() : '',
+        room_number: matched ? (matched.room_number || 'Main Classroom') : 'Main Classroom',
       };
     });
 
+    setConflictError(null);
     setBulkFormData({
       day_of_week: dayCode,
       periods: newPeriodsData,
@@ -173,12 +188,14 @@ const TimetableSchedule = () => {
 
   const openBulkScheduler = (day = 'MON') => {
     populateBulkForm(day);
+    setConflictError(null);
     setModalOpen(true);
   };
 
   const handleBulkSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    setConflictError(null);
     try {
       // 1. Delete all existing periods for that day to avoid conflicts
       const existingPeriods = periods.filter((p) => p.day_of_week === bulkFormData.day_of_week);
@@ -200,6 +217,7 @@ const TimetableSchedule = () => {
             day_of_week: bulkFormData.day_of_week,
             start_time: slot.start,
             end_time: slot.end,
+            room_number: data.room_number || 'Main Classroom',
           });
         }
         return Promise.resolve();
@@ -210,10 +228,42 @@ const TimetableSchedule = () => {
       fetchPeriods();
     } catch (err) {
       console.error("Failed to save day routine:", err);
+      const backendError = err.response?.data?.teacher || err.response?.data?.non_field_errors || "Failed to save day routine due to conflict.";
+      setConflictError(Array.isArray(backendError) ? backendError.join(' ') : backendError);
     } finally {
       setSubmitting(false);
     }
   };
+
+  const fetchFreeTeachers = async (day, slotNum) => {
+    const slot = PERIOD_TEMPLATES.find(s => s.num === slotNum);
+    if (!slot) return;
+    setLoadingFreeTeachers(true);
+    try {
+      const data = await timetableService.getFreeTeachers({
+        day_of_week: day,
+        start_time: slot.start,
+        end_time: slot.end
+      });
+      setFreeTeachers(data.results || data);
+    } catch (err) {
+      console.error("Failed to fetch available substitute teachers:", err);
+    } finally {
+      setLoadingFreeTeachers(false);
+    }
+  };
+
+  const handleOpenSubstituteFinder = () => {
+    fetchFreeTeachers(substituteQuery.day_of_week, substituteQuery.period_num);
+    setSubstituteModalOpen(true);
+  };
+
+  const handleSubstituteQueryChange = (field, value) => {
+    const updated = { ...substituteQuery, [field]: value };
+    setSubstituteQuery(updated);
+    fetchFreeTeachers(updated.day_of_week, updated.period_num);
+  };
+
 
   const selectedSectionDetails = sections.find((sec) => sec.id.toString() === selectedSection);
 
@@ -256,6 +306,9 @@ const TimetableSchedule = () => {
           <p className="text-xs text-[#64748B] mt-1">Manage daily subject routines, faculty assignments, and weekly class periods.</p>
         </div>
         <div className="flex items-center gap-3">
+          <Button variant="outline" size="sm" onClick={handleOpenSubstituteFinder} className="gap-2 shadow-sm border-[#1B2A4A]/20 text-[#1B2A4A]">
+            <Search className="w-4 h-4 text-[#1B2A4A]" /> Substitute Finder
+          </Button>
           {periods.length > 0 && (
             <Button variant="outline" size="sm" onClick={handlePrint} className="gap-2 shadow-sm">
               <Printer className="w-4 h-4" /> Print Routine
@@ -471,6 +524,12 @@ const TimetableSchedule = () => {
                                     {period.teacher_details?.user?.first_name} {period.teacher_details?.user?.last_name?.[0]}.
                                   </div>
                                 )}
+                                
+                                {/* Room Tag Badge */}
+                                <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/80 border border-[#E5E0D8] text-[9px] font-semibold text-[#1A1918] mt-1 print:border-none">
+                                  <MapPin className="w-2.5 h-2.5 text-[#5C1D24]" />
+                                  <span>{period.room_number || 'Main Class'}</span>
+                                </div>
 
                                 {/* Floating delete button visible on hover */}
                                 {canManageCurrentSection && (
@@ -516,6 +575,15 @@ const TimetableSchedule = () => {
         title={`Schedule Routine for ${DAYS.find((d) => d.code === bulkFormData.day_of_week)?.name}`}
       >
         <form onSubmit={handleBulkSubmit} className="space-y-4">
+          
+          {/* Conflict Error Alert */}
+          {conflictError && (
+            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-700 text-xs font-bold flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-600" />
+              <div>{conflictError}</div>
+            </div>
+          )}
+
           <div className="flex items-center justify-between pb-3 border-b border-[#E5E0D8]">
             <div className="flex items-center gap-3">
               <label className="text-xs font-bold text-[#1A1918] uppercase tracking-wider">
@@ -548,7 +616,7 @@ const TimetableSchedule = () => {
               </div>
               {[1, 2, 3, 4].map((num) => {
                 const slot = PERIOD_TEMPLATES.find((s) => s.num === num);
-                const pData = bulkFormData.periods[num] || { subject: '', teacher: '' };
+                const pData = bulkFormData.periods[num] || { subject: '', teacher: '', room_number: 'Main Classroom' };
 
                 return (
                   <div key={num} className="bg-white p-2.5 rounded-lg border border-[#E5E0D8] space-y-1.5 shadow-2xs">
@@ -557,11 +625,11 @@ const TimetableSchedule = () => {
                       <span className="text-[10px] text-[#64748B] font-mono font-medium">{slot.start} - {slot.end}</span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-3 gap-2">
                       <select
                         value={pData.subject}
                         onChange={(e) => handleBulkPeriodChange(num, 'subject', e.target.value)}
-                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
                       >
                         <option value="">No Class</option>
                         {subjects.map((sub) => (
@@ -574,7 +642,7 @@ const TimetableSchedule = () => {
                       <select
                         value={pData.teacher}
                         onChange={(e) => handleBulkPeriodChange(num, 'teacher', e.target.value)}
-                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
                         disabled={!pData.subject}
                       >
                         <option value="">Assign Teacher</option>
@@ -584,6 +652,15 @@ const TimetableSchedule = () => {
                           </option>
                         ))}
                       </select>
+
+                      <input
+                        type="text"
+                        placeholder="Room / Lab"
+                        value={pData.room_number || ''}
+                        onChange={(e) => handleBulkPeriodChange(num, 'room_number', e.target.value)}
+                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                        disabled={!pData.subject}
+                      />
                     </div>
                   </div>
                 );
@@ -598,7 +675,7 @@ const TimetableSchedule = () => {
               </div>
               {[5, 6, 7, 8].map((num) => {
                 const slot = PERIOD_TEMPLATES.find((s) => s.num === num);
-                const pData = bulkFormData.periods[num] || { subject: '', teacher: '' };
+                const pData = bulkFormData.periods[num] || { subject: '', teacher: '', room_number: 'Main Classroom' };
 
                 return (
                   <div key={num} className="bg-white p-2.5 rounded-lg border border-[#E5E0D8] space-y-1.5 shadow-2xs">
@@ -607,11 +684,11 @@ const TimetableSchedule = () => {
                       <span className="text-[10px] text-[#64748B] font-mono font-medium">{slot.start} - {slot.end}</span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-3 gap-2">
                       <select
                         value={pData.subject}
                         onChange={(e) => handleBulkPeriodChange(num, 'subject', e.target.value)}
-                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
                       >
                         <option value="">No Class</option>
                         {subjects.map((sub) => (
@@ -624,7 +701,7 @@ const TimetableSchedule = () => {
                       <select
                         value={pData.teacher}
                         onChange={(e) => handleBulkPeriodChange(num, 'teacher', e.target.value)}
-                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2.5 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
                         disabled={!pData.subject}
                       >
                         <option value="">Assign Teacher</option>
@@ -634,6 +711,15 @@ const TimetableSchedule = () => {
                           </option>
                         ))}
                       </select>
+
+                      <input
+                        type="text"
+                        placeholder="Room / Lab"
+                        value={pData.room_number || ''}
+                        onChange={(e) => handleBulkPeriodChange(num, 'room_number', e.target.value)}
+                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                        disabled={!pData.subject}
+                      />
                     </div>
                   </div>
                 );
@@ -646,6 +732,89 @@ const TimetableSchedule = () => {
           </Button>
         </form>
       </Modal>
+
+      {/* Free Period / Substitute Teacher Finder Modal */}
+      <Modal
+        isOpen={substituteModalOpen}
+        onClose={() => setSubstituteModalOpen(false)}
+        maxWidth="max-w-2xl"
+        title="🔍 Free Period & Substitute Teacher Finder"
+      >
+        <div className="space-y-4">
+          <p className="text-xs text-[#64748B]">
+            Query unassigned faculty members available for proxy substitution during any target day and period slot.
+          </p>
+
+          <div className="grid grid-cols-2 gap-3 bg-[#F7F5F0] p-3 rounded-xl border border-[#E5E0D8]">
+            <div>
+              <label className="text-[10px] font-bold text-[#1A1918] uppercase tracking-wider block mb-1">
+                Select Day
+              </label>
+              <select
+                value={substituteQuery.day_of_week}
+                onChange={(e) => handleSubstituteQueryChange('day_of_week', e.target.value)}
+                className="w-full bg-white border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-bold text-[#1B2A4A]"
+              >
+                {DAYS.map((d) => (
+                  <option key={d.code} value={d.code}>{d.name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="text-[10px] font-bold text-[#1A1918] uppercase tracking-wider block mb-1">
+                Select Period Slot
+              </label>
+              <select
+                value={substituteQuery.period_num}
+                onChange={(e) => handleSubstituteQueryChange('period_num', parseInt(e.target.value))}
+                className="w-full bg-white border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-bold text-[#1B2A4A]"
+              >
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => {
+                  const s = PERIOD_TEMPLATES.find(p => p.num === num);
+                  return (
+                    <option key={num} value={num}>
+                      Period {num} ({s.start} - {s.end})
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="text-xs font-bold text-[#1B2A4A] flex items-center justify-between">
+              <span>Available Unassigned Faculty ({freeTeachers.length})</span>
+              {loadingFreeTeachers && <span className="text-[10px] text-[#64748B] animate-pulse">Searching...</span>}
+            </div>
+
+            {freeTeachers.length === 0 && !loadingFreeTeachers ? (
+              <div className="py-8 text-center text-xs text-[#64748B] italic bg-[#F7F5F0]/50 rounded-xl border border-[#E5E0D8]">
+                No free teachers available during this period slot.
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-64 overflow-y-auto">
+                {freeTeachers.map((t) => (
+                  <div key={t.id} className="bg-white p-3 rounded-xl border border-[#E5E0D8] flex items-center justify-between shadow-2xs">
+                    <div>
+                      <div className="text-xs font-bold text-[#1B2A4A]">
+                        {t.user?.first_name} {t.user?.last_name}
+                      </div>
+                      <div className="text-[10px] text-[#64748B]">
+                        Employee ID: {t.employee_id || 'N/A'}
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 text-[10px] font-bold">
+                      <UserCheck className="w-3 h-3" /> Free
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </Modal>
+
     </div>
   );
 };
