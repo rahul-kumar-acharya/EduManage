@@ -14,13 +14,18 @@ import {
   ArrowRight,
   School as SchoolIcon,
   Shield,
-  KeyRound
+  KeyRound,
+  Eye,
+  EyeOff
 } from 'lucide-react';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState('ADMIN');
+
   const [error, setError] = useState('');
   const { login, logout, loading } = useAuth();
   const { school, subdomain } = useSchool();
@@ -231,15 +236,25 @@ const Login = () => {
                 <div className="relative flex items-center">
                   <Lock className="w-4.5 h-4.5 text-[#1B2A4A] absolute left-3.5" />
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     required
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-11 pr-4 py-3.5 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                    className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-11 pr-10 py-3.5 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(prev => !prev)}
+                    className="absolute right-3.5 text-[#64748B] hover:text-[#1B2A4A] focus:outline-none transition-colors"
+                    tabIndex={-1}
+                    title={showPassword ? "Hide Password" : "Show Password"}
+                  >
+                    {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
+                  </button>
                 </div>
               </div>
+
 
               <div className="flex items-center justify-between text-xs pt-1">
                 <label className="flex items-center gap-2 text-[#64748B] cursor-pointer">

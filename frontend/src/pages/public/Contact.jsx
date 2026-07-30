@@ -50,11 +50,11 @@ const Contact = () => {
                 </div>
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
                   <Phone className="w-5 h-5 text-[#1B2A4A] shrink-0" />
-                  <span className="font-semibold text-xs sm:text-sm">+1 (800) 555-EDU1</span>
+                  <span className="font-semibold text-xs sm:text-sm">+91 7061638189</span>
                 </div>
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
                   <MapPin className="w-5 h-5 text-[#1B2A4A] shrink-0" />
-                  <span className="font-semibold text-xs sm:text-sm">100 SaaS Way, San Francisco, CA</span>
+                  <span className="font-semibold text-xs sm:text-sm">Purnia, Bihar</span>
                 </div>
               </div>
             </div>
@@ -104,7 +104,7 @@ const Contact = () => {
                     <input
                       type="text"
                       required
-                      placeholder="Jane Doe"
+                      placeholder="Rahul"
                       className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
                     />
                   </div>
@@ -116,7 +116,7 @@ const Contact = () => {
                     <input
                       type="email"
                       required
-                      placeholder="jane@example.com"
+                      placeholder="rahul@gmail.com"
                       className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
                     />
                   </div>

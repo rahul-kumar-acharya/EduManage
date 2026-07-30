@@ -19,8 +19,11 @@ import {
   Clock,
   HelpCircle,
   FileText,
-  MapPin
+  MapPin,
+  Eye,
+  EyeOff
 } from 'lucide-react';
+
 
 const RegisterSchool = () => {
   const [searchParams] = useSearchParams();
@@ -33,6 +36,7 @@ const RegisterSchool = () => {
     phone: '',
     address: '',
     state: '',
+    district: '',
     city: '',
     pincode: '',
     registration_document: null,
@@ -41,9 +45,12 @@ const RegisterSchool = () => {
     admin_password: '',
   });
 
+  const [showPassword, setShowPassword] = useState(false);
   const [subdomainStatus, setSubdomainStatus] = useState({ checking: false, available: null, message: '' });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [validationErrors, setValidationErrors] = useState({});
   const [successResult, setSuccessResult] = useState(null);
 
   useEffect(() => {
@@ -74,8 +81,20 @@ const RegisterSchool = () => {
     if (name === 'subdomain') {
       const sanitized = value.toLowerCase().replace(/[^a-z0-9-]/g, '');
       setFormData(prev => ({ ...prev, [name]: sanitized }));
+    } else if (name === 'district') {
+      setFormData(prev => ({ ...prev, district: value, city: value }));
+    } else if (name === 'phone') {
+      const numeric = value.replace(/\D/g, '').slice(0, 10);
+      setFormData(prev => ({ ...prev, phone: numeric }));
+    } else if (name === 'pincode') {
+      const numeric = value.replace(/\D/g, '').slice(0, 6);
+      setFormData(prev => ({ ...prev, pincode: numeric }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
+    }
+
+    if (validationErrors[name]) {
+      setValidationErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
@@ -83,8 +102,59 @@ const RegisterSchool = () => {
     setFormData(prev => ({ ...prev, registration_document: e.target.files[0] }));
   };
 
+  const validateForm = () => {
+    const errors = {};
+
+    // 1. Email Validation (School Email & Admin Email)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email || !emailRegex.test(formData.email)) {
+      errors.email = 'Please enter a valid official email address.';
+    }
+    if (!formData.admin_email || !emailRegex.test(formData.admin_email)) {
+      errors.admin_email = 'Please enter a valid administrator email address.';
+    }
+
+    // 2. Phone Validation (10 digits starting with 6, 7, 8, 9)
+    const phoneRegex = /^[6-9]\d{9}$/;
+    if (!formData.phone || !phoneRegex.test(formData.phone)) {
+      errors.phone = 'Phone number must be a valid 10-digit number starting with 6, 7, 8, or 9.';
+    }
+
+    // 3. Pincode Validation (6 digits)
+    const pincodeRegex = /^[1-9]\d{5}$/;
+    if (!formData.pincode || !pincodeRegex.test(formData.pincode)) {
+      errors.pincode = 'Pincode must be a valid 6-digit number.';
+    }
+
+    // 4. District Validation
+    const activeDistrict = formData.district || formData.city;
+    if (!activeDistrict) {
+      errors.district = 'District is required.';
+    }
+
+    // 5. Password Validation (min 8 chars, 1 upper, 1 lower, 1 special char)
+    const pwd = formData.admin_password || '';
+    const hasMinLen = pwd.length >= 8;
+    const hasUpper = /[A-Z]/.test(pwd);
+    const hasLower = /[a-z]/.test(pwd);
+    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd);
+
+    if (!hasMinLen || !hasUpper || !hasLower || !hasSpecial) {
+      errors.admin_password = 'Password must be at least 8 characters and include 1 uppercase letter, 1 lowercase letter, and 1 special character.';
+    }
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      setError('Please resolve all validation errors before proceeding.');
+      return;
+    }
+
     if (subdomainStatus.available === false) {
       setError('Please choose an available subdomain.');
       return;
@@ -101,7 +171,7 @@ const RegisterSchool = () => {
     submitData.append('phone', formData.phone);
     submitData.append('address', formData.address);
     submitData.append('state', formData.state);
-    submitData.append('city', formData.city);
+    submitData.append('city', formData.district || formData.city);
     submitData.append('pincode', formData.pincode);
     
     if (formData.registration_document) {
@@ -119,8 +189,21 @@ const RegisterSchool = () => {
       console.error(err);
       if (err.response && err.response.data) {
         const errData = err.response.data;
-        const msg = typeof errData === 'object' ? JSON.stringify(errData) : 'Registration failed.';
-        setError(msg);
+        if (typeof errData === 'object' && errData !== null) {
+          const fieldErrors = {};
+          const messages = [];
+
+          Object.entries(errData).forEach(([field, msgs]) => {
+            const msgStr = Array.isArray(msgs) ? msgs.join(' ') : String(msgs);
+            fieldErrors[field] = msgStr;
+            messages.push(msgStr);
+          });
+
+          setValidationErrors(prev => ({ ...prev, ...fieldErrors }));
+          setError(messages.join(' '));
+        } else {
+          setError(String(errData));
+        }
       } else {
         setError('School registration failed. Please try again.');
       }
@@ -128,6 +211,8 @@ const RegisterSchool = () => {
       setLoading(false);
     }
   };
+
+
 
   if (successResult) {
     return (
@@ -349,9 +434,12 @@ const RegisterSchool = () => {
                           value={formData.email}
                           onChange={handleChange}
                           required
-                          className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-10 pr-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                          className={`w-full bg-[#F7F5F0] border ${validationErrors.email ? 'border-red-500' : 'border-[#E5E0D8]'} rounded-lg pl-10 pr-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]`}
                         />
                       </div>
+                      {validationErrors.email && (
+                        <span className="text-[10px] text-red-600 font-bold block mt-1">{validationErrors.email}</span>
+                      )}
                     </div>
 
                     <div>
@@ -363,16 +451,19 @@ const RegisterSchool = () => {
                         <input
                           type="text"
                           name="phone"
-                          placeholder="+1234567890"
+                          placeholder="7061638189"
                           value={formData.phone}
                           onChange={handleChange}
-                          className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-10 pr-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                          className={`w-full bg-[#F7F5F0] border ${validationErrors.phone ? 'border-red-500' : 'border-[#E5E0D8]'} rounded-lg pl-10 pr-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]`}
                         />
                       </div>
+                      {validationErrors.phone && (
+                        <span className="text-[10px] text-red-600 font-bold block mt-1">{validationErrors.phone}</span>
+                      )}
                     </div>
                   </div>
 
-                  {/* State, City, Pincode Grid */}
+                  {/* State, District, Pincode Grid */}
                   <div className="grid grid-cols-3 gap-3">
                     <div>
                       <label className="block text-xs font-semibold text-[#1A1918] uppercase tracking-wider mb-2">
@@ -383,7 +474,7 @@ const RegisterSchool = () => {
                         <input
                           type="text"
                           name="state"
-                          placeholder="California"
+                          placeholder="Bihar"
                           value={formData.state}
                           onChange={handleChange}
                           required
@@ -393,20 +484,23 @@ const RegisterSchool = () => {
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-[#1A1918] uppercase tracking-wider mb-2">
-                        City
+                        District
                       </label>
                       <div className="relative flex items-center">
                         <MapPin className="w-4 h-4 text-[#1B2A4A] absolute left-3" />
                         <input
                           type="text"
-                          name="city"
-                          placeholder="San Francisco"
-                          value={formData.city}
+                          name="district"
+                          placeholder="Purnia"
+                          value={formData.district || formData.city}
                           onChange={handleChange}
                           required
-                          className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-9 pr-3 py-3 text-xs text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                          className={`w-full bg-[#F7F5F0] border ${validationErrors.district ? 'border-red-500' : 'border-[#E5E0D8]'} rounded-lg pl-9 pr-3 py-3 text-xs text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]`}
                         />
                       </div>
+                      {validationErrors.district && (
+                        <span className="text-[10px] text-red-600 font-bold block mt-1">{validationErrors.district}</span>
+                      )}
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-[#1A1918] uppercase tracking-wider mb-2">
@@ -415,12 +509,15 @@ const RegisterSchool = () => {
                       <input
                         type="text"
                         name="pincode"
-                        placeholder="94103"
+                        placeholder="854301"
                         value={formData.pincode}
                         onChange={handleChange}
                         required
-                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-3 text-xs text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                        className={`w-full bg-[#F7F5F0] border ${validationErrors.pincode ? 'border-red-500' : 'border-[#E5E0D8]'} rounded-lg px-3 py-3 text-xs text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]`}
                       />
+                      {validationErrors.pincode && (
+                        <span className="text-[10px] text-red-600 font-bold block mt-1">{validationErrors.pincode}</span>
+                      )}
                     </div>
                   </div>
 
@@ -457,7 +554,7 @@ const RegisterSchool = () => {
                       <input
                         type="text"
                         name="admin_name"
-                        placeholder="John Doe"
+                        placeholder="Sanjay Sinha"
                         value={formData.admin_name}
                         onChange={handleChange}
                         required
@@ -476,13 +573,16 @@ const RegisterSchool = () => {
                         <input
                           type="email"
                           name="admin_email"
-                          placeholder="admin@abcschool.com"
+                          placeholder="sanjaysinha@gmail.com"
                           value={formData.admin_email}
                           onChange={handleChange}
                           required
-                          className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-10 pr-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                          className={`w-full bg-[#F7F5F0] border ${validationErrors.admin_email ? 'border-red-500' : 'border-[#E5E0D8]'} rounded-lg pl-10 pr-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]`}
                         />
                       </div>
+                      {validationErrors.admin_email && (
+                        <span className="text-[10px] text-red-600 font-bold block mt-1">{validationErrors.admin_email}</span>
+                      )}
                     </div>
 
                     <div>
@@ -492,18 +592,34 @@ const RegisterSchool = () => {
                       <div className="relative flex items-center">
                         <Lock className="w-4 h-4 text-[#1B2A4A] absolute left-3" />
                         <input
-                          type="password"
+                          type={showPassword ? 'text' : 'password'}
                           name="admin_password"
                           placeholder="••••••••"
                           value={formData.admin_password}
                           onChange={handleChange}
                           required
-                          className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-10 pr-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                          className={`w-full bg-[#F7F5F0] border ${validationErrors.admin_password ? 'border-red-500' : 'border-[#E5E0D8]'} rounded-lg pl-10 pr-10 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]`}
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(prev => !prev)}
+                          className="absolute right-3 text-[#64748B] hover:text-[#1B2A4A] focus:outline-none transition-colors"
+                          tabIndex={-1}
+                          title={showPassword ? "Hide Password" : "Show Password"}
+                        >
+                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
                       </div>
+                      {validationErrors.admin_password ? (
+                        <span className="text-[10px] text-red-600 font-bold block mt-1">{validationErrors.admin_password}</span>
+                      ) : (
+                        <span className="text-[10px] text-[#64748B] block mt-1">Min 8 chars (1 upper, 1 lower, 1 special char).</span>
+                      )}
                     </div>
+
                   </div>
                 </div>
+
 
               </div>
 
