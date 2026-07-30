@@ -1,13 +1,40 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle2, Clock, HelpCircle } from 'lucide-react';
+import { schoolService } from '../../services/schoolService';
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [responseMsg, setResponseMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMsg('');
+    try {
+      const res = await schoolService.submitContactForm(formData);
+      setResponseMsg(res.message || 'Message sent successfully!');
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Failed to submit contact message:", err);
+      setErrorMsg(err.response?.data?.error || 'Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <div className="space-y-20 font-['Plus_Jakarta_Sans']">
@@ -85,10 +112,10 @@ const Contact = () => {
                   Message Sent Successfully!
                 </h3>
                 <p className="text-sm text-[#64748B] max-w-xs mx-auto">
-                  Thank you for reaching out. Our support engineering team will get back to you within 24 hours.
+                  {responseMsg || 'Thank you for reaching out. Our support team will respond shortly at support.edumanage@gmail.com.'}
                 </p>
                 <button 
-                  onClick={() => setSubmitted(false)}
+                  onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: '', message: '' }); }}
                   className="mt-2 text-xs font-semibold text-[#1B2A4A] hover:text-[#5C1D24] underline"
                 >
                   Send another message
@@ -97,14 +124,23 @@ const Contact = () => {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 flex-1 flex flex-col justify-between">
                 <div className="space-y-4">
+                  {errorMsg && (
+                    <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg font-medium">
+                      {errorMsg}
+                    </div>
+                  )}
+
                   <div>
                     <label className="block text-xs font-semibold text-[#1A1918] uppercase tracking-wider mb-2">
                       Your Name
                     </label>
                     <input
                       type="text"
+                      name="name"
                       required
-                      placeholder="Rahul"
+                      placeholder="Rahul Kumar"
+                      value={formData.name}
+                      onChange={handleChange}
                       className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
                     />
                   </div>
@@ -115,8 +151,25 @@ const Contact = () => {
                     </label>
                     <input
                       type="email"
+                      name="email"
                       required
                       placeholder="rahul@gmail.com"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-[#1A1918] uppercase tracking-wider mb-2">
+                      Subject
+                    </label>
+                    <input
+                      type="text"
+                      name="subject"
+                      placeholder="Inquiry about EduManage Multi-Tenant SaaS"
+                      value={formData.subject}
+                      onChange={handleChange}
                       className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
                     />
                   </div>
@@ -126,9 +179,12 @@ const Contact = () => {
                       Message
                     </label>
                     <textarea
+                      name="message"
                       rows={4}
                       required
                       placeholder="How can we help your school?"
+                      value={formData.message}
+                      onChange={handleChange}
                       className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
                     />
                   </div>
@@ -136,12 +192,14 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-[#1B2A4A] hover:bg-[#5C1D24] text-white text-sm font-semibold py-3.5 px-6 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 mt-4"
+                  disabled={loading}
+                  className="w-full bg-[#1B2A4A] hover:bg-[#5C1D24] disabled:bg-[#64748B] text-white text-sm font-semibold py-3.5 px-6 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 mt-4"
                 >
-                  Send Message <Send className="w-4 h-4" />
+                  {loading ? 'Sending Message...' : 'Send Message'} <Send className="w-4 h-4" />
                 </button>
               </form>
             )}
+
           </div>
 
         </div>

@@ -4,7 +4,8 @@ from apps.schools.views import (
     SchoolRegisterView,
     TenantInfoView,
     SchoolListView,
-    PublicPlatformStatsView
+    PublicPlatformStatsView,
+    ContactSupportView
 )
 
 urlpatterns = [
@@ -13,4 +14,6 @@ urlpatterns = [
     path('tenant-info/', TenantInfoView.as_view(), name='tenant-info'),
     path('all/', SchoolListView.as_view(), name='school-list'),
     path('public-stats/', PublicPlatformStatsView.as_view(), name='public-stats'),
+    path('contact/', ContactSupportView.as_view(), name='contact-support'),
 ]
+

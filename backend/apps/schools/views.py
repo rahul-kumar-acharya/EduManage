@@ -120,3 +120,58 @@ class PublicPlatformStatsView(APIView):
             'sample_fee': sample_fee,
             'sample_notice': sample_notice
         }, status=status.HTTP_200_OK)
+
+from django.core.mail import send_mail
+from django.conf import settings
+
+class ContactSupportView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        name = request.data.get('name', '').strip()
+        email = request.data.get('email', '').strip()
+        subject = request.data.get('subject', '').strip() or 'New Public Contact Inquiry'
+        message = request.data.get('message', '').strip()
+
+        if not name or not email or not message:
+            return Response(
+                {'error': 'Name, email, and message are required fields.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        recipient_email = getattr(settings, 'SUPPORT_EMAIL', 'support.edumanage@gmail.com')
+
+        email_body = f"""
+📩 NEW CONTACT INQUIRY RECEIVED VIA WEBSITE
+
+From: {name}
+Email: {email}
+Subject: {subject}
+
+Message Content:
+----------------------------------------------------------------------
+{message}
+----------------------------------------------------------------------
+
+Target Recipient: {recipient_email}
+EduManage Multi-Tenant SaaS Platform
+"""
+
+        try:
+            send_mail(
+                subject=f"[EduManage Contact] {subject}",
+                message=email_body,
+                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'rahulkumaracharya199@gmail.com'),
+                recipient_list=[recipient_email, "rahulkumaracharya199@gmail.com"],
+                fail_silently=False,
+            )
+            return Response({
+                'message': f'Thank you {name}! Your message has been dispatched to {recipient_email}.'
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(f"[CONTACT INQUIRY SMTP ERROR]: {e}")
+            return Response({
+                'error': f'Email Dispatch Failed: {str(e)}'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+

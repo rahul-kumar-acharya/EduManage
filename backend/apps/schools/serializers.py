@@ -99,14 +99,76 @@ class SchoolRegistrationSerializer(serializers.Serializer):
 
         # 3. Create Trial Subscription
         free_plan = SubscriptionPlan.objects.filter(code='starter').first()
+        trial_end = date.today() + timedelta(days=14)
         SchoolSubscription.objects.create(
             school=school,
             plan=free_plan,
             status='TRIAL',
-            end_date=date.today() + timedelta(days=14)
+            end_date=trial_end
         )
+
+        # 4. Dispatch Welcome Email with Password to Admin
+        from django.core.mail import send_mail
+        from django.conf import settings
+
+        raw_password = validated_data['admin_password']
+        admin_email = validated_data['admin_email']
+        admin_full_name = validated_data['admin_name']
+        school_name = school.name
+        subdomain = school.subdomain
+
+        portal_login_url = f"http://{subdomain}.edumanage.acharyaworks.in/login"
+        local_dev_url = f"http://{subdomain}.localhost:5173/login"
+
+        welcome_email_body = f"""
+Welcome to EduManage Multi-Tenant SaaS Platform!
+
+Dear {admin_full_name},
+
+Congratulations! Your school management portal for "{school_name}" has been successfully created and activated.
+
+----------------------------------------------------------------------
+🔑 YOUR ADMINISTRATOR LOGIN CREDENTIALS
+----------------------------------------------------------------------
+School Name       : {school_name}
+Subdomain Portal  : {subdomain}.edumanage.acharyaworks.in
+Portal Login URL  : {portal_login_url}
+Dev Local URL     : {local_dev_url}
+
+Admin Email       : {admin_email}
+Password          : {raw_password}
+Role              : School Administrator
+Trial Access      : 14-Day Free Trial (Active until {trial_end.strftime('%B %d, %Y')})
+----------------------------------------------------------------------
+
+Quick Setup Guide:
+1. Open your portal login URL: {local_dev_url}
+2. Sign in using your Admin Email and Password shown above.
+3. Setup Class Sections, Assign Subjects, and Add Teachers & Students.
+
+For support or custom setup help, contact support.edumanage@gmail.com.
+
+Best regards,
+EduManage Systems Team
+https://edumanage.acharyaworks.in
+"""
+
+        try:
+            send_mail(
+                subject=f"🚀 Welcome to EduManage — Portal Credentials for {school_name}",
+                message=welcome_email_body,
+                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', '"EduManage Platform" <support.edumanage@gmail.com>'),
+                recipient_list=[admin_email],
+                fail_silently=False,
+            )
+
+            print(f"[REGISTRATION WELCOME EMAIL] Sent credentials successfully to {admin_email}")
+        except Exception as e:
+            print(f"[REGISTRATION WELCOME EMAIL SMTP WARNING]: {e}")
+            print(f"[CREDENTIALS MESSAGE BODY]:\n{welcome_email_body}")
 
         return {
             'school': school,
             'admin_user': admin_user
         }
+

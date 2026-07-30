@@ -24,4 +24,10 @@ export const schoolService = {
     const response = await api.get('/schools/public-stats/');
     return response.data;
   },
+
+  submitContactForm: async (data) => {
+    const response = await api.post('/schools/contact/', data);
+    return response.data;
+  },
 };
+
