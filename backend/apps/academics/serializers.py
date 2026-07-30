@@ -26,8 +26,11 @@ class ClassLevelSerializer(serializers.ModelSerializer):
 
 class SubjectSerializer(serializers.ModelSerializer):
     class_level_name = serializers.CharField(source='class_level.name', read_only=True, default='')
+    section_name = serializers.CharField(source='section.name', read_only=True, default='')
+    class_name = serializers.CharField(source='section.class_level.name', read_only=True, default='')
 
     class Meta:
         model = Subject
-        fields = ['id', 'name', 'code', 'class_level', 'class_level_name', 'created_at']
+        fields = ['id', 'name', 'code', 'class_level', 'class_level_name', 'section', 'section_name', 'class_name', 'created_at']
         read_only_fields = ['id', 'created_at']
+

@@ -31,11 +31,12 @@ const Footer = () => {
           <h4 className="font-['Newsreader'] font-bold text-[#1A1918] text-base">Quick Links</h4>
           <ul className="space-y-2 text-xs font-semibold">
             <li><Link to="/" className="hover:text-[#1B2A4A] transition-colors">Home</Link></li>
+            <li><Link to="/about" className="hover:text-[#1B2A4A] transition-colors">About Us</Link></li>
             <li><Link to="/features" className="hover:text-[#1B2A4A] transition-colors">Features</Link></li>
             <li><Link to="/pricing" className="hover:text-[#1B2A4A] transition-colors">Pricing</Link></li>
-            <li><Link to="/about" className="hover:text-[#1B2A4A] transition-colors">About Us</Link></li>
             <li><Link to="/faq" className="hover:text-[#1B2A4A] transition-colors">FAQ</Link></li>
           </ul>
+
         </div>
 
         {/* Platform Services */}

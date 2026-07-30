@@ -93,7 +93,7 @@ class SectionViewSet(BaseTenantViewSet):
         serializer.save(school=self.request.school)
 
 class SubjectViewSet(BaseTenantViewSet):
-    queryset = Subject.objects.all().order_by('name')
+    queryset = Subject.objects.all().select_related('class_level', 'section', 'section__class_level').order_by('name')
     serializer_class = SubjectSerializer
 
     def get_permissions(self):
@@ -104,37 +104,58 @@ class SubjectViewSet(BaseTenantViewSet):
 
     def perform_create(self, serializer):
         user = self.request.user
+        section = serializer.validated_data.get('section')
         class_level = serializer.validated_data.get('class_level')
+        
+        if section and not class_level:
+            class_level = section.class_level
+
         if user.role == 'TEACHER':
             teacher_profile = getattr(user, 'teacher_profile', None)
-            if not teacher_profile or not teacher_profile.assigned_sections.filter(class_level=class_level).exists():
-                from rest_framework.exceptions import PermissionDenied
-                raise PermissionDenied("You can only add subjects for your assigned Class Level.")
-        serializer.save(school=self.request.school)
+            if section:
+                if not teacher_profile or not teacher_profile.assigned_sections.filter(id=section.id).exists():
+                    from rest_framework.exceptions import PermissionDenied
+                    raise PermissionDenied("You can only add subjects for your assigned section.")
+            elif class_level:
+                if not teacher_profile or not teacher_profile.assigned_sections.filter(class_level=class_level).exists():
+                    from rest_framework.exceptions import PermissionDenied
+                    raise PermissionDenied("You can only add subjects for your assigned Class Level.")
+
+        serializer.save(school=self.request.school, class_level=class_level)
 
     def perform_update(self, serializer):
         user = self.request.user
+        section = serializer.validated_data.get('section')
         class_level = serializer.validated_data.get('class_level')
+
+        if section and not class_level:
+            class_level = section.class_level
+
         if user.role == 'TEACHER':
             teacher_profile = getattr(user, 'teacher_profile', None)
-            if not teacher_profile or not teacher_profile.assigned_sections.filter(class_level=class_level).exists():
+            if section and (not teacher_profile or not teacher_profile.assigned_sections.filter(id=section.id).exists()):
                 from rest_framework.exceptions import PermissionDenied
-                raise PermissionDenied("You can only modify subjects for your assigned Class Level.")
-        serializer.save()
+                raise PermissionDenied("You can only modify subjects for your assigned section.")
+        serializer.save(class_level=class_level)
 
     def destroy(self, request, *args, **kwargs):
         user = self.request.user
         if user.role == 'TEACHER':
             instance = self.get_object()
             teacher_profile = getattr(user, 'teacher_profile', None)
-            if not teacher_profile or not teacher_profile.assigned_sections.filter(class_level=instance.class_level).exists():
+            if instance.section and (not teacher_profile or not teacher_profile.assigned_sections.filter(id=instance.section.id).exists()):
                 from rest_framework.exceptions import PermissionDenied
-                raise PermissionDenied("You can only delete subjects for your assigned Class Level.")
+                raise PermissionDenied("You can only delete subjects for your assigned section.")
         return super().destroy(request, *args, **kwargs)
 
     def get_queryset(self):
         qs = super().get_queryset()
         user = self.request.user
+        
+        section_id = self.request.query_params.get('section')
+        if section_id:
+            return qs.filter(section_id=section_id)
+
         class_level_id = self.request.query_params.get('class_level')
         if class_level_id:
             qs = qs.filter(class_level_id=class_level_id)
@@ -149,3 +170,4 @@ class SubjectViewSet(BaseTenantViewSet):
                 else:
                     qs = qs.none()
         return qs
+

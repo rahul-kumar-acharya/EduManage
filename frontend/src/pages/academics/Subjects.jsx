@@ -23,7 +23,7 @@ const Subjects = () => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteSubjectId, setDeleteSubjectId] = useState(null);
 
-  const [formData, setFormData] = useState({ name: '', code: '', class_level: '' });
+  const [formData, setFormData] = useState({ name: '', code: '', section: '' });
   const [submitting, setSubmitting] = useState(false);
 
   const fetchSubjects = async () => {
@@ -56,34 +56,25 @@ const Subjects = () => {
 
   const getDisplaySubjects = () => {
     if (!filterSection) return subjects;
-    const targetSec = sections.find((s) => s.id.toString() === filterSection);
-    if (!targetSec) return subjects;
-    return subjects.filter((sub) => sub.class_level === targetSec.class_level);
+    return subjects.filter((sub) => sub.section?.toString() === filterSection);
   };
 
-  const getFormClassLevels = () => {
+  const getFormSections = () => {
     if (user?.role !== 'TEACHER') {
-      return classLevels;
+      return sections;
     }
-    const assignedLevels = [];
-    user.class_teacher_sections?.forEach((sec) => {
-      if (!assignedLevels.some((lvl) => lvl.id === sec.class_level_id)) {
-        assignedLevels.push({
-          id: sec.class_level_id,
-          name: `${sec.class_level_name} - Section ${sec.section_name}`,
-        });
-      }
-    });
-    return assignedLevels;
+    return sections.filter((sec) =>
+      user.class_teacher_sections?.some((s) => s.id === sec.id)
+    );
   };
 
   const openCreateModal = () => {
     setEditId(null);
-    const allowedLevels = getFormClassLevels();
+    const allowedSecs = getFormSections();
     setFormData({
       name: '',
       code: '',
-      class_level: allowedLevels.length > 0 ? allowedLevels[0].id.toString() : '',
+      section: filterSection || (allowedSecs.length > 0 ? allowedSecs[0].id.toString() : ''),
     });
     setModalOpen(true);
   };
@@ -93,7 +84,7 @@ const Subjects = () => {
     setFormData({
       name: subject.name,
       code: subject.code || '',
-      class_level: subject.class_level?.toString() || '',
+      section: subject.section?.toString() || filterSection || '',
     });
     setModalOpen(true);
   };
@@ -119,10 +110,13 @@ const Subjects = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
+      const selectedSecObj = sections.find((s) => s.id.toString() === formData.section);
+
       const payload = {
         name: formData.name,
         code: formData.code,
-        class_level: formData.class_level ? parseInt(formData.class_level) : null,
+        section: formData.section ? parseInt(formData.section) : null,
+        class_level: selectedSecObj ? selectedSecObj.class_level : null,
       };
 
       if (editId) {
@@ -132,7 +126,7 @@ const Subjects = () => {
       }
       setModalOpen(false);
       setEditId(null);
-      setFormData({ name: '', code: '', class_level: '' });
+      setFormData({ name: '', code: '', section: '' });
       fetchSubjects();
     } catch (err) {
       console.error("Failed to save subject:", err);
@@ -142,6 +136,20 @@ const Subjects = () => {
   };
 
   const isUserAdmin = user?.role === 'SCHOOL_ADMIN' || user?.role === 'SUPER_ADMIN';
+
+  // Evaluate if the logged in user has creation rights for the currently selected section
+  let canCreateSubject = false;
+  if (isUserAdmin) {
+    canCreateSubject = true;
+  } else if (user?.role === 'TEACHER') {
+    if (filterSection) {
+      canCreateSubject = user?.class_teacher_sections?.some(
+        (sec) => sec.id.toString() === filterSection
+      );
+    } else {
+      canCreateSubject = user?.class_teacher_sections?.length > 0;
+    }
+  }
 
   const columns = [
     {
@@ -158,32 +166,17 @@ const Subjects = () => {
     },
     {
       header: 'Class & Section',
-      accessor: 'class_level_name',
-      render: (row) => {
-        let secNames = '';
-        if (filterSection) {
-          const selSec = sections.find((s) => s.id.toString() === filterSection);
-          if (selSec) {
-            secNames = selSec.name;
-          }
-        }
-        if (!secNames) {
-          const classSecs = sections.filter((s) => s.class_level === row.class_level);
-          secNames = classSecs.length > 0 ? classSecs.map((s) => s.name).join(', ') : '';
-        }
-        return (
-          <div className="flex flex-col">
-            <span className="font-bold text-xs text-[#1B2A4A]">
-              {row.class_level_name || 'All Classes'}
-            </span>
-            {secNames && (
-              <span className="text-[10px] font-semibold text-[#64748B]">
-                Section {secNames}
-              </span>
-            )}
-          </div>
-        );
-      }
+      accessor: 'class_name',
+      render: (row) => (
+        <div className="flex flex-col">
+          <span className="font-bold text-xs text-[#1B2A4A]">
+            {row.class_name || row.class_level_name || 'Class'}
+          </span>
+          <span className="text-[10px] font-semibold text-[#64748B]">
+            Section {row.section_name || 'N/A'}
+          </span>
+        </div>
+      )
     },
     {
       header: 'Subject Code',
@@ -205,7 +198,7 @@ const Subjects = () => {
             );
           } else {
             canEditRow = user?.class_teacher_sections?.some(
-              (sec) => sec.class_level_id === row.class_level
+              (sec) => sec.id === row.section
             );
           }
         }
@@ -247,9 +240,9 @@ const Subjects = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
         <div>
           <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Academics Subjects</h1>
-          <p className="text-xs text-[#64748B] mt-1">Configure subjects, courses, and syllabus codes for each class level.</p>
+          <p className="text-xs text-[#64748B] mt-1">Configure subjects, courses, and syllabus codes for each class section.</p>
         </div>
-        {canManageSubjects && (
+        {canCreateSubject && (
           <Button variant="primary" size="sm" onClick={openCreateModal} className="gap-2 shadow-sm">
             <Plus className="w-4 h-4" /> Add Subject
           </Button>
@@ -257,30 +250,28 @@ const Subjects = () => {
       </div>
 
       {/* Filters Bar */}
-      <div className="bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-sm max-w-sm flex items-center gap-3">
-        <label className="text-xs font-bold text-[#1A1918] uppercase tracking-wider whitespace-nowrap">
-          Filter Grade & Section:
-        </label>
-        <select
-          value={filterSection}
-          onChange={(e) => setFilterSection(e.target.value)}
-          className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
-        >
-          <option value="">All Grades & Sections</option>
-          {sections.length > 0 ? (
-            sections.map((sec) => (
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-sm max-w-sm flex items-center gap-3 w-full">
+          <label className="text-xs font-bold text-[#1A1918] uppercase tracking-wider whitespace-nowrap">
+            Filter Section:
+          </label>
+          <select
+            value={filterSection}
+            onChange={(e) => setFilterSection(e.target.value)}
+            className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+          >
+            <option value="">All Sections</option>
+            {sections.map((sec) => (
               <option key={sec.id} value={sec.id.toString()}>
                 {sec.class_name} - Section {sec.name}
               </option>
-            ))
-          ) : (
-            classLevels.map((lvl) => (
-              <option key={lvl.id} value={lvl.id.toString()}>
-                {lvl.name}
-              </option>
-            ))
-          )}
-        </select>
+            ))}
+          </select>
+        </div>
+
+        <div className="text-[11px] text-[#64748B] bg-[#F7F5F0] p-3 rounded-xl border border-[#E5E0D8]">
+          🔒 <strong>Section Isolation</strong>: Each class section manages its own independent subjects.
+        </div>
       </div>
 
       {/* Subjects Registry Table */}
@@ -293,7 +284,7 @@ const Subjects = () => {
           <Table 
             columns={columns} 
             data={getDisplaySubjects()} 
-            emptyMessage="No subjects configured yet." 
+            emptyMessage="No subjects configured for this section yet." 
           />
         )}
       </div>
@@ -314,26 +305,42 @@ const Subjects = () => {
             value={formData.code}
             onChange={(e) => setFormData({ ...formData, code: e.target.value })}
           />
-          {user?.role !== 'TEACHER' && (
+          {/* Target Class & Section Display */}
+          {formData.section ? (
+            <div>
+              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-1.5">
+                Target Class & Section
+              </label>
+              <div className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2.5 text-xs font-bold text-[#1B2A4A] flex items-center justify-between shadow-2xs">
+                <span>
+                  {sections.find((s) => s.id.toString() === formData.section)?.class_name || 'Class'} — Section {sections.find((s) => s.id.toString() === formData.section)?.name || ''}
+                </span>
+                <span className="text-[10px] text-emerald-700 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
+                  ✓ Auto-Bound
+                </span>
+              </div>
+            </div>
+          ) : (
             <div>
               <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
-                Class Level assignment
+                Target Class & Section
               </label>
               <select
-                value={formData.class_level}
-                onChange={(e) => setFormData({ ...formData, class_level: e.target.value })}
+                value={formData.section}
+                onChange={(e) => setFormData({ ...formData, section: e.target.value })}
                 className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
                 required
               >
-                <option value="">Select Class Level</option>
-                {getFormClassLevels().map((lvl) => (
-                  <option key={lvl.id} value={lvl.id}>
-                    {lvl.name}
+                <option value="">Select Section</option>
+                {getFormSections().map((sec) => (
+                  <option key={sec.id} value={sec.id}>
+                    {sec.class_name || sec.class_level_name} - Section {sec.name}
                   </option>
                 ))}
               </select>
             </div>
           )}
+
           <Button type="submit" variant="primary" className="w-full mt-2" loading={submitting}>
             {editId ? "Save Changes" : "Create Subject"}
           </Button>
@@ -348,7 +355,7 @@ const Subjects = () => {
       >
         <div className="space-y-4">
           <p className="text-xs text-[#64748B] leading-relaxed">
-            Are you sure you want to delete this subject? Deleting this subject will remove it from all class schedules, gradebooks, and homework records.
+            Are you sure you want to delete this subject? Deleting this subject will remove it from this section's class schedule and homework records.
           </p>
           <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#F7F5F0]">
             <button
@@ -373,3 +380,4 @@ const Subjects = () => {
 };
 
 export default Subjects;
+

@@ -37,14 +37,14 @@ const PublicNavbar = () => {
           <NavLink to="/" className={navLinkStyles} end>
             Home
           </NavLink>
+          <NavLink to="/about" className={navLinkStyles}>
+            About
+          </NavLink>
           <NavLink to="/features" className={navLinkStyles}>
             Features
           </NavLink>
           <NavLink to="/pricing" className={navLinkStyles}>
             Pricing
-          </NavLink>
-          <NavLink to="/about" className={navLinkStyles}>
-            About
           </NavLink>
           <NavLink to="/faq" className={navLinkStyles}>
             FAQ
@@ -53,6 +53,7 @@ const PublicNavbar = () => {
             Contact
           </NavLink>
         </div>
+
 
         {/* Action Buttons (Increased to text-sm) */}
         <div className="flex items-center gap-3">

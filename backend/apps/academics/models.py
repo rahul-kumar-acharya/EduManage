@@ -47,6 +47,16 @@ class Subject(TenantModel):
         null=True,
         blank=True
     )
+    section = models.ForeignKey(
+        Section,
+        on_delete=models.CASCADE,
+        related_name='subjects',
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
+        if self.section:
+            return f"{self.name} ({self.section.class_level.name} - Sec {self.section.name})"
         return self.name
+

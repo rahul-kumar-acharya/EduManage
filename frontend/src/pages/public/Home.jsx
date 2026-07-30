@@ -59,69 +59,120 @@ const Home = () => {
     <div className="space-y-20 font-['Plus_Jakarta_Sans']">
       
       {/* 1. Hero Section */}
-      <section className="max-w-7xl mx-auto px-6 text-center space-y-8">
-        {/* Category Pill */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-xs font-semibold text-[#5C1D24] uppercase tracking-wider">
-          <Sparkles className="w-4 h-4 text-[#5C1D24]" />
-          <span>Next-Generation Multi-Tenant School OS</span>
+      <section className="max-w-7xl mx-auto px-6 pt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* Left Column: Heading, CTA & Subdomain Form */}
+          <div className="lg:col-span-7 space-y-6 text-left">
+            {/* Category Pill */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-xs font-bold text-[#5C1D24] uppercase tracking-wider">
+              <Sparkles className="w-4 h-4 text-[#5C1D24]" />
+              <span>Next-Generation Multi-Tenant School OS</span>
+            </div>
+
+            {/* Editorial Serif Heading */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Newsreader'] font-normal text-[#1A1918] leading-tight tracking-tight">
+              Manage Your Entire School System on <br />
+              <span className="italic font-medium text-[#1B2A4A]">
+                Your Dedicated Subdomain
+              </span>
+            </h1>
+
+            <p className="text-base sm:text-lg text-[#64748B] font-normal leading-relaxed max-w-2xl">
+              Empower administrators, faculty teachers, students, and parents with an intuitive cloud platform. Streamline admissions, attendance, timetables, and fee billing effortlessly.
+            </p>
+
+            {/* Subdomain Search Form / Go to Dashboard */}
+            {isAuthenticated ? (
+              <div className="pt-2">
+                <Link to="/dashboard">
+                  <button className="bg-[#1B2A4A] hover:bg-[#5C1D24] text-white font-semibold text-base px-8 py-4 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                    Go to Dashboard <ArrowRight className="w-5 h-5" />
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              <form 
+                onSubmit={handleSubdomainCheck} 
+                className="flex flex-col sm:flex-row gap-3 p-2 bg-white rounded-2xl border border-[#E5E0D8] shadow-sm max-w-xl"
+              >
+                <div className="flex-1 flex items-center px-4 bg-[#F7F5F0] rounded-xl border border-[#E5E0D8]">
+                  <Globe className="w-5 h-5 text-[#1B2A4A] mr-2 shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="your-school-name"
+                    value={desiredSubdomain}
+                    onChange={(e) => setDesiredSubdomain(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
+                    className="w-full bg-transparent py-3 text-xs text-[#1A1918] placeholder-slate-400 focus:outline-none font-medium"
+                    required
+                  />
+                  <span className="text-xs font-mono text-[#64748B] font-bold">.edumanage.acharyaworks.in</span>
+                </div>
+                <button 
+                  type="submit" 
+                  className="bg-[#1B2A4A] hover:bg-[#5C1D24] text-white text-sm font-semibold px-6 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm whitespace-nowrap"
+                >
+                  Claim Subdomain <ArrowRight className="w-4 h-4" />
+                </button>
+              </form>
+            )}
+
+            {/* Trust Badges */}
+            <div className="pt-2 flex items-center gap-6 text-xs text-[#64748B] font-semibold">
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" /> Wildcard SSL Secured
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Zap className="w-4 h-4 text-amber-600" /> Instant Tenant Setup
+              </span>
+            </div>
+          </div>
+
+          {/* Right Column: Hero Dashboard Showcase Graphic */}
+          <div className="lg:col-span-5 relative">
+            <div className="relative rounded-2xl overflow-hidden border border-[#E5E0D8] bg-gradient-to-b from-white to-[#F7F5F0] p-3 shadow-xl hover:shadow-2xl transition-all group">
+              
+              {/* Main Dashboard Image */}
+              <img 
+                src="/hero_dashboard.png" 
+                alt="EduManage Platform Dashboard Preview" 
+                className="w-full h-auto rounded-xl object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
+              />
+
+              {/* Floating Badge 1: Timetable Engine */}
+              <div className="absolute top-6 -left-4 bg-white/95 backdrop-blur-md p-3 rounded-xl border border-[#E5E0D8] shadow-lg hidden sm:flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#1B2A4A] text-white flex items-center justify-center font-bold">
+                  📅
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-[#1B2A4A]">Timetable Engine</div>
+                  <div className="text-[10px] text-emerald-700 font-semibold">Conflict-Free Routines</div>
+                </div>
+              </div>
+
+              {/* Floating Badge 2: Multi-Tenant Active */}
+              <div className="absolute -bottom-4 right-6 bg-white/95 backdrop-blur-md p-3 rounded-xl border border-[#E5E0D8] shadow-lg hidden sm:flex items-center gap-3">
+                <div className="w-9 h-9 rounded-lg bg-[#5C1D24] text-white flex items-center justify-center font-bold">
+                  ⭐
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-[#1A1918]">Multi-Tenant Isolated</div>
+                  <div className="text-[10px] text-[#64748B]">Dedicated Subdomains</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Editorial Serif Heading */}
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-['Newsreader'] font-normal text-[#1A1918] leading-tight tracking-tight">
-          Manage Your Entire School System on <br />
-          <span className="italic font-medium text-[#1B2A4A]">
-            Your Dedicated Subdomain
-          </span>
-        </h1>
-
-        <p className="max-w-3xl mx-auto text-base sm:text-lg text-[#64748B] font-normal leading-relaxed">
-          Empower administrators, teachers, students, and parents with an intuitive cloud platform. Streamline admissions, attendance, digital gradebooks, and fee billing effortlessly.
-        </p>
-
-        {/* Subdomain Search Form / Go to Dashboard */}
-        {isAuthenticated ? (
-          <div className="flex justify-center pt-2">
-            <Link to="/dashboard">
-              <button className="bg-[#1B2A4A] hover:bg-[#5C1D24] text-white font-semibold text-base px-8 py-4 rounded-lg transition-colors shadow-sm flex items-center gap-2">
-                Go to Dashboard <ArrowRight className="w-5 h-5" />
-              </button>
-            </Link>
-          </div>
-        ) : (
-          <form 
-            onSubmit={handleSubdomainCheck} 
-            className="max-w-2xl mx-auto flex flex-col sm:flex-row gap-3 p-2 bg-white rounded-xl border border-[#E5E0D8] shadow-sm"
-          >
-            <div className="flex-1 flex items-center px-4 bg-[#F7F5F0] rounded-lg border border-[#E5E0D8]">
-              <Globe className="w-5 h-5 text-[#1B2A4A] mr-2 shrink-0" />
-              <input
-                type="text"
-                placeholder="your-school-name"
-                value={desiredSubdomain}
-                onChange={(e) => setDesiredSubdomain(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                className="w-full bg-transparent py-3 text-sm text-[#1A1918] placeholder-slate-400 focus:outline-none"
-                required
-              />
-              <span className="text-sm font-mono text-[#64748B] font-medium">.edumanage.acharyaworks.in</span>
-            </div>
-            <button 
-              type="submit" 
-              className="bg-[#1B2A4A] hover:bg-[#5C1D24] text-white text-sm font-semibold px-6 py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm whitespace-nowrap"
-            >
-              Claim Subdomain <ArrowRight className="w-4 h-4" />
-            </button>
-          </form>
-        )}
-
         {/* Live Metrics Bar */}
-        <div className="pt-8 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+        <div className="pt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {[
             { value: stats.total_schools, label: 'Institutions Onboarded' },
             { value: stats.total_students, label: 'Active Students' },
             { value: '99.99%', label: 'Uptime SLA' },
             { value: 'Instant', label: 'Tenant Provisioning' },
           ].map((stat, i) => (
-            <div key={i} className="bg-white p-6 rounded-xl text-center border border-[#E5E0D8] shadow-sm">
+            <div key={i} className="bg-white p-6 rounded-xl text-center border border-[#E5E0D8] shadow-sm hover:border-[#1B2A4A]/30 transition-colors">
               <div className="text-3xl sm:text-4xl font-['Newsreader'] font-bold text-[#1A1918]">
                 {stat.value}
               </div>
@@ -130,6 +181,7 @@ const Home = () => {
           ))}
         </div>
       </section>
+
 
       {/* 2. Key Features Grid */}
       <section className="max-w-7xl mx-auto px-6 space-y-12">
