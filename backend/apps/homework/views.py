@@ -3,7 +3,7 @@ from apps.homework.models import HomeworkAssignment
 from apps.homework.serializers import HomeworkAssignmentSerializer
 
 class HomeworkAssignmentViewSet(BaseTenantViewSet):
-    queryset = HomeworkAssignment.objects.all().select_related('section', 'subject', 'section__class_level').order_by('-due_date')
+    queryset = HomeworkAssignment.objects.all().select_related('section', 'subject', 'section__class_level', 'assigned_by').order_by('-due_date')
     serializer_class = HomeworkAssignmentSerializer
 
     def get_permissions(self):
@@ -41,7 +41,8 @@ class HomeworkAssignmentViewSet(BaseTenantViewSet):
                     if not is_class_teacher and not teaches_here:
                         from rest_framework.exceptions import PermissionDenied
                         raise PermissionDenied("You are not assigned to teach this Subject in this Section.")
-        serializer.save(school=self.request.school)
+        serializer.save(school=self.request.school, assigned_by=user)
+
 
     def perform_update(self, serializer):
         user = self.request.user

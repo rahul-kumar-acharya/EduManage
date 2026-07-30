@@ -26,6 +26,8 @@ const HomeworkList = () => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteHomeworkId, setDeleteHomeworkId] = useState(null);
 
+  const [filterSection, setFilterSection] = useState('');
+
   const [formData, setFormData] = useState({
     section: '',
     subject: '',
@@ -58,6 +60,40 @@ const HomeworkList = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (user?.role === 'TEACHER' && user.class_teacher_sections?.length > 0) {
+      setFilterSection(user.class_teacher_sections[0].id.toString());
+    }
+  }, [user]);
+
+  const getDueDateStatus = (dueDateStr) => {
+    if (!dueDateStr) return { label: 'Active', color: 'bg-emerald-500/10 text-emerald-700 border-emerald-500/30' };
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const due = new Date(dueDateStr);
+    due.setHours(0, 0, 0, 0);
+
+    const diffDays = Math.round((due.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) {
+      return { label: 'Overdue', color: 'bg-red-500/10 text-red-700 border-red-500/30' };
+    } else if (diffDays === 0) {
+      return { label: 'Due Today ⏰', color: 'bg-amber-500/10 text-amber-700 border-amber-500/30' };
+    } else if (diffDays === 1) {
+      return { label: 'Due Tomorrow', color: 'bg-blue-500/10 text-blue-700 border-blue-500/30' };
+    }
+    return { label: 'Active', color: 'bg-emerald-500/10 text-emerald-700 border-emerald-500/30' };
+  };
+
+  const getDisplayHomeworks = () => {
+    if (!filterSection) return homeworks;
+    return homeworks.filter(
+      (hw) => hw.section?.toString() === filterSection || hw.section_details?.id?.toString() === filterSection
+    );
+  };
+
+
+
   const getFilteredSections = () => {
     if (user?.role !== 'TEACHER') {
       return sections;
@@ -78,29 +114,31 @@ const HomeworkList = () => {
     const secId = parseInt(secVal);
     const selectedSec = sections.find((s) => s.id === secId);
     
-    let levelFilteredSubjects = subjects;
-    if (selectedSec && selectedSec.class_level) {
-      levelFilteredSubjects = subjects.filter(
-        (sub) => !sub.class_level || sub.class_level === selectedSec.class_level
-      );
-    }
+    // Filter subjects belonging strictly to the selected Section (or matching class_level if legacy)
+    let sectionFilteredSubjects = subjects.filter((sub) => {
+      if (sub.section) {
+        return sub.section === secId;
+      }
+      return !sub.class_level || sub.class_level === selectedSec?.class_level;
+    });
 
     if (user?.role !== 'TEACHER') {
-      return levelFilteredSubjects;
+      return sectionFilteredSubjects;
     }
     
     const teacherPeriods = periods.filter((p) => p.teacher?.user?.id === user.id);
     if (teacherPeriods.length === 0) {
-      return levelFilteredSubjects;
+      return sectionFilteredSubjects;
     }
     const taughtSubjectIds = teacherPeriods
       .filter((p) => p.section?.id === secId)
       .map((p) => p.subject?.id);
     if (taughtSubjectIds.length === 0) {
-      return levelFilteredSubjects;
+      return sectionFilteredSubjects;
     }
-    return levelFilteredSubjects.filter((sub) => taughtSubjectIds.includes(sub.id));
+    return sectionFilteredSubjects.filter((sub) => taughtSubjectIds.includes(sub.id));
   };
+
 
   const handleSectionChange = (sectionId) => {
     const filteredSubs = getFilteredSubjects(sectionId);
@@ -197,56 +235,97 @@ const HomeworkList = () => {
         )}
       </div>
 
+      {/* Filters Bar */}
+      <div className="bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <label className="text-xs font-bold text-[#1A1918] uppercase tracking-wider whitespace-nowrap">
+            Filter Class Section:
+          </label>
+          <select
+            value={filterSection}
+            onChange={(e) => setFilterSection(e.target.value)}
+            className="w-full sm:w-72 bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2 text-xs font-bold text-[#1B2A4A] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+          >
+            <option value="">All Class Sections</option>
+            {sections.map((sec) => (
+              <option key={sec.id} value={sec.id.toString()}>
+                {sec.class_name || sec.class_level_name} - Section {sec.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="text-[11px] text-[#64748B] font-semibold">
+          Showing <strong className="text-[#1B2A4A]">{getDisplayHomeworks().length}</strong> homework assignment(s)
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
           <div className="col-span-full py-20 text-center text-xs text-[#64748B] font-semibold animate-pulse">
             Retrieving homework catalogs and subject lists...
           </div>
-        ) : homeworks.map((hw) => (
-          <div key={hw.id} className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Badge variant="info">{hw.subject_name || hw.subject_details?.name || 'Subject'}</Badge>
-                <Badge variant="purple">
-                  {hw.section_name || (hw.section_details ? `${hw.section_details.class_name} - ${hw.section_details.name}` : 'Section')}
-                </Badge>
-              </div>
-              <h3 className="text-sm font-bold text-[#1A1918]">{hw.title}</h3>
-              <p className="text-xs text-[#64748B] leading-relaxed line-clamp-3 font-medium">{hw.description}</p>
-            </div>
-
-            <div className="border-t border-[#F7F5F0] pt-3 flex items-center justify-between text-xs text-[#64748B]">
-              <div className="flex items-center gap-1.5 text-amber-600 font-bold">
-                <Calendar className="w-3.5 h-3.5 text-amber-600" /> Due: {hw.due_date}
-              </div>
-              {isManageAllowed && (
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => openEditModal(hw)}
-                    className="p-1.5 rounded text-[#64748B] hover:text-[#1B2A4A] hover:bg-[#1B2A4A]/10 transition-colors"
-                    title="Edit Homework"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => queueDelete(hw.id)}
-                    className="p-1.5 rounded text-[#64748B] hover:text-[#5C1D24] hover:bg-[#5C1D24]/10 transition-colors"
-                    title="Delete Homework"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+        ) : (
+          getDisplayHomeworks().map((hw) => {
+            const dueStatus = getDueDateStatus(hw.due_date);
+            return (
+              <div key={hw.id} className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <div className="flex items-center gap-1.5">
+                      <Badge variant="info">{hw.subject_name || hw.subject_details?.name || 'Subject'}</Badge>
+                      <Badge variant="purple">
+                        {hw.section_name || (hw.section_details ? `${hw.section_details.class_name} - ${hw.section_details.name}` : 'Section')}
+                      </Badge>
+                    </div>
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${dueStatus.color}`}>
+                      {dueStatus.label}
+                    </span>
+                  </div>
+                  <h3 className="text-sm font-bold text-[#1A1918]">{hw.title}</h3>
+                  <p className="text-xs text-[#64748B] leading-relaxed line-clamp-3 font-medium">{hw.description}</p>
+                  
+                  {/* Assigned By Teacher Attribution Badge */}
+                  <div className="text-[10px] font-semibold text-[#1B2A4A] bg-[#F7F5F0] px-2.5 py-1 rounded-md inline-block">
+                    ✍️ Assigned by: <span className="font-bold">{hw.assigned_by_name || 'Faculty / Admin'}</span>
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
-        ))}
 
-        {homeworks.length === 0 && !loading && (
+                <div className="border-t border-[#F7F5F0] pt-3 flex items-center justify-between text-xs text-[#64748B]">
+                  <div className="flex items-center gap-1.5 text-amber-600 font-bold">
+                    <Calendar className="w-3.5 h-3.5 text-amber-600" /> Due: {hw.due_date}
+                  </div>
+
+                  {isManageAllowed && (
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => openEditModal(hw)}
+                        className="p-1.5 rounded text-[#64748B] hover:text-[#1B2A4A] hover:bg-[#1B2A4A]/10 transition-colors"
+                        title="Edit Homework"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => queueDelete(hw.id)}
+                        className="p-1.5 rounded text-[#64748B] hover:text-[#5C1D24] hover:bg-[#5C1D24]/10 transition-colors"
+                        title="Delete Homework"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
+
+        {getDisplayHomeworks().length === 0 && !loading && (
           <div className="col-span-full bg-white p-12 text-center text-[#64748B] rounded-xl border border-[#E5E0D8] shadow-sm font-medium italic">
-            No homework assignments posted yet.
+            No homework assignments posted for this section yet.
           </div>
         )}
       </div>
+
 
       {/* Edit / Add Homework Modal */}
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editId ? "Edit Homework Assignment" : "Post Homework Assignment"}>
