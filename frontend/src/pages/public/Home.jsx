@@ -130,7 +130,7 @@ const Home = () => {
 
           {/* Right Column: Hero Dashboard Showcase Graphic */}
           <div className="lg:col-span-5 relative">
-            <div className="relative rounded-2xl overflow-hidden border border-[#E5E0D8] bg-gradient-to-b from-white to-[#F7F5F0] p-3 shadow-xl hover:shadow-2xl transition-all group">
+            <div className="relative rounded-2xl overflow-hidden border border-[#E5E0D8] bg-linear-to-b from-white to-[#F7F5F0] p-3 shadow-xl hover:shadow-2xl transition-all group">
               
               {/* Main Dashboard Image */}
               <img 
