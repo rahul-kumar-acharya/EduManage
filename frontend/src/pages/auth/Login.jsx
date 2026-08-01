@@ -1,24 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useSchool } from '../../contexts/SchoolContext';
 import { getSubdomain } from '../../utils/subdomain';
-import {
-  Mail,
-  Lock,
-  Globe,
-  UserCheck,
-  ShieldCheck,
-  HelpCircle,
-  ShieldAlert,
-  ArrowRight,
-  School as SchoolIcon,
-  Shield,
-  KeyRound,
-  Eye,
-  EyeOff
-} from 'lucide-react';
-
+import { Mail, Lock, Globe, UserCheck, ShieldCheck, HelpCircle, ShieldAlert, ArrowRight, KeyRound, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -27,42 +12,20 @@ const Login = () => {
   const [selectedRole, setSelectedRole] = useState('ADMIN');
 
   const [error, setError] = useState('');
-  const { login, logout, loading } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { login, logout } = useAuth();
   const { school, subdomain } = useSchool();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsSubmitting(true);
     try {
-      const user = await login(email, password);
-      
-      if (user.role === 'SUPER_ADMIN') {
-        navigate('/super-admin');
-        return;
-      }
-
-      // Check role alignment
-      if (selectedRole === 'ADMIN' && user.role !== 'SCHOOL_ADMIN') {
-        setError('Access Denied: This account does not have School Admin privileges.');
-        await logout();
-        return;
-      }
-      if (selectedRole === 'TEACHER' && user.role !== 'TEACHER') {
-        setError('Access Denied: This account does not have Faculty privileges.');
-        await logout();
-        return;
-      }
-      if (selectedRole === 'ACCOUNTANT' && user.role !== 'ACCOUNTANT') {
-        setError('Access Denied: This account does not have Accountant privileges.');
-        await logout();
-        return;
-      }
-      if (selectedRole === 'STUDENT' && user.role !== 'STUDENT' && user.role !== 'PARENT') {
-        setError('Access Denied: This account is not registered as a Student or Parent.');
-        await logout();
-        return;
-      }
+      const user = await login(email, password, {
+        portal_type: 'school',
+        selected_role: selectedRole
+      });
 
       // Redirect to correct subdomain if not already on it
       const currentSub = getSubdomain();
@@ -90,15 +53,39 @@ const Login = () => {
       navigate('/dashboard');
     } catch (err) {
       console.error("Login error:", err);
-      if (err.response && err.response.data && err.response.data.detail) {
-        setError(err.response.data.detail);
+      const resData = err?.response?.data;
+      if (resData) {
+        if (typeof resData === 'string') {
+          setError(resData);
+        } else if (resData.detail) {
+          setError(String(resData.detail));
+        } else if (resData.non_field_errors) {
+          setError(Array.isArray(resData.non_field_errors) ? resData.non_field_errors.join(' ') : String(resData.non_field_errors));
+        } else if (resData.error) {
+          setError(String(resData.error));
+        } else if (resData.message) {
+          setError(String(resData.message));
+        } else {
+          const firstKey = Object.keys(resData)[0];
+          if (firstKey && resData[firstKey]) {
+            const val = resData[firstKey];
+            setError(Array.isArray(val) ? val.join(' ') : String(val));
+          } else {
+            setError('Unable to authenticate. Please check your credentials.');
+          }
+        }
       } else {
-        setError('Invalid email or password. Please verify your credentials.');
+        setError('Connection error. Unable to reach authentication server.');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
+
   return (
+
+
     <div className="space-y-10 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
       
       {/* Page Title & Context Header */}
@@ -204,11 +191,19 @@ const Login = () => {
             </div>
 
             {error && (
-              <div className="p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg flex items-center gap-2 font-medium">
-                <ShieldAlert className="w-4 h-4 shrink-0 text-rose-600" />
-                <span>{error}</span>
+              <div className="p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg flex items-start gap-2.5 font-medium">
+                <ShieldAlert className="w-4 h-4 shrink-0 text-rose-600 mt-0.5" />
+                <div className="leading-relaxed">
+                  {error}{' '}
+                  {error.includes('Super Admin') && (
+                    <Link to="/super-admin/login" className="text-[#5C1D24] font-bold underline hover:text-[#1B2A4A] ml-1">
+                      Go to Super Admin Portal →
+                    </Link>
+                  )}
+                </div>
               </div>
             )}
+
 
             {/* Input Form Fields */}
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -271,24 +266,34 @@ const Login = () => {
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isSubmitting}
                 className="w-full bg-[#1B2A4A] hover:bg-[#5C1D24] disabled:bg-[#64748B] text-white font-semibold text-sm py-4 px-6 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 mt-4"
               >
-                {loading ? 'Authenticating...' : 'Sign In to Portal'} <ArrowRight className="w-4 h-4" />
+                {isSubmitting ? 'Authenticating...' : 'Sign In to Portal'} <ArrowRight className="w-4 h-4" />
               </button>
+
             </form>
           </div>
 
           {/* Bottom Banner Note */}
           <div className="pt-4 border-t border-[#F7F5F0] text-center space-y-2">
             {!subdomain && (
-              <div className="text-xs text-[#64748B]">
-                Want to register a new school?{' '}
-                <Link to="/register-school" className="text-[#1B2A4A] hover:text-[#5C1D24] font-semibold underline">
-                  Register School Portal
-                </Link>
+              <div className="text-xs text-[#64748B] space-y-1">
+                <div>
+                  Want to register a new school?{' '}
+                  <Link to="/register-school" className="text-[#1B2A4A] hover:text-[#5C1D24] font-semibold underline">
+                    Register School Portal
+                  </Link>
+                </div>
+                <div>
+                  Platform Super Admin?{' '}
+                  <Link to="/super-admin/login" className="text-[#5C1D24] hover:text-[#1B2A4A] font-semibold underline">
+                    Super Admin Portal →
+                  </Link>
+                </div>
               </div>
             )}
+
             <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#64748B]">
               <KeyRound className="w-3.5 h-3.5 text-[#5C1D24]" />
               <span>Protected by Row-Level Security & Encrypted Auth</span>

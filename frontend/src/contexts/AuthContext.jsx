@@ -79,22 +79,19 @@ export const AuthProvider = ({ children }) => {
   });
   const [loading, setLoading] = useState(false);
 
-  const login = async (email, password) => {
-    setLoading(true);
-    try {
-      const data = await authService.login(email, password);
-      const userStr = JSON.stringify(data.user);
-      setCookie('token', data.access, 7);
-      setCookie('user', userStr, 7);
-      localStorage.setItem('token', data.access);
-      localStorage.setItem('user', userStr);
-      setToken(data.access);
-      setUser(data.user);
-      return data.user;
-    } finally {
-      setLoading(false);
-    }
+  const login = async (email, password, extraData = {}) => {
+    const data = await authService.login(email, password, extraData);
+    const userStr = JSON.stringify(data.user);
+    setCookie('token', data.access, 7);
+    setCookie('user', userStr, 7);
+    localStorage.setItem('token', data.access);
+    localStorage.setItem('user', userStr);
+    setToken(data.access);
+    setUser(data.user);
+    return data.user;
   };
+
+
 
   const logout = async () => {
     try {
@@ -107,25 +104,27 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       localStorage.removeItem('local_avatar');
-      setToken(null);
-      setUser(null);
 
-      // Perform cross-origin global logout redirect
+      // Immediate browser navigation to Home page BEFORE updating React state
+      // This eliminates the microsecond flash of /super-admin/login or /login caused by route guards
       const hostname = window.location.hostname;
       const port = window.location.port ? `:${window.location.port}` : '';
       
-      // If we are on a subdomain (e.g. sinhaschool.localhost), redirect to parent to clear its session
       if (hostname.includes('localhost') && hostname !== 'localhost') {
-        window.location.href = `${window.location.protocol}//localhost${port}/login?global_logout=true`;
+        window.location.href = `${window.location.protocol}//localhost${port}/?global_logout=true`;
       } else {
         const parts = hostname.split('.');
         if (parts.length > 2) {
           const rootDomain = parts.slice(-2).join('.');
-          window.location.href = `${window.location.protocol}//${rootDomain}${port}/login?global_logout=true`;
+          window.location.href = `${window.location.protocol}//${rootDomain}${port}/?global_logout=true`;
+        } else {
+          window.location.href = '/';
         }
       }
     }
   };
+
+
 
   const refreshUser = (updatedUser) => {
     const localAvatar = localStorage.getItem('local_avatar');

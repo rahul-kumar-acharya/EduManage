@@ -1,10 +1,11 @@
 import api from './api';
 
 export const authService = {
-  login: async (email, password) => {
-    const response = await api.post('/accounts/login/', { email, password });
+  login: async (email, password, extraData = {}) => {
+    const response = await api.post('/accounts/login/', { email, password, ...extraData });
     return response.data;
   },
+
 
   getCurrentUser: async () => {
     const response = await api.get('/accounts/me/');

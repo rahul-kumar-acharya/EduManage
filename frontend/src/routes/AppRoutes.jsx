@@ -53,9 +53,13 @@ import DueFeesList from '../pages/fees/DueFeesList';
 import ReportsDashboard from '../pages/reports/ReportsDashboard';
 import SubscriptionPanel from '../pages/subscription/SubscriptionPanel';
 
+import SuperAdminLogin from '../pages/auth/SuperAdminLogin';
+
 import ProtectedRoute from './ProtectedRoute';
 import RoleRoute from './RoleRoute';
 import GuestRoute from './GuestRoute';
+import SuperAdminRoute from './SuperAdminRoute';
+
 
 const DashboardRouter = () => {
   const { user } = useAuth();
@@ -89,6 +93,19 @@ const AppRoutes = () => {
           <Route path="/register-school" element={<RegisterSchool />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+        </Route>
+      </Route>
+
+      {/* Dedicated Super Admin Login Page */}
+      <Route path="/super-admin/login" element={<SuperAdminLogin />} />
+
+      {/* Dedicated Protected Super Admin Layout */}
+      <Route element={<SuperAdminRoute />}>
+        <Route path="/super-admin" element={<SuperAdminLayout />}>
+          <Route index element={<SuperAdminDashboard />} />
+          <Route path="plans" element={<SuperAdminDashboard />} />
+          <Route path="users" element={<SuperAdminDashboard />} />
+          <Route path="analytics" element={<SuperAdminDashboard />} />
         </Route>
       </Route>
 
@@ -131,17 +148,8 @@ const AppRoutes = () => {
             <Route path="subscription" element={<SubscriptionPanel />} />
           </Route>
         </Route>
-
-        {/* Super Admin Dedicated Layout */}
-        <Route element={<RoleRoute allowedRoles={['SUPER_ADMIN']} />}>
-          <Route path="/super-admin" element={<SuperAdminLayout />}>
-            <Route index element={<SuperAdminDashboard />} />
-            <Route path="plans" element={<SuperAdminDashboard />} />
-            <Route path="users" element={<SuperAdminDashboard />} />
-            <Route path="analytics" element={<SuperAdminDashboard />} />
-          </Route>
-        </Route>
       </Route>
+
 
       {/* Main Marketing Domain Public Routes */}
       <Route element={<PublicLayout />}>
