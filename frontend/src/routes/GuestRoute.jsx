@@ -3,7 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const GuestRoute = () => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, user } = useAuth();
 
   if (loading) {
     return (
@@ -14,10 +14,14 @@ const GuestRoute = () => {
   }
 
   if (isAuthenticated) {
+    if (user?.role === 'SUPER_ADMIN') {
+      return <Navigate to="/super-admin" replace />;
+    }
     return <Navigate to="/dashboard" replace />;
   }
 
   return <Outlet />;
 };
+
 
 export default GuestRoute;

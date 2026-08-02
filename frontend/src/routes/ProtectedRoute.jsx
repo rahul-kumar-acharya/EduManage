@@ -35,14 +35,9 @@ const ProtectedRoute = () => {
 
   // Super Admin redirect guard
   if (user?.role === 'SUPER_ADMIN') {
-    if (subdomain !== 'admin') {
-      const port = window.location.port ? `:${window.location.port}` : '';
-      const token = localStorage.getItem('token') || getCookie('token') || '';
-      const encodedUser = encodeURIComponent(JSON.stringify(user));
-      window.location.href = `${window.location.protocol}//admin.localhost${port}/super-admin?sso_token=${token}&sso_user=${encodedUser}`;
-      return null;
-    }
-  } else {
+    return <Navigate to="/super-admin" replace />;
+  }
+ else {
     // School staff/students/parents redirect guard
     if (!subdomain || subdomain === 'admin') {
       if (user?.school?.subdomain) {

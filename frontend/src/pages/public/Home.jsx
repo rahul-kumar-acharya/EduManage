@@ -16,7 +16,8 @@ import {
 } from 'lucide-react';
 
 const Home = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+
   const [desiredSubdomain, setDesiredSubdomain] = useState('');
   const [activeTab, setActiveTab] = useState('admin');
   const [openFaq, setOpenFaq] = useState(null);
@@ -85,13 +86,14 @@ const Home = () => {
             {/* Subdomain Search Form / Go to Dashboard */}
             {isAuthenticated ? (
               <div className="pt-2">
-                <Link to="/dashboard">
-                  <button className="bg-[#1B2A4A] hover:bg-[#5C1D24] text-white font-semibold text-base px-8 py-4 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center gap-2">
-                    Go to Dashboard <ArrowRight className="w-5 h-5" />
+                <Link to={user?.role === 'SUPER_ADMIN' ? '/super-admin' : '/dashboard'}>
+                  <button className="bg-[#1B2A4A] hover:bg-[#5C1D24] text-white font-semibold text-base px-8 py-4 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center gap-2 cursor-pointer">
+                    {user?.role === 'SUPER_ADMIN' ? 'Go to Super Admin Board' : 'Go to Dashboard'} <ArrowRight className="w-5 h-5" />
                   </button>
                 </Link>
               </div>
             ) : (
+
               <form 
                 onSubmit={handleSubdomainCheck} 
                 className="flex flex-col sm:flex-row gap-3 p-2 bg-white rounded-2xl border border-[#E5E0D8] shadow-sm max-w-xl"
@@ -415,12 +417,13 @@ const Home = () => {
           </p>
           <div className="pt-2 flex justify-center">
             {isAuthenticated ? (
-              <Link to="/dashboard">
-                <button className="bg-[#1B2A4A] hover:bg-[#5C1D24] text-white font-semibold text-sm px-8 py-4 rounded-lg transition-colors shadow-sm flex items-center gap-2">
-                  Go to Dashboard <ArrowRight className="w-4 h-4" />
+              <Link to={user?.role === 'SUPER_ADMIN' ? '/super-admin' : '/dashboard'}>
+                <button className="bg-[#1B2A4A] hover:bg-[#5C1D24] text-white font-semibold text-sm px-8 py-4 rounded-lg transition-colors shadow-sm flex items-center gap-2 cursor-pointer">
+                  {user?.role === 'SUPER_ADMIN' ? 'Go to Super Admin Board' : 'Go to Dashboard'} <ArrowRight className="w-4 h-4" />
                 </button>
               </Link>
             ) : (
+
               <Link to="/register-school">
                 <button className="bg-[#1B2A4A] hover:bg-[#5C1D24] text-white font-semibold text-sm px-8 py-4 rounded-lg transition-colors shadow-sm flex items-center gap-2">
                   Get Started Free <ArrowRight className="w-4 h-4" />

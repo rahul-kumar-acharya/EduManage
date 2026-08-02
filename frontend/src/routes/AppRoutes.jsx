@@ -89,7 +89,8 @@ const DashboardRouter = () => {
 
 const AppRoutes = () => {
   const { subdomain } = useSchool();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+
 
   return (
     <Routes>
@@ -168,12 +169,17 @@ const AppRoutes = () => {
           path="/"
           element={
             subdomain ? (
-              isAuthenticated ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />
+              isAuthenticated ? (
+                user?.role === 'SUPER_ADMIN' ? <Navigate to="/super-admin" replace /> : <Navigate to="/dashboard" replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
             ) : (
               <Home />
             )
           }
         />
+
         <Route path="/features" element={<Features />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/about" element={<About />} />

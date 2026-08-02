@@ -72,11 +72,12 @@ const PublicNavbar = () => {
                    user?.role === 'PARENT' ? 'Parent' : user?.role}
                 </div>
               </div>
-              <Link to="/dashboard">
-                <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#1B2A4A] hover:bg-[#5C1D24] text-white text-sm font-semibold transition-colors shadow-sm">
-                  Go to Dashboard
+              <Link to={user?.role === 'SUPER_ADMIN' ? '/super-admin' : '/dashboard'}>
+                <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#1B2A4A] hover:bg-[#5C1D24] text-white text-sm font-semibold transition-colors shadow-sm cursor-pointer">
+                  {user?.role === 'SUPER_ADMIN' ? 'Super Admin Board' : 'Go to Dashboard'}
                 </button>
               </Link>
+
             </div>
           ) : (
             <>
