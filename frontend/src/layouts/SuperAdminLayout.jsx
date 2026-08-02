@@ -9,22 +9,27 @@ import {
   GraduationCap, 
   ShieldCheck, 
   LogOut, 
-  Search, 
-  Bell, 
   Server, 
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  MessageSquare,
+  Settings
 } from 'lucide-react';
 
 const SuperAdminLayout = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
 
-  const superAdminNav = [
+  const mainNav = [
     { name: 'Tenant Schools', path: '/super-admin', icon: Building2 },
     { name: 'Plans & Subscriptions', path: '/super-admin/plans', icon: CreditCard },
+  ];
+
+  const platformNav = [
     { name: 'Global Users & Roles', path: '/super-admin/users', icon: Users },
+    { name: 'Contact Inquiries', path: '/super-admin/inquiries', icon: MessageSquare },
     { name: 'System Analytics', path: '/super-admin/analytics', icon: Activity },
+    { name: 'Platform Settings', path: '/super-admin/settings', icon: Settings },
   ];
 
   return (
@@ -53,30 +58,59 @@ const SuperAdminLayout = () => {
           </div>
 
           {/* Sidebar Nav Items (Sketch Navigation Middle Box) */}
-          <div className="p-3 space-y-1 overflow-y-auto flex-1 select-none">
-            <div className="text-[10px] uppercase font-bold text-[#5C1D24] tracking-wider px-3 mt-3 mb-2 flex items-center justify-between">
-              <span>Platform Control</span>
-              <Server className="w-3 h-3 text-[#5C1D24]" />
+          <div className="p-3 space-y-4 overflow-y-auto flex-1 select-none">
+            
+            {/* Section 1: Main Control */}
+            <div className="space-y-1">
+              <div className="text-[10px] uppercase font-bold text-[#5C1D24] tracking-wider px-3 mb-1.5 flex items-center justify-between">
+                <span>Tenant Operations</span>
+                <Server className="w-3 h-3 text-[#5C1D24]" />
+              </div>
+              {mainNav.map((item) => {
+                const Icon = item.icon;
+                const isActive = location.pathname === item.path;
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.path}
+                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                      isActive
+                        ? 'bg-[#1B2A4A] text-white shadow-sm'
+                        : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-[#64748B]'}`} />
+                    <span className="truncate">{item.name}</span>
+                  </Link>
+                );
+              })}
             </div>
 
-            {superAdminNav.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  className={`flex items-center gap-3 px-3.5 py-3 rounded-xl text-xs font-semibold transition-all ${
-                    isActive
-                      ? 'bg-[#1B2A4A] text-white shadow-sm'
-                      : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
-                  }`}
-                >
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-[#64748B]'}`} />
-                  <span className="truncate">{item.name}</span>
-                </Link>
-              );
-            })}
+            {/* Section 2: Platform Management */}
+            <div className="space-y-1 pt-2 border-t border-[#F7F5F0]">
+              <div className="text-[10px] uppercase font-bold text-[#64748B] tracking-wider px-3 mb-1.5">
+                System Infrastructure
+              </div>
+              {platformNav.map((item) => {
+                const Icon = item.icon;
+                const isActive = location.pathname === item.path;
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.path}
+                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                      isActive
+                        ? 'bg-[#1B2A4A] text-white shadow-sm'
+                        : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-[#64748B]'}`} />
+                    <span className="truncate">{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+
           </div>
 
           {/* Bottom Sidebar Pinned Card (Sketch Bottom Left User Card) */}
@@ -122,7 +156,9 @@ const SuperAdminLayout = () => {
                 {location.pathname === '/super-admin' ? 'Tenant Schools' :
                  location.pathname === '/super-admin/plans' ? 'Plans & Subscriptions' :
                  location.pathname === '/super-admin/users' ? 'Global Platform Users' :
-                 location.pathname === '/super-admin/analytics' ? 'System Analytics' : 'Dashboard'}
+                 location.pathname === '/super-admin/inquiries' ? 'Contact Inquiries' :
+                 location.pathname === '/super-admin/analytics' ? 'System Analytics' :
+                 location.pathname === '/super-admin/settings' ? 'Platform Settings' : 'Dashboard'}
               </span>
             </div>
           </div>

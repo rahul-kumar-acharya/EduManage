@@ -5,7 +5,9 @@ from apps.schools.views import (
     TenantInfoView,
     SchoolListView,
     PublicPlatformStatsView,
-    ContactSupportView
+    ContactSupportView,
+    ToggleSchoolStatusView,
+    ContactInquiryListView
 )
 
 urlpatterns = [
@@ -13,7 +15,11 @@ urlpatterns = [
     path('register/', SchoolRegisterView.as_view(), name='school-register'),
     path('tenant-info/', TenantInfoView.as_view(), name='tenant-info'),
     path('all/', SchoolListView.as_view(), name='school-list'),
+    path('<int:pk>/toggle-status/', ToggleSchoolStatusView.as_view(), name='toggle-school-status'),
+    path('inquiries/', ContactInquiryListView.as_view(), name='contact-inquiry-list'),
     path('public-stats/', PublicPlatformStatsView.as_view(), name='public-stats'),
     path('contact/', ContactSupportView.as_view(), name='contact-support'),
 ]
+
+
 

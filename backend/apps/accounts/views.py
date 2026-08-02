@@ -40,3 +40,38 @@ class LogoutView(APIView):
 
     def post(self, request):
         return Response({'message': 'Logged out successfully.'}, status=status.HTTP_200_OK)
+
+from apps.common.permissions import IsSuperAdmin
+
+class SuperAdminListView(generics.ListAPIView):
+    queryset = User.objects.filter(role='SUPER_ADMIN').order_by('-date_joined')
+    serializer_class = UserSerializer
+    permission_classes = [IsSuperAdmin]
+
+class CreateSuperAdminView(APIView):
+    permission_classes = [IsSuperAdmin]
+
+    def post(self, request):
+        email = request.data.get('email', '').strip()
+        first_name = request.data.get('first_name', '').strip()
+        last_name = request.data.get('last_name', '').strip()
+        password = request.data.get('password', '').strip()
+
+        if not email or not password or not first_name:
+            return Response({'error': 'First name, email, and password are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if User.objects.filter(email__iexact=email).exists():
+            return Response({'error': 'A user account with this email address already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        admin = User.objects.create_superuser(
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            username=email
+        )
+        return Response({
+            'message': f"Super Admin '{admin.get_full_name()}' provisioned successfully.",
+            'user': UserSerializer(admin).data
+        }, status=status.HTTP_201_CREATED)
+

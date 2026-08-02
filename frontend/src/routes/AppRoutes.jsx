@@ -31,6 +31,9 @@ import SuperAdminDashboard from '../pages/dashboard/SuperAdminDashboard';
 import SuperAdminPlans from '../pages/dashboard/SuperAdminPlans';
 import SuperAdminUsers from '../pages/dashboard/SuperAdminUsers';
 import SuperAdminAnalytics from '../pages/dashboard/SuperAdminAnalytics';
+import SuperAdminInquiries from '../pages/dashboard/SuperAdminInquiries';
+import SuperAdminSettings from '../pages/dashboard/SuperAdminSettings';
+
 
 import ProfileSettings from '../pages/dashboard/ProfileSettings';
 
@@ -109,9 +112,12 @@ const AppRoutes = () => {
           <Route index element={<SuperAdminDashboard />} />
           <Route path="plans" element={<SuperAdminPlans />} />
           <Route path="users" element={<SuperAdminUsers />} />
+          <Route path="inquiries" element={<SuperAdminInquiries />} />
           <Route path="analytics" element={<SuperAdminAnalytics />} />
+          <Route path="settings" element={<SuperAdminSettings />} />
         </Route>
       </Route>
+
 
 
       {/* Tenant Dashboard Protected Routes */}

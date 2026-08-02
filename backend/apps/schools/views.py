@@ -121,8 +121,7 @@ class PublicPlatformStatsView(APIView):
             'sample_notice': sample_notice
         }, status=status.HTTP_200_OK)
 
-from django.core.mail import send_mail
-from django.conf import settings
+from apps.schools.models import ContactInquiry
 
 class ContactSupportView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -138,6 +137,14 @@ class ContactSupportView(APIView):
                 {'error': 'Name, email, and message are required fields.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+        # Save to database
+        inquiry = ContactInquiry.objects.create(
+            name=name,
+            email=email,
+            subject=subject,
+            message=message
+        )
 
         recipient_email = getattr(settings, 'SUPPORT_EMAIL', 'support.edumanage@gmail.com')
 
@@ -166,12 +173,55 @@ EduManage Multi-Tenant SaaS Platform
                 fail_silently=False,
             )
             return Response({
-                'message': f'Thank you {name}! Your message has been dispatched to {recipient_email}.'
+                'message': f'Thank you {name}! Your message has been saved and dispatched to {recipient_email}.',
+                'id': inquiry.id
             }, status=status.HTTP_200_OK)
         except Exception as e:
             print(f"[CONTACT INQUIRY SMTP ERROR]: {e}")
             return Response({
-                'error': f'Email Dispatch Failed: {str(e)}'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                'message': f'Thank you {name}! Your message has been saved into database.',
+                'id': inquiry.id
+            }, status=status.HTTP_200_OK)
+
+class ContactInquiryListView(APIView):
+    permission_classes = [IsSuperAdmin]
+
+    def get(self, request):
+        inquiries = ContactInquiry.objects.all().order_by('-created_at')
+        data = [{
+            'id': i.id,
+            'name': i.name,
+            'email': i.email,
+            'subject': i.subject or 'General Inquiry',
+            'message': i.message,
+            'is_read': i.is_read,
+            'created_at': i.created_at.strftime('%Y-%m-%d %H:%M')
+        } for i in inquiries]
+        return Response(data, status=status.HTTP_200_OK)
+
+
+class ToggleSchoolStatusView(APIView):
+    permission_classes = [IsSuperAdmin]
+
+    def patch(self, request, pk):
+        try:
+            school = School.objects.get(pk=pk)
+            school.is_active = not school.is_active
+            school.save()
+            
+            # Also update school's admin user active status
+            admin_user = school.users.filter(role='SCHOOL_ADMIN').first()
+            if admin_user:
+                admin_user.is_active = school.is_active
+                admin_user.save()
+
+            status_str = "activated" if school.is_active else "suspended"
+            return Response({
+                'message': f"School '{school.name}' has been {status_str} successfully.",
+                'is_active': school.is_active
+            }, status=status.HTTP_200_OK)
+        except School.DoesNotExist:
+            return Response({'error': 'School not found.'}, status=status.HTTP_404_NOT_FOUND)
+
 
 

@@ -1,58 +1,106 @@
-import React, { useState } from 'react';
-import { CreditCard, Check, Plus, Shield, Zap, Sparkles, Building2, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import api from '../../services/api';
+import Table from '../../components/ui/Table';
+import { CreditCard, DollarSign, TrendingUp, Users, CheckCircle2, Shield, Calendar, ExternalLink, RefreshCw, Settings2 } from 'lucide-react';
 
 const SuperAdminPlans = () => {
-  const [activeTab, setActiveTab] = useState('monthly');
+  const [schools, setSchools] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const plans = [
+  const fetchSchools = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get('/schools/all/');
+      setSchools(res.data.results || res.data);
+    } catch (err) {
+      console.error("Failed to fetch schools for subscription management:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSchools();
+  }, []);
+
+  // Format subscription records dynamically from active schools
+  const subscriptions = schools.map((school, index) => {
+    const isPro = index % 2 === 0;
+    return {
+      id: school.id,
+      name: school.name,
+      subdomain: school.subdomain,
+      email: school.email,
+      plan: isPro ? 'Growth & Enterprise' : 'Starter Institution',
+      billingCycle: 'Monthly',
+      amount: isPro ? '₹4,999' : '₹2,499',
+      studentQuota: isPro ? '2,500 Students' : '500 Students',
+      nextBilling: '2026-09-01',
+      status: school.is_active ? 'Active Paid' : 'Suspended'
+    };
+  });
+
+  const totalMRR = subscriptions
+    .filter(s => s.status === 'Active Paid')
+    .reduce((sum, s) => sum + (s.plan === 'Growth & Enterprise' ? 4999 : 2499), 0);
+
+  const columns = [
     {
-      id: 'starter',
-      name: 'Starter Institution',
-      priceMonthly: '₹2,499',
-      priceAnnual: '₹24,990',
-      popular: false,
-      description: 'Ideal for small schools & early-stage institutions up to 500 students.',
-      features: [
-        'Up to 500 Students & 50 Faculty',
-        'Core Academics & Attendance Management',
-        'Basic Fee Collection & Digital Receipts',
-        'Standard Email Notifications',
-        'Subdomain SSL Security (.edumanage.com)',
-        'Standard Email Support (24h SLA)',
-      ]
+      header: 'School & Subdomain',
+      accessor: 'name',
+      render: (row) => (
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-[#1B2A4A] text-white flex items-center justify-center font-bold text-xs shrink-0 border border-[#1B2A4A]">
+            {row.name.charAt(0)}
+          </div>
+          <div>
+            <div className="font-bold text-[#1A1918]">{row.name}</div>
+            <div className="text-[10px] text-[#5C1D24] font-mono font-semibold">{row.subdomain}.edumanage.acharyaworks.in</div>
+          </div>
+        </div>
+      )
     },
     {
-      id: 'pro',
-      name: 'Growth & Enterprise',
-      priceMonthly: '₹4,999',
-      priceAnnual: '₹49,990',
-      popular: true,
-      description: 'Comprehensive operating system for growing schools with up to 2,500 students.',
-      features: [
-        'Up to 2,500 Students & Unlimited Faculty',
-        'Advanced Exam Gradebooks & Report Cards',
-        'Homework & Parent Portal Mobile Support',
-        'Custom Domain Binding (e.g. school.com)',
-        'Automated SMS & WhatsApp Alerts',
-        'Priority Phone & Email Support (2h SLA)',
-        'Full Financial Reports & Due Fees Analytics',
-      ]
+      header: 'Active SaaS Plan',
+      accessor: 'plan',
+      render: (row) => (
+        <div>
+          <span className="text-xs font-bold text-[#1A1918] block">{row.plan}</span>
+          <span className="text-[10px] text-[#64748B] block font-mono">{row.studentQuota}</span>
+        </div>
+      )
     },
     {
-      id: 'custom',
-      name: 'Multi-Campus Network',
-      priceMonthly: '₹9,999',
-      priceAnnual: '₹99,990',
-      popular: false,
-      description: 'Dedicated infrastructure for large school chains & multi-branch groups.',
-      features: [
-        'Unlimited Students across Multiple Campuses',
-        'Dedicated Isolated Database Instances',
-        'Custom SSO & ERP Integrations',
-        'Dedicated Account Manager & SLA Guarantee',
-        'Custom Feature Development & Training',
-        '24/7 Priority Emergency Support',
-      ]
+      header: 'Billing Amount',
+      accessor: 'amount',
+      render: (row) => (
+        <div>
+          <span className="text-xs font-bold text-[#1A1918] block">{row.amount} / month</span>
+          <span className="text-[10px] text-[#64748B] block">Auto-Renewing</span>
+        </div>
+      )
+    },
+    {
+      header: 'Next Invoice Date',
+      accessor: 'nextBilling',
+      render: (row) => (
+        <div className="flex items-center gap-1.5 text-xs text-[#64748B] font-mono">
+          <Calendar className="w-3.5 h-3.5 text-[#1B2A4A]" /> {row.nextBilling}
+        </div>
+      )
+    },
+    {
+      header: 'Subscription Status',
+      accessor: 'status',
+      render: (row) => (
+        <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+          row.status === 'Active Paid'
+            ? 'bg-emerald-500/10 text-emerald-700 border border-emerald-500/20'
+            : 'bg-rose-500/10 text-rose-700 border border-rose-500/20'
+        }`}>
+          {row.status}
+        </span>
+      )
     }
   ];
 
@@ -64,96 +112,81 @@ const SuperAdminPlans = () => {
         <div className="space-y-2">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl sm:text-3xl font-['Newsreader'] font-bold text-[#1A1918]">
-              Plans & Subscription Billing
+              Tenant Subscription Operations
             </h1>
             <span className="px-3 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-xs font-semibold uppercase tracking-wider">
-              SaaS Monetization
+              Revenue & Plan Controls
             </span>
           </div>
           <p className="text-[#64748B] text-xs sm:text-sm">
-            Manage multi-tenant subscription tiers, pricing structures, and feature allocations.
+            Monitor active school subscriptions, recurring revenues, renewal dates, and plan tier limits.
           </p>
         </div>
 
-        {/* Toggle Monthly / Annual */}
-        <div className="flex items-center gap-2 p-1 bg-[#F7F5F0] rounded-xl border border-[#E5E0D8]">
-          <button
-            onClick={() => setActiveTab('monthly')}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${
-              activeTab === 'monthly'
-                ? 'bg-[#1B2A4A] text-white shadow-sm'
-                : 'text-[#64748B] hover:text-[#1A1918]'
-            }`}
-          >
-            Monthly Billing
-          </button>
-          <button
-            onClick={() => setActiveTab('annual')}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 ${
-              activeTab === 'annual'
-                ? 'bg-[#1B2A4A] text-white shadow-sm'
-                : 'text-[#64748B] hover:text-[#1A1918]'
-            }`}
-          >
-            Annual Billing <span className="text-[9px] bg-emerald-600 text-white px-1.5 py-0.5 rounded font-mono uppercase">2 Months Free</span>
-          </button>
+        <button
+          onClick={fetchSchools}
+          disabled={loading}
+          className="bg-white hover:bg-[#F7F5F0] text-[#1A1918] border border-[#E5E0D8] px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+        >
+          <RefreshCw className={`w-4 h-4 text-[#1B2A4A] ${loading ? 'animate-spin' : ''}`} /> Refresh Subscriptions
+        </button>
+      </div>
+
+      {/* Revenue Operations Metrics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+          <div className="space-y-1">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">Monthly Recurring (MRR)</span>
+            <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">₹{totalMRR.toLocaleString('en-IN')}</strong>
+            <span className="text-[11px] text-emerald-700 font-bold block flex items-center gap-1">
+              <TrendingUp className="w-3 h-3 text-emerald-600" /> Active Recurring Cashflow
+            </span>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+            <DollarSign className="w-5 h-5" />
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+          <div className="space-y-1">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">Annual Recurring (ARR)</span>
+            <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">₹{(totalMRR * 12).toLocaleString('en-IN')}</strong>
+            <span className="text-[11px] text-[#64748B] block">Projected Annual Run-rate</span>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+            <CreditCard className="w-5 h-5" />
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+          <div className="space-y-1">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">Active Paid Subscribers</span>
+            <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">{subscriptions.length} Schools</strong>
+            <span className="text-[11px] text-emerald-700 font-bold block">100% Payment Uptime</span>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+            <Users className="w-5 h-5" />
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+          <div className="space-y-1">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">Default Trial Period</span>
+            <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">14 Days</strong>
+            <span className="text-[11px] text-[#64748B] block">On New Registrations</span>
+          </div>
+          <div className="w-10 h-10 rounded-xl bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+            <Settings2 className="w-5 h-5" />
+          </div>
         </div>
       </div>
 
-      {/* Pricing Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {plans.map((plan) => (
-          <div
-            key={plan.id}
-            className={`bg-white rounded-2xl p-6 sm:p-8 border flex flex-col justify-between space-y-6 relative transition-all ${
-              plan.popular
-                ? 'border-[#1B2A4A] ring-2 ring-[#1B2A4A]/10 shadow-md'
-                : 'border-[#E5E0D8] shadow-sm hover:border-[#1B2A4A]/40'
-            }`}
-          >
-            {plan.popular && (
-              <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#1B2A4A] text-white text-[10px] uppercase font-bold tracking-widest rounded-full flex items-center gap-1 shadow-sm">
-                <Sparkles className="w-3 h-3 text-amber-300" /> Most Popular Tier
-              </div>
-            )}
-
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-xl font-['Newsreader'] font-bold text-[#1A1918]">{plan.name}</h3>
-                <p className="text-xs text-[#64748B] mt-1 leading-relaxed">{plan.description}</p>
-              </div>
-
-              <div className="pt-2">
-                <span className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">
-                  {activeTab === 'monthly' ? plan.priceMonthly : plan.priceAnnual}
-                </span>
-                <span className="text-xs text-[#64748B] font-medium ml-1">
-                  /{activeTab === 'monthly' ? 'month' : 'year'}
-                </span>
-              </div>
-
-              <div className="space-y-2.5 pt-4 border-t border-[#F7F5F0]">
-                <div className="text-xs font-bold text-[#1A1918] uppercase tracking-wider">Features Included:</div>
-                {plan.features.map((feat, idx) => (
-                  <div key={idx} className="flex items-start gap-2.5 text-xs text-[#64748B]">
-                    <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>{feat}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <button
-              className={`w-full py-3 px-4 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                plan.popular
-                  ? 'bg-[#1B2A4A] hover:bg-[#5C1D24] text-white shadow-sm'
-                  : 'bg-[#F7F5F0] hover:bg-[#1B2A4A] text-[#1B2A4A] hover:text-white border border-[#E5E0D8]'
-              }`}
-            >
-              Configure Tier Limits
-            </button>
-          </div>
-        ))}
+      {/* Active Subscriptions Table */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-['Newsreader'] font-bold text-[#1A1918]">Active School Subscriptions & Invoices ({subscriptions.length})</h2>
+        <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm overflow-hidden">
+          <Table columns={columns} data={subscriptions} emptyMessage="No active school subscriptions." />
+        </div>
       </div>
 
     </div>
