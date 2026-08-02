@@ -17,7 +17,15 @@ const Login = () => {
   const { school, subdomain } = useSchool();
   const navigate = useNavigate();
 
+  const handleRoleChange = (roleId) => {
+    setSelectedRole(roleId);
+    setEmail('');
+    setPassword('');
+    setError('');
+  };
+
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     setError('');
     setIsSubmitting(true);
@@ -177,7 +185,8 @@ const Login = () => {
                   <button
                     key={type.id}
                     type="button"
-                    onClick={() => setSelectedRole(type.id)}
+                    onClick={() => handleRoleChange(type.id)}
+
                     className={`py-2 px-3 text-xs font-semibold rounded-md transition-all ${
                       selectedRole === type.id
                         ? 'bg-[#1B2A4A] text-white shadow-sm'

@@ -28,6 +28,10 @@ import StudentDashboard from '../pages/dashboard/StudentDashboard';
 import ParentDashboard from '../pages/dashboard/ParentDashboard';
 import AccountantDashboard from '../pages/dashboard/AccountantDashboard';
 import SuperAdminDashboard from '../pages/dashboard/SuperAdminDashboard';
+import SuperAdminPlans from '../pages/dashboard/SuperAdminPlans';
+import SuperAdminUsers from '../pages/dashboard/SuperAdminUsers';
+import SuperAdminAnalytics from '../pages/dashboard/SuperAdminAnalytics';
+
 import ProfileSettings from '../pages/dashboard/ProfileSettings';
 
 import Sessions from '../pages/academics/Sessions';
@@ -103,11 +107,12 @@ const AppRoutes = () => {
       <Route element={<SuperAdminRoute />}>
         <Route path="/super-admin" element={<SuperAdminLayout />}>
           <Route index element={<SuperAdminDashboard />} />
-          <Route path="plans" element={<SuperAdminDashboard />} />
-          <Route path="users" element={<SuperAdminDashboard />} />
-          <Route path="analytics" element={<SuperAdminDashboard />} />
+          <Route path="plans" element={<SuperAdminPlans />} />
+          <Route path="users" element={<SuperAdminUsers />} />
+          <Route path="analytics" element={<SuperAdminAnalytics />} />
         </Route>
       </Route>
+
 
       {/* Tenant Dashboard Protected Routes */}
       <Route element={<ProtectedRoute />}>
