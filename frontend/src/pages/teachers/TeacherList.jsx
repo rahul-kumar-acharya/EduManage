@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { teacherService } from '../../services/teacherService';
 import Table from '../../components/ui/Table';
 import Button from '../../components/ui/Button';
@@ -10,6 +11,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const TeacherList = () => {
   const { user } = useAuth();
+  const location = useLocation();
   const isAdmin = user?.role === 'SCHOOL_ADMIN' || user?.role === 'SUPER_ADMIN';
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,7 +49,11 @@ const TeacherList = () => {
 
   useEffect(() => {
     fetchTeachers();
-  }, []);
+    if (location.state?.openAddModal) {
+      setModalOpen(true);
+    }
+  }, [location.state]);
+
 
   const initiateDelete = (id, name) => {
     setDeleteTarget({ id, name });
