@@ -184,13 +184,19 @@ const ClassesSections = () => {
 
   const handleAssignTeacher = async (sectionId, teacherId) => {
     try {
-      await academicService.assignTeacher(sectionId, teacherId ? parseInt(teacherId) : null);
+      const parsedTeacherId = teacherId ? parseInt(teacherId) : null;
+      if (typeof academicService.assignTeacher === 'function') {
+        await academicService.assignTeacher(sectionId, parsedTeacherId);
+      } else {
+        await academicService.updateSection(sectionId, { class_teacher: parsedTeacherId });
+      }
       fetchClasses();
       fetchDropdownData();
     } catch (err) {
       console.error("Failed to assign class teacher:", err);
     }
   };
+
 
   const initiateDeleteClass = (id, name) => {
     setDeleteTarget({ type: 'class', id, name });

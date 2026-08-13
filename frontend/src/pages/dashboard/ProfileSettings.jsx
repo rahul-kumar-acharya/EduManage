@@ -143,9 +143,24 @@ const ProfileSettings = () => {
     setMessage('');
     setError('');
 
-    if (formData.password && formData.password !== formData.confirm_password) {
-      setError("New passwords do not match. Please verify.");
-      return;
+    if (formData.phone) {
+      const cleanPhone = formData.phone.replace(/[^0-9]/g, '');
+      const phoneRegex = /^[6-9][0-9]{9}$/;
+      if (!phoneRegex.test(cleanPhone)) {
+        setError("Contact phone must be a valid 10-digit mobile number starting with 6, 7, 8, or 9 (e.g. 9876543210).");
+        return;
+      }
+    }
+
+    if (formData.password) {
+      if (formData.password.length < 8) {
+        setError("New password must be at least 8 characters long.");
+        return;
+      }
+      if (formData.password !== formData.confirm_password) {
+        setError("New passwords do not match. Please verify.");
+        return;
+      }
     }
 
     setSubmitting(true);
@@ -153,9 +168,9 @@ const ProfileSettings = () => {
       const payload = {
         first_name: formData.first_name,
         last_name: formData.last_name,
-        email: formData.email,
         phone: formData.phone,
       };
+
 
       if (formData.password) {
         payload.password = formData.password;
@@ -175,6 +190,10 @@ const ProfileSettings = () => {
         const errorData = err.response.data;
         if (errorData.email) {
           setError(Array.isArray(errorData.email) ? errorData.email.join(' ') : errorData.email);
+        } else if (errorData.phone) {
+          setError(Array.isArray(errorData.phone) ? errorData.phone.join(' ') : errorData.phone);
+        } else if (errorData.password) {
+          setError(Array.isArray(errorData.password) ? errorData.password.join(' ') : errorData.password);
         } else {
           setError("Failed to update settings. Please verify details.");
         }
@@ -185,6 +204,7 @@ const ProfileSettings = () => {
       setSubmitting(false);
     }
   };
+
 
   return (
     <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918] max-w-4xl">
@@ -308,19 +328,38 @@ const ProfileSettings = () => {
                 required
               />
             </div>
-            <Input
-              label="Email Address"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              required
-            />
-            <Input
-              label="Contact Phone"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              placeholder="e.g. +91 98765 43210"
-            />
+            <div>
+              <Input
+                label="Official Email Address"
+                type="email"
+                value={formData.email}
+                disabled
+                required
+              />
+              <p className="text-[10px] text-[#64748B] mt-1 font-medium font-sans">Official Email is locked for security. Contact school admin to change your email.</p>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+                Contact Phone
+              </label>
+              <input
+                type="text"
+                maxLength={10}
+                placeholder="9876543210 (starts with 6-9)"
+                value={formData.phone}
+                onChange={(e) => {
+                  const raw = e.target.value.replace(/[^0-9]/g, '');
+                  if (raw.length > 0 && !['6', '7', '8', '9'].includes(raw[0])) {
+                    return;
+                  }
+                  setFormData({ ...formData, phone: raw.slice(0, 10) });
+                }}
+                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs text-[#1A1918] font-semibold focus:outline-none focus:border-[#1B2A4A] transition-colors"
+              />
+              <p className="text-[10px] text-[#64748B] mt-1 font-medium font-sans">10-digit mobile number starting with 6, 7, 8, or 9.</p>
+            </div>
+
           </div>
 
           {/* Section 2: Password Details */}

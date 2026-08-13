@@ -5,7 +5,7 @@ import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Modal from '../../components/ui/Modal';
 import Badge from '../../components/ui/Badge';
-import { UserCheck, Plus, Trash2, Mail, Phone, Edit2, ShieldAlert } from 'lucide-react';
+import { UserCheck, Plus, Trash2, Edit2, Shield, CheckCircle2 } from 'lucide-react';
 
 const AccountantList = () => {
   const [accountants, setAccountants] = useState([]);
@@ -13,16 +13,16 @@ const AccountantList = () => {
   const [editAccountant, setEditAccountant] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [error, setError] = useState('');
+  const [successBanner, setSuccessBanner] = useState('');
 
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
     email: '',
-    password: '',
     phone: '',
-    employee_id: '',
     is_active: true,
   });
+  const [employeeNumber, setEmployeeNumber] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null); // { id: number, name: string }
@@ -56,6 +56,7 @@ const AccountantList = () => {
       setDeleteConfirmOpen(false);
       setDeleteTarget(null);
       fetchAccountants();
+      setSuccessBanner(`Accountant profile removed successfully.`);
     } catch (err) {
       console.error("Failed to delete accountant:", err);
     } finally {
@@ -64,16 +65,17 @@ const AccountantList = () => {
   };
 
   const handleStartEdit = (accountant) => {
+    setError('');
     setEditAccountant(accountant);
     setFormData({
       first_name: accountant.user?.first_name || '',
       last_name: accountant.user?.last_name || '',
       email: accountant.user?.email || '',
-      password: '',
       phone: accountant.user?.phone || '',
-      employee_id: accountant.employee_id || '',
       is_active: accountant.user?.is_active ?? true,
     });
+    const rawEmp = accountant.employee_id || '';
+    setEmployeeNumber(rawEmp.replace(/^act-?\s*/i, '').trim());
     setModalOpen(true);
   };
 
@@ -81,33 +83,71 @@ const AccountantList = () => {
     setModalOpen(false);
     setEditAccountant(null);
     setError('');
+    setEmployeeNumber('');
     setFormData({
       first_name: '',
       last_name: '',
       email: '',
-      password: '',
       phone: '',
-      employee_id: '',
       is_active: true,
     });
   };
 
+  const validateForm = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email || !emailRegex.test(formData.email.trim())) {
+      setError("Please enter a valid official email address (e.g. alex@school.com).");
+      return false;
+    }
+
+    if (formData.phone) {
+      const cleanPhone = formData.phone.replace(/[^0-9]/g, '');
+      const phoneRegex = /^[6-9][0-9]{9}$/;
+      if (!phoneRegex.test(cleanPhone)) {
+        setError("Phone number must be a valid 10-digit mobile number starting with 6, 7, 8, or 9 (e.g. 9876543210).");
+        return false;
+      }
+    }
+
+    const cleanEmpNumber = employeeNumber.replace(/[^0-9]/g, '').trim();
+    if (!cleanEmpNumber) {
+      setError("Employee ID number cannot be empty. Please enter numeric digits (e.g. 101).");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     setSubmitting(true);
     setError('');
     try {
+      const cleanEmpNumber = employeeNumber.replace(/[^0-9]/g, '').trim();
+      const finalEmployeeId = `ACT-${cleanEmpNumber}`;
+
       if (editAccountant) {
         const payload = {
           first_name: formData.first_name,
           last_name: formData.last_name,
           phone: formData.phone,
-          employee_id: formData.employee_id,
+          employee_id: finalEmployeeId,
           is_active: formData.is_active,
         };
         await accountantService.updateAccountant(editAccountant.id, payload);
+        setSuccessBanner(`Accountant profile for ${formData.first_name} ${formData.last_name} updated successfully.`);
       } else {
-        await accountantService.createAccountant(formData);
+        const payload = {
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          email: formData.email.trim().toLowerCase(),
+          phone: formData.phone,
+          employee_id: finalEmployeeId,
+        };
+        await accountantService.createAccountant(payload);
+        setSuccessBanner(`School Accountant ${formData.first_name} ${formData.last_name} registered! A temporary password has been emailed to ${formData.email}.`);
       }
       handleCloseModal();
       fetchAccountants();
@@ -209,6 +249,16 @@ const AccountantList = () => {
         <span>Finance & Billing Staff Directory</span>
       </div>
 
+      {successBanner && (
+        <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-xl flex items-center justify-between font-medium shadow-xs">
+          <div className="flex items-center gap-2.5">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>{successBanner}</span>
+          </div>
+          <button onClick={() => setSuccessBanner('')} className="text-emerald-700 font-bold hover:underline">Dismiss</button>
+        </div>
+      )}
+
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
         <div>
           <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">School Accountants</h1>
@@ -220,70 +270,97 @@ const AccountantList = () => {
       </div>
 
       <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm">
-        <Table columns={columns} data={accountants} emptyMessage="No accountants registered in database." />
+        <Table columns={columns} data={accountants} isLoading={loading} emptyMessage="No accountants registered in database." />
       </div>
 
+      {/* Register / Edit Accountant Modal */}
       <Modal isOpen={modalOpen} onClose={handleCloseModal} title={editAccountant ? "Edit Accountant Details" : "Register School Accountant"}>
-        {error && (
-          <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold rounded-lg mb-4">
-            {error}
-          </div>
-        )}
         <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg font-medium">
+              {error}
+            </div>
+          )}
+
           <div className="grid grid-cols-2 gap-3">
             <Input
-              label="First Name"
+              label="First Name *"
               placeholder="Alex"
               value={formData.first_name}
               onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
               required
             />
             <Input
-              label="Last Name"
+              label="Last Name *"
               placeholder="Johnson"
               value={formData.last_name}
               onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
               required
             />
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className={editAccountant ? "col-span-2" : ""}>
-              <Input
-                label="Official Email"
-                type="email"
-                placeholder="alex.j@school.com"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-                disabled={!!editAccountant}
-              />
-            </div>
-            {!editAccountant && (
-              <Input
-                label="Portal Password"
-                type="password"
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                required
-              />
-            )}
-          </div>
-          <div className="grid grid-cols-2 gap-3">
+
+          <div>
             <Input
-              label="Employee ID"
-              placeholder="ACT-101"
-              value={formData.employee_id}
-              onChange={(e) => setFormData({ ...formData, employee_id: e.target.value })}
+              label="Official Email *"
+              type="email"
+              placeholder="alex.j@school.com"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
-            />
-            <Input
-              label="Phone Number"
-              placeholder="+1234567890"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              disabled={!!editAccountant}
             />
           </div>
+
+          {!editAccountant && (
+            <div className="p-3 bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg text-xs flex items-center gap-2.5 text-[#1B2A4A] font-medium">
+              <Shield className="w-4 h-4 text-[#1B2A4A] shrink-0" />
+              <span>A secure temporary password will be auto-generated and emailed to official email automatically.</span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+                Employee ID *
+              </label>
+              <div className="flex items-center">
+                <span className="bg-[#E5E0D8] text-[#1B2A4A] text-xs font-bold px-3 py-2.5 rounded-l-lg border border-r-0 border-[#E5E0D8] select-none shrink-0">
+                  ACT-
+                </span>
+                <input
+                  type="text"
+                  required
+                  placeholder="101"
+                  value={employeeNumber}
+                  onChange={(e) => setEmployeeNumber(e.target.value.replace(/[^0-9]/g, ''))}
+                  className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-r-lg px-3.5 py-2.5 text-xs text-[#1A1918] font-bold focus:outline-none focus:border-[#1B2A4A]"
+                />
+              </div>
+              <p className="text-[10px] text-[#64748B] mt-1 font-medium font-sans">"ACT-" prefix is locked. Type numbers only (e.g. 101).</p>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+                Phone Number
+              </label>
+              <input
+                type="text"
+                maxLength={10}
+                placeholder="9876543210 (starts with 6-9)"
+                value={formData.phone}
+                onChange={(e) => {
+                  const raw = e.target.value.replace(/[^0-9]/g, '');
+                  if (raw.length > 0 && !['6', '7', '8', '9'].includes(raw[0])) {
+                    return;
+                  }
+                  setFormData({ ...formData, phone: raw.slice(0, 10) });
+                }}
+                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2.5 text-xs text-[#1A1918] font-semibold focus:outline-none focus:border-[#1B2A4A]"
+              />
+              <p className="text-[10px] text-[#64748B] mt-1 font-medium font-sans">10-digit number starting with 6, 7, 8, or 9.</p>
+            </div>
+          </div>
+
           {editAccountant && (
             <div>
               <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
@@ -292,14 +369,15 @@ const AccountantList = () => {
               <select
                 value={formData.is_active ? 'active' : 'inactive'}
                 onChange={(e) => setFormData({ ...formData, is_active: e.target.value === 'active' })}
-                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors cursor-pointer"
               >
                 <option value="active">Active (Can log in & manage billing)</option>
                 <option value="inactive">Inactive (Access suspended)</option>
               </select>
             </div>
           )}
-          <Button type="submit" variant="primary" className="w-full mt-2" loading={submitting}>
+
+          <Button type="submit" variant="primary" className="w-full mt-2 shadow-sm" loading={submitting}>
             {editAccountant ? "Save Changes" : "Register Accountant"}
           </Button>
         </form>

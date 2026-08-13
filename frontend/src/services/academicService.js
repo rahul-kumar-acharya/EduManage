@@ -48,6 +48,11 @@ export const academicService = {
     const res = await api.patch(`/academics/sections/${id}/`, data);
     return res.data;
   },
+  assignTeacher: async (sectionId, teacherId) => {
+    const res = await api.patch(`/academics/sections/${sectionId}/`, { class_teacher: teacherId });
+    return res.data;
+  },
+
 
   // Subjects
   getSubjects: async (params) => {
