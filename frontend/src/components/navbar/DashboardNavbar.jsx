@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useSchool } from '../../contexts/SchoolContext';
 import { Link, useLocation } from 'react-router-dom';
-import { LogOut, Shield, Search, ExternalLink, ChevronRight, School as SchoolIcon } from 'lucide-react';
+import { LogOut, Shield, ExternalLink, ChevronRight, School as SchoolIcon } from 'lucide-react';
 
 const DashboardNavbar = () => {
   const { user, logout } = useAuth();
@@ -40,18 +40,9 @@ const DashboardNavbar = () => {
         </div>
       </div>
 
-      {/* Right: Quick Search + User Profile Summary */}
+      {/* Right: User Profile Summary & Live Status */}
       <div className="flex items-center gap-4">
-        
-        {/* Search Bar */}
-        <div className="hidden md:flex items-center relative w-64">
-          <Search className="w-3.5 h-3.5 text-[#64748B] absolute left-3 pointer-events-none" />
-          <input
-            type="text"
-            placeholder="Search workspace..."
-            className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-9 pr-3 py-1.5 text-xs text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
-          />
-        </div>
+
 
         {/* Live Status Pill */}
         <div className="hidden lg:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-800 font-mono font-medium">

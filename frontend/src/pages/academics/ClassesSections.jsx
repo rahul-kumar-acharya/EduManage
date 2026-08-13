@@ -4,7 +4,7 @@ import { academicService } from '../../services/academicService';
 import { teacherService } from '../../services/teacherService';
 import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
-import { GraduationCap, Layers, Plus, Trash2 } from 'lucide-react';
+import { GraduationCap, Layers, Plus, Trash2, Check } from 'lucide-react';
 
 const ALLOWED_CLASSES = [
   'Nursery',
@@ -30,12 +30,13 @@ const ClassesSections = () => {
   const [hasActiveSession, setHasActiveSession] = useState(true);
   const [error, setError] = useState('');
 
+  // Multi-select arrays for batch creation
   const [classModalOpen, setClassModalOpen] = useState(false);
-  const [selectedClassName, setSelectedClassName] = useState('');
+  const [selectedClassNames, setSelectedClassNames] = useState([]);
 
   const [sectionModalOpen, setSectionModalOpen] = useState(false);
   const [selectedClassId, setSelectedClassId] = useState(null);
-  const [sectionLetter, setSectionLetter] = useState('');
+  const [selectedSectionLetters, setSelectedSectionLetters] = useState([]);
   const [selectedTeacherId, setSelectedTeacherId] = useState('');
 
   const [submitting, setSubmitting] = useState(false);
@@ -82,41 +83,61 @@ const ClassesSections = () => {
 
   const openClassModal = () => {
     setError('');
-    setSelectedClassName('');
+    setSelectedClassNames([]);
     setClassModalOpen(true);
   };
 
   const openSectionModal = (classId) => {
     setError('');
     setSelectedClassId(classId);
-    setSectionLetter('');
+    setSelectedSectionLetters([]);
     setSelectedTeacherId('');
     setSectionModalOpen(true);
   };
 
+  const toggleClassSelection = (clsName) => {
+    setError('');
+    if (selectedClassNames.includes(clsName)) {
+      setSelectedClassNames(selectedClassNames.filter(name => name !== clsName));
+    } else {
+      setSelectedClassNames([...selectedClassNames, clsName]);
+    }
+  };
+
+  const toggleSectionSelection = (letter) => {
+    setError('');
+    if (selectedSectionLetters.includes(letter)) {
+      setSelectedSectionLetters(selectedSectionLetters.filter(l => l !== letter));
+    } else {
+      setSelectedSectionLetters([...selectedSectionLetters, letter]);
+    }
+  };
+
   const handleAddClass = async (e) => {
     e.preventDefault();
+    if (selectedClassNames.length === 0) {
+      setError("Please select at least one class level to add.");
+      return;
+    }
     setSubmitting(true);
     setError('');
     try {
-      if (!selectedClassName) {
-        setError("Please select a valid class level (Nursery, LKG, UKG, or Grade 1 to 10).");
-        setSubmitting(false);
-        return;
-      }
-      await academicService.createClass({ name: selectedClassName });
-      setSelectedClassName('');
+      // Batch create all selected classes
+      await Promise.all(
+        selectedClassNames.map(name => academicService.createClass({ name }))
+      );
+      setSelectedClassNames([]);
       setClassModalOpen(false);
       fetchClasses();
     } catch (err) {
-      console.error("Failed to add class:", err);
+      console.error("Failed to add classes:", err);
       if (err.response && err.response.data && err.response.data.name) {
         const nameErr = Array.isArray(err.response.data.name) ? err.response.data.name.join(' ') : err.response.data.name;
         setError(nameErr);
       } else if (err.response && err.response.data && err.response.data.detail) {
         setError(err.response.data.detail);
       } else {
-        setError("Failed to add class level. Make sure an active session exists.");
+        setError("Failed to add selected class levels. Make sure an active session exists.");
       }
     } finally {
       setSubmitting(false);
@@ -125,38 +146,36 @@ const ClassesSections = () => {
 
   const handleAddSection = async (e) => {
     e.preventDefault();
+    if (selectedSectionLetters.length === 0) {
+      setError("Please select at least one section division (Section A, B, or C).");
+      return;
+    }
     setSubmitting(true);
     setError('');
     try {
-      const cleanSec = sectionLetter.replace(/[^a-zA-Z0-9]/g, '').trim().toUpperCase();
-      if (!cleanSec) {
-        setError("Section division must be valid letters (e.g. A, B, C).");
-        setSubmitting(false);
-        return;
-      }
-      const finalSectionName = `Section ${cleanSec}`;
-      const payload = { 
-        class_level: selectedClassId, 
-        name: finalSectionName 
-      };
-      if (selectedTeacherId && selectedTeacherId !== 'ADD_TEACHER') {
-        payload.class_teacher = parseInt(selectedTeacherId);
-      }
-      await academicService.createSection(payload);
-      setSectionLetter('');
-      setSelectedTeacherId('');
+      // Batch create all selected sections for the target class level
+      await Promise.all(
+        selectedSectionLetters.map(letter => {
+          return academicService.createSection({
+            class_level: selectedClassId, 
+            name: `Section ${letter}` 
+          });
+        })
+      );
+      setSelectedSectionLetters([]);
       setSectionModalOpen(false);
       fetchClasses();
       fetchDropdownData();
+
     } catch (err) {
-      console.error("Failed to add section:", err);
+      console.error("Failed to add sections:", err);
       if (err.response && err.response.data && err.response.data.name) {
         const nameErr = Array.isArray(err.response.data.name) ? err.response.data.name.join(' ') : err.response.data.name;
         setError(nameErr);
       } else if (err.response && err.response.data && err.response.data.detail) {
         setError(err.response.data.detail);
       } else {
-        setError("Failed to add section. Make sure a valid section letter is entered.");
+        setError("Failed to add selected section divisions.");
       }
     } finally {
       setSubmitting(false);
@@ -344,8 +363,8 @@ const ClassesSections = () => {
         )}
       </div>
 
-      {/* Add Class Modal */}
-      <Modal isOpen={classModalOpen} onClose={() => { setClassModalOpen(false); setError(''); }} title="Add Class Level">
+      {/* Add Class Modal (Multi-Select Supported) */}
+      <Modal isOpen={classModalOpen} onClose={() => { setClassModalOpen(false); setError(''); }} title="Add Class Levels">
         <form onSubmit={handleAddClass} className="space-y-4">
           {error && (
             <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg font-medium">
@@ -353,38 +372,100 @@ const ClassesSections = () => {
             </div>
           )}
           <div>
-            <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
-              Select Class Level *
-            </label>
-            <select
-              value={selectedClassName}
-              onChange={(e) => setSelectedClassName(e.target.value)}
-              className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-bold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] cursor-pointer"
-              required
-            >
-              <option value="">-- Select Class (Nursery, LKG, UKG, Grade 1 to 10) --</option>
-              {ALLOWED_CLASSES.map((clsName) => {
-                const alreadyExists = classes.some(c => c.name.toLowerCase() === clsName.toLowerCase());
-                return (
-                  <option key={clsName} value={clsName} disabled={alreadyExists}>
-                    {clsName} {alreadyExists ? '(Already Added)' : ''}
-                  </option>
-                );
-              })}
-            </select>
-            <p className="text-[10px] text-[#64748B] mt-1 font-medium font-sans">
-              Class levels are restricted to Nursery, LKG, UKG, and Grade 1 through Grade 10.
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider">
+                Select Class Levels to Add *
+              </label>
+              {selectedClassNames.length > 0 && (
+                <span className="text-[10px] font-bold text-[#5C1D24] bg-[#5C1D24]/10 px-2 py-0.5 rounded-full">
+                  {selectedClassNames.length} Selected
+                </span>
+              )}
+            </div>
+
+            {/* Pre-School / Kindergarten Section */}
+            <div className="space-y-1.5 mb-4">
+              <div className="text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">Kindergarten / Pre-School</div>
+              <div className="grid grid-cols-3 gap-2">
+                {['Nursery', 'LKG', 'UKG'].map((clsName) => {
+                  const alreadyExists = classes.some(c => c.name.toLowerCase() === clsName.toLowerCase());
+                  const isSelected = selectedClassNames.includes(clsName);
+                  return (
+                    <button
+                      key={clsName}
+                      type="button"
+                      disabled={alreadyExists}
+                      onClick={() => toggleClassSelection(clsName)}
+                      className={`px-3 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 border cursor-pointer whitespace-nowrap ${
+                        alreadyExists
+                          ? 'bg-[#F7F5F0]/60 border-[#E5E0D8] text-[#94A3B8] cursor-not-allowed select-none'
+                          : isSelected
+                          ? 'bg-[#1B2A4A] text-white border-[#1B2A4A] shadow-md ring-2 ring-[#1B2A4A]/20 scale-[1.02]'
+                          : 'bg-[#F7F5F0] border-[#E5E0D8] text-[#1A1918] hover:border-[#1B2A4A] hover:bg-white shadow-2xs'
+                      }`}
+                    >
+                      <span className="whitespace-nowrap">{clsName}</span>
+                      {alreadyExists ? (
+                        <span className="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded shrink-0">✓ Added</span>
+                      ) : isSelected ? (
+                        <Check className="w-3.5 h-3.5 text-white shrink-0" />
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Primary & Secondary Grades Section */}
+            <div className="space-y-1.5">
+              <div className="text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">Primary & Secondary Grades</div>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
+                {['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10'].map((clsName) => {
+                  const alreadyExists = classes.some(c => c.name.toLowerCase() === clsName.toLowerCase());
+                  const isSelected = selectedClassNames.includes(clsName);
+                  return (
+                    <button
+                      key={clsName}
+                      type="button"
+                      disabled={alreadyExists}
+                      onClick={() => toggleClassSelection(clsName)}
+                      className={`px-1.5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 border cursor-pointer whitespace-nowrap ${
+                        alreadyExists
+                          ? 'bg-[#F7F5F0]/60 border-[#E5E0D8] text-[#94A3B8] cursor-not-allowed select-none'
+                          : isSelected
+                          ? 'bg-[#1B2A4A] text-white border-[#1B2A4A] shadow-md ring-2 ring-[#1B2A4A]/20 scale-[1.02]'
+                          : 'bg-[#F7F5F0] border-[#E5E0D8] text-[#1A1918] hover:border-[#1B2A4A] hover:bg-white shadow-2xs'
+                      }`}
+                    >
+                      <span className="whitespace-nowrap">{clsName}</span>
+                      {alreadyExists ? (
+                        <span className="text-[10px] text-emerald-700 font-extrabold shrink-0">✓</span>
+                      ) : isSelected ? (
+                        <Check className="w-3.5 h-3.5 text-white shrink-0" />
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <p className="text-[10px] text-[#64748B] mt-3 font-medium font-sans">
+              Click multiple class pills to select and batch-create them at once. Configured classes are marked with a green check (✓).
             </p>
           </div>
 
-          <Button type="submit" variant="primary" className="w-full mt-2" loading={submitting}>
-            Create Class
+          <Button type="submit" variant="primary" className="w-full mt-2 shadow-sm" loading={submitting}>
+            {submitting 
+              ? "Creating Classes..." 
+              : selectedClassNames.length > 0 
+              ? `Create ${selectedClassNames.length} Class${selectedClassNames.length > 1 ? 'es' : ''}` 
+              : "Create Selected Classes"}
           </Button>
         </form>
       </Modal>
 
-      {/* Add Section Modal */}
-      <Modal isOpen={sectionModalOpen} onClose={() => { setSectionModalOpen(false); setError(''); }} title="Add Section Division">
+      {/* Add Section Modal (Multi-Select Supported) */}
+      <Modal isOpen={sectionModalOpen} onClose={() => { setSectionModalOpen(false); setError(''); }} title="Add Section Divisions">
         <form onSubmit={handleAddSection} className="space-y-4">
           {error && (
             <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg font-medium">
@@ -393,58 +474,68 @@ const ClassesSections = () => {
           )}
 
           <div>
-            <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
-              Section Division *
-            </label>
-            <div className="flex items-center">
-              <span className="bg-[#E5E0D8] text-[#1B2A4A] text-xs font-bold px-3.5 py-2.5 rounded-l-lg border border-r-0 border-[#E5E0D8] select-none shrink-0">
-                Section
-              </span>
-              <input
-                type="text"
-                required
-                placeholder="A (or B, C - auto capitalized)"
-                value={sectionLetter}
-                onChange={(e) => setSectionLetter(e.target.value.replace(/[^a-zA-Z]/g, '').toUpperCase())}
-                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-r-lg px-3.5 py-2.5 text-xs text-[#1A1918] font-bold uppercase focus:outline-none focus:border-[#1B2A4A]"
-              />
-            </div>
-            <p className="text-[10px] text-[#64748B] mt-1 font-medium font-sans">"Section" prefix is permanently locked. Type letters only (e.g. A, B). Automatically converted to uppercase.</p>
-          </div>
-
-          <div>
-            <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
-              Assign Class Teacher
-            </label>
-            
-            <select
-              value={selectedTeacherId}
-              onChange={(e) => {
-                if (e.target.value === 'ADD_TEACHER') {
-                  setSectionModalOpen(false);
-                  navigate('/dashboard/teachers', { state: { openAddModal: true } });
-                  return;
-                }
-                setSelectedTeacherId(e.target.value);
-              }}
-              className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors cursor-pointer"
-            >
-              <option value="">No Class Teacher Assigned</option>
-              {availableUnassignedTeachers.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.user?.first_name} {t.user?.last_name} ({t.employee_id})
-                </option>
-              ))}
-              {availableUnassignedTeachers.length === 0 && (
-                <option value="ADD_TEACHER" className="font-bold text-[#5C1D24]">
-                  + Add Teacher
-                </option>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider">
+                Select Section Divisions to Add *
+              </label>
+              {selectedSectionLetters.length > 0 && (
+                <span className="text-[10px] font-bold text-[#5C1D24] bg-[#5C1D24]/10 px-2 py-0.5 rounded-full">
+                  {selectedSectionLetters.length} Selected
+                </span>
               )}
-            </select>
+            </div>
+            
+            {(() => {
+              const targetClass = classes.find(c => c.id === selectedClassId);
+              const existingSectionNames = new Set(
+                targetClass?.sections?.map(s => s.name.replace(/^section\s*/i, '').trim().toUpperCase()) || []
+              );
+
+              return (
+                <div className="grid grid-cols-3 gap-3">
+                  {['A', 'B', 'C'].map((letter) => {
+                    const alreadyExists = existingSectionNames.has(letter);
+                    const isSelected = selectedSectionLetters.includes(letter);
+
+                    return (
+                      <button
+                        key={letter}
+                        type="button"
+                        disabled={alreadyExists}
+                        onClick={() => toggleSectionSelection(letter)}
+                        className={`p-3 rounded-lg text-xs font-bold transition-all flex items-center justify-between border cursor-pointer ${
+                          alreadyExists
+                            ? 'bg-[#F7F5F0]/60 border-[#E5E0D8] text-[#94A3B8] cursor-not-allowed select-none'
+                            : isSelected
+                            ? 'bg-[#1B2A4A] text-white border-[#1B2A4A] shadow-md ring-2 ring-[#1B2A4A]/20 scale-[1.02]'
+                            : 'bg-[#F7F5F0] border-[#E5E0D8] text-[#1A1918] hover:border-[#1B2A4A] hover:bg-white shadow-2xs'
+                        }`}
+                      >
+                        <span>Section {letter}</span>
+                        {alreadyExists ? (
+                          <span className="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">✓ Added</span>
+                        ) : isSelected ? (
+                          <Check className="w-3.5 h-3.5 text-white" />
+                        ) : null}
+                      </button>
+                    );
+                  })}
+                </div>
+              );
+            })()}
+
+            <p className="text-[10px] text-[#64748B] mt-2 font-medium font-sans">
+              Click multiple section pills to batch-add Section A, Section B, or Section C. You can assign class teachers directly on each section card after creation.
+            </p>
           </div>
 
-          <Button type="submit" variant="primary" className="w-full mt-2" loading={submitting}>
-            Create Section
+          <Button type="submit" variant="primary" className="w-full mt-2 shadow-sm" loading={submitting}>
+
+            {submitting 
+              ? "Creating Sections..." 
+              : selectedSectionLetters.length > 0 
+              ? `Create ${selectedSectionLetters.length} Section${selectedSectionLetters.length > 1 ? 's' : ''}` 
+              : "Create Selected Sections"}
           </Button>
         </form>
       </Modal>

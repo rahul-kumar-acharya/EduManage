@@ -7,9 +7,28 @@ import Modal from '../../components/ui/Modal';
 import { BookOpen, Plus, Trash2, Edit } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
+const CLASS_ORDER = [
+  'Nursery', 'LKG', 'UKG',
+  'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5',
+  'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10'
+];
+
+const getClassRank = (className) => {
+  if (!className) return 99;
+  const idx = CLASS_ORDER.findIndex(c => c.toLowerCase() === className.trim().toLowerCase());
+  return idx !== -1 ? idx : 99;
+};
+
+const formatSectionName = (secName) => {
+  if (!secName) return 'N/A';
+  const clean = secName.replace(/^section\s*/i, '').trim();
+  return `Section ${clean}`;
+};
+
 const Subjects = () => {
   const { user } = useAuth();
-  const canManageSubjects = user?.permissions?.manage_subjects ?? false;
+  const isSuperAdmin = user?.role === 'SUPER_ADMIN';
+  const isSchoolAdmin = user?.role === 'SCHOOL_ADMIN';
 
   const [subjects, setSubjects] = useState([]);
   const [classLevels, setClassLevels] = useState([]);
@@ -67,6 +86,13 @@ const Subjects = () => {
       user.class_teacher_sections?.some((s) => s.id === sec.id)
     );
   };
+
+  const sortedSections = [...sections].sort((a, b) => {
+    const rankA = getClassRank(a.class_name);
+    const rankB = getClassRank(b.class_name);
+    if (rankA !== rankB) return rankA - rankB;
+    return (a.name || '').localeCompare(b.name || '');
+  });
 
   const openCreateModal = () => {
     setEditId(null);
@@ -135,12 +161,12 @@ const Subjects = () => {
     }
   };
 
-  const isUserAdmin = user?.role === 'SCHOOL_ADMIN' || user?.role === 'SUPER_ADMIN';
-
   // Evaluate if the logged in user has creation rights for the currently selected section
   let canCreateSubject = false;
-  if (isUserAdmin) {
+  if (isSuperAdmin) {
     canCreateSubject = true;
+  } else if (isSchoolAdmin) {
+    canCreateSubject = false; // School Admin is Read-Only
   } else if (user?.role === 'TEACHER') {
     if (filterSection) {
       canCreateSubject = user?.class_teacher_sections?.some(
@@ -173,7 +199,7 @@ const Subjects = () => {
             {row.class_name || row.class_level_name || 'Class'}
           </span>
           <span className="text-[10px] font-semibold text-[#64748B]">
-            Section {row.section_name || 'N/A'}
+            {formatSectionName(row.section_name)}
           </span>
         </div>
       )
@@ -189,8 +215,10 @@ const Subjects = () => {
       render: (row) => {
         let canEditRow = false;
 
-        if (isUserAdmin) {
+        if (isSuperAdmin) {
           canEditRow = true;
+        } else if (isSchoolAdmin) {
+          canEditRow = false; // Read-Only for School Admin
         } else if (user?.role === 'TEACHER') {
           if (filterSection) {
             canEditRow = user?.class_teacher_sections?.some(
@@ -204,7 +232,7 @@ const Subjects = () => {
         }
 
         if (!canEditRow) {
-          return <span className="text-[10px] text-[#64748B] italic select-none">Read-Only</span>;
+          return <span className="text-[10px] text-[#64748B] italic font-semibold select-none bg-[#F7F5F0] px-2 py-1 rounded border border-[#E5E0D8]">Read-Only</span>;
         }
 
         return (
@@ -261,13 +289,14 @@ const Subjects = () => {
             className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
           >
             <option value="">All Sections</option>
-            {sections.map((sec) => (
+            {sortedSections.map((sec) => (
               <option key={sec.id} value={sec.id.toString()}>
-                {sec.class_name} - Section {sec.name}
+                {sec.class_name} - {formatSectionName(sec.name)}
               </option>
             ))}
           </select>
         </div>
+
 
         <div className="text-[11px] text-[#64748B] bg-[#F7F5F0] p-3 rounded-xl border border-[#E5E0D8]">
           🔒 <strong>Section Isolation</strong>: Each class section manages its own independent subjects.

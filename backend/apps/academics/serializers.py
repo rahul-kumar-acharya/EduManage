@@ -67,15 +67,13 @@ class SectionSerializer(serializers.ModelSerializer):
 
     def validate_name(self, value):
         name = value.strip()
-        suffix = re.sub(r'^section\s*', '', name, flags=re.IGNORECASE).strip()
-        if not suffix:
-            raise serializers.ValidationError("Section division cannot be empty.")
-        uppercase_suffix = suffix.upper()
-        if not re.match(r'^[A-Z0-9\s-]+$', uppercase_suffix):
+        suffix = re.sub(r'^section\s*', '', name, flags=re.IGNORECASE).strip().upper()
+        if suffix not in ['A', 'B', 'C']:
             raise serializers.ValidationError(
-                f"Section division must be letters (e.g. A, B, C). Invalid section '{suffix}'."
+                "Section division must be only A, B, or C (e.g. Section A, Section B, Section C)."
             )
-        return f"Section {uppercase_suffix}"
+        return f"Section {suffix}"
+
 
 
 class ClassLevelSerializer(serializers.ModelSerializer):
