@@ -344,7 +344,8 @@ const TeacherList = () => {
             <select
               value={assignedSec ? assignedSec.id.toString() : ''}
               onChange={(e) => handleAssignSectionToTeacher(row, e.target.value)}
-              className="bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2.5 py-1.5 text-xs font-bold text-[#1B2A4A] focus:outline-none focus:border-[#1B2A4A] cursor-pointer max-w-[210px] truncate shadow-2xs"
+              className="bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-2.5 py-1.5 text-xs font-bold text-[#1B2A4A] focus:outline-none focus:border-[#1B2A4A] cursor-pointer max-w-52 truncate shadow-2xs"
+
             >
               <option value="">-- Subject Teacher (Not Assigned) --</option>
               {sortedSections.map((sec) => {
@@ -450,7 +451,8 @@ const TeacherList = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-[#E5E0D8] gap-8 text-xs font-bold">
+      <div className="flex border-b border-[#E5E0D8] gap-4 sm:gap-8 text-xs font-bold overflow-x-auto pb-0.5 whitespace-nowrap scrollbar-none">
+
         <button
           onClick={() => setActiveTab('all')}
           className={`pb-3 transition-colors border-b-2 ${

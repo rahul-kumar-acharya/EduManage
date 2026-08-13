@@ -135,8 +135,10 @@ const AppRoutes = () => {
           <Route element={<RoleRoute allowedRoles={['SCHOOL_ADMIN', 'SUPER_ADMIN', 'TEACHER']} />}>
             <Route path="teachers" element={<TeacherList />} />
           </Route>
-          <Route element={<RoleRoute allowedRoles={['TEACHER', 'SUPER_ADMIN']} />}>
+          <Route element={<RoleRoute allowedRoles={['SCHOOL_ADMIN', 'TEACHER', 'ACCOUNTANT', 'SUPER_ADMIN']} />}>
             <Route path="students" element={<StudentList />} />
+          </Route>
+          <Route element={<RoleRoute allowedRoles={['TEACHER', 'SUPER_ADMIN']} />}>
             <Route path="attendance" element={<AttendanceSheet />} />
           </Route>
           <Route path="notices" element={<NoticeBoard />} />
@@ -151,14 +153,17 @@ const AppRoutes = () => {
           </Route>
           <Route element={<RoleRoute allowedRoles={['ACCOUNTANT', 'SUPER_ADMIN']} />}>
             <Route path="fees" element={<FeeStructures />} />
-            <Route path="fees/structures" element={<FeeStructures />} />
+            <Route path="fees/structure" element={<FeeStructures />} />
             <Route path="fees/collection" element={<FeeCollection />} />
             <Route path="fees/dues" element={<DueFeesList />} />
           </Route>
-          <Route element={<RoleRoute allowedRoles={['SCHOOL_ADMIN', 'SUPER_ADMIN']} />}>
+          <Route element={<RoleRoute allowedRoles={['SCHOOL_ADMIN', 'ACCOUNTANT', 'SUPER_ADMIN']} />}>
             <Route path="reports" element={<ReportsDashboard />} />
+          </Route>
+          <Route element={<RoleRoute allowedRoles={['SCHOOL_ADMIN', 'SUPER_ADMIN']} />}>
             <Route path="subscription" element={<SubscriptionPanel />} />
           </Route>
+
         </Route>
       </Route>
 

@@ -281,7 +281,8 @@ const ProfileSettings = () => {
 
             <div className="space-y-1 w-full pt-2">
               <h3 className="text-base font-bold text-[#1A1918]">{user?.first_name} {user?.last_name}</h3>
-              <p className="text-xs text-[#64748B] truncate w-full max-w-[200px]">{user?.email}</p>
+              <p className="text-xs text-[#64748B] truncate w-full max-w-50">{user?.email}</p>
+
             </div>
             
             <div className="flex flex-wrap gap-2 pt-2 justify-center md:justify-start">
@@ -413,7 +414,7 @@ const ProfileSettings = () => {
 
           {/* Visual Crop Container */}
           <div 
-            className="w-[300px] h-[300px] bg-slate-950 overflow-hidden relative rounded-xl mx-auto cursor-move select-none border border-[#E5E0D8] shadow-inner"
+            className="w-75 h-75 bg-slate-950 overflow-hidden relative rounded-xl mx-auto cursor-move select-none border border-[#E5E0D8] shadow-inner"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -442,12 +443,13 @@ const ProfileSettings = () => {
             
             {/* Visual Mask Overlay */}
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-              <div className="w-[160px] h-[160px] rounded-full border-2 border-white shadow-[0_0_0_9999px_rgba(15,23,42,0.65)]" />
+              <div className="w-40 h-40 rounded-full border-2 border-white shadow-[0_0_0_9999px_rgba(15,23,42,0.65)]" />
             </div>
           </div>
 
           {/* Scale Control */}
-          <div className="space-y-2 max-w-[300px] mx-auto">
+          <div className="space-y-2 max-w-75 mx-auto">
+
             <div className="flex items-center justify-between text-xs text-[#64748B] font-semibold">
               <span>Zoom Scale</span>
               <span>{Math.round(zoom * 100)}%</span>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { 
@@ -13,12 +13,15 @@ import {
   ExternalLink,
   ChevronRight,
   MessageSquare,
-  Settings
+  Settings,
+  Menu,
+  X
 } from 'lucide-react';
 
 const SuperAdminLayout = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const mainNav = [
     { name: 'Tenant Schools', path: '/super-admin', icon: Building2 },
@@ -32,13 +35,25 @@ const SuperAdminLayout = () => {
     { name: 'Platform Settings', path: '/super-admin/settings', icon: Settings },
   ];
 
+  const closeMobileSidebar = () => setMobileSidebarOpen(false);
+
   return (
     <div className="min-h-screen bg-[#F7F5F0] flex font-['Plus_Jakarta_Sans'] text-[#1A1918] overflow-hidden selection:bg-[#1B2A4A] selection:text-white">
       
-      {/* 1. Left Vertical Sidebar (w-64) matching Sketch Column */}
-      <aside className="border-r border-[#E5E0D8] bg-white flex flex-col justify-between transition-all duration-300 z-30 h-screen w-64 shrink-0 shadow-sm">
+      {/* Mobile Drawer Overlay Backdrop */}
+      {mobileSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-40 lg:hidden transition-opacity"
+          onClick={closeMobileSidebar}
+        />
+      )}
+
+      {/* 1. Left Vertical Sidebar */}
+      <aside className={`fixed lg:static inset-y-0 left-0 border-r border-[#E5E0D8] bg-white flex flex-col justify-between transition-transform duration-300 z-50 h-screen w-64 shrink-0 shadow-lg lg:shadow-none ${
+        mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+      }`}>
         
-        {/* Top-Left Box: Logo + Brand Header (Sketch Top-Left Box) */}
+        {/* Top-Left Box: Logo + Brand Header */}
         <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
           
           <div className="p-4 flex items-center justify-between border-b border-[#E5E0D8] h-16 shrink-0 bg-white">
@@ -55,9 +70,16 @@ const SuperAdminLayout = () => {
                 </div>
               </div>
             </div>
+            
+            <button
+              onClick={closeMobileSidebar}
+              className="lg:hidden p-1.5 rounded-lg text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0] transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
 
-          {/* Sidebar Nav Items (Sketch Navigation Middle Box) */}
+          {/* Sidebar Nav Items */}
           <div className="p-3 space-y-4 overflow-y-auto flex-1 select-none">
             
             {/* Section 1: Main Control */}
@@ -71,41 +93,44 @@ const SuperAdminLayout = () => {
                 const isActive = location.pathname === item.path;
                 return (
                   <Link
-                    key={item.name}
+                    key={item.path}
                     to={item.path}
-                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                    onClick={closeMobileSidebar}
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                       isActive
                         ? 'bg-[#1B2A4A] text-white shadow-sm'
                         : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
                     }`}
                   >
-                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-[#64748B]'}`} />
-                    <span className="truncate">{item.name}</span>
+                    <Icon className="w-4 h-4 shrink-0" />
+                    <span>{item.name}</span>
                   </Link>
                 );
               })}
             </div>
 
-            {/* Section 2: Platform Management */}
-            <div className="space-y-1 pt-2 border-t border-[#F7F5F0]">
-              <div className="text-[10px] uppercase font-bold text-[#64748B] tracking-wider px-3 mb-1.5">
-                System Infrastructure
+            {/* Section 2: Platform Settings & Management */}
+            <div className="space-y-1">
+              <div className="text-[10px] uppercase font-bold text-[#5C1D24] tracking-wider px-3 mb-1.5 flex items-center justify-between">
+                <span>Platform Governance</span>
+                <ShieldCheck className="w-3 h-3 text-[#5C1D24]" />
               </div>
               {platformNav.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
                 return (
                   <Link
-                    key={item.name}
+                    key={item.path}
                     to={item.path}
-                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                    onClick={closeMobileSidebar}
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                       isActive
                         ? 'bg-[#1B2A4A] text-white shadow-sm'
                         : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
                     }`}
                   >
-                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-[#64748B]'}`} />
-                    <span className="truncate">{item.name}</span>
+                    <Icon className="w-4 h-4 shrink-0" />
+                    <span>{item.name}</span>
                   </Link>
                 );
               })}
@@ -113,9 +138,9 @@ const SuperAdminLayout = () => {
 
           </div>
 
-          {/* Bottom Sidebar Pinned Card (Sketch Bottom Left User Card) */}
-          <div className="p-3 border-t border-[#E5E0D8] bg-[#F7F5F0] select-none">
-            <div className="flex items-center justify-between gap-2">
+          {/* User Profile Footer Card */}
+          <div className="p-3 border-t border-[#E5E0D8] bg-white shrink-0">
+            <div className="p-3 bg-[#F7F5F0] rounded-xl flex items-center justify-between gap-2 overflow-hidden select-none">
               <div className="flex items-center gap-2.5 truncate">
                 <div className="w-9 h-9 rounded-xl bg-[#1B2A4A] border border-[#1B2A4A] flex items-center justify-center text-[#F7F5F0] font-bold text-xs shrink-0 shadow-sm">
                   {user?.first_name?.charAt(0) || 'A'}
@@ -141,18 +166,25 @@ const SuperAdminLayout = () => {
         </div>
       </aside>
 
-      {/* 2. Main Right Container (Header + Canvas) */}
+      {/* 2. Main Right Container */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden bg-[#F7F5F0]">
         
-        {/* Top Navigation Header Bar (Sketch Top Header Bar) */}
-        <header className="h-16 border-b border-[#E5E0D8] bg-white px-6 flex items-center justify-between sticky top-0 z-20 w-full shrink-0 shadow-xs">
+        {/* Top Header */}
+        <header className="h-16 border-b border-[#E5E0D8] bg-white px-3 sm:px-6 flex items-center justify-between sticky top-0 z-20 w-full shrink-0 shadow-xs">
           
-          {/* Header Title & Context Breadcrumb */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-xs text-[#64748B]">
-              <span className="font-semibold text-[#1A1918]">Super Admin Control</span>
-              <ChevronRight className="w-3.5 h-3.5 text-[#64748B]" />
-              <span className="text-[#5C1D24] font-medium">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+              className="lg:hidden p-2 rounded-lg text-[#1B2A4A] hover:bg-[#F7F5F0] transition-colors shrink-0"
+              title="Toggle Sidebar Menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-[#64748B] truncate">
+              <span className="font-semibold text-[#1A1918] truncate">Super Admin</span>
+              <ChevronRight className="w-3.5 h-3.5 text-[#64748B] shrink-0" />
+              <span className="text-[#5C1D24] font-medium truncate">
                 {location.pathname === '/super-admin' ? 'Tenant Schools' :
                  location.pathname === '/super-admin/plans' ? 'Plans & Subscriptions' :
                  location.pathname === '/super-admin/users' ? 'Global Platform Users' :
@@ -163,10 +195,7 @@ const SuperAdminLayout = () => {
             </div>
           </div>
 
-          {/* Header Right Actions */}
-          <div className="flex items-center gap-4">
-            
-            {/* Status Pill */}
+          <div className="flex items-center gap-2 sm:gap-4">
             <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 font-mono font-semibold">
               <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
               <span>SaaS Infrastructure Live</span>
@@ -182,9 +211,9 @@ const SuperAdminLayout = () => {
 
         </header>
 
-        {/* Scrollable Main Content Canvas (Sketch Main Canvas Area) */}
+        {/* Scrollable Main Content Canvas */}
         <div className="flex-1 overflow-y-auto w-full">
-          <main className="p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">
+          <main className="p-4 sm:p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">
             <Outlet />
           </main>
         </div>
