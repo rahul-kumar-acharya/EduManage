@@ -9,6 +9,8 @@ class StudentProfile(TenantModel):
     section = models.ForeignKey('academics.Section', on_delete=models.SET_NULL, null=True, related_name='students')
     guardian_name = models.CharField(max_length=255, blank=True)
     guardian_phone = models.CharField(max_length=20, blank=True)
+    guardian_email = models.EmailField(max_length=254, blank=True)
+
 
     class Meta:
         constraints = [

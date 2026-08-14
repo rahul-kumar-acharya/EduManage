@@ -138,9 +138,10 @@ const Subjects = () => {
     try {
       const selectedSecObj = sections.find((s) => s.id.toString() === formData.section);
 
+      const autoCode = formData.name ? formData.name.trim().substring(0, 4).toUpperCase() : '';
       const payload = {
         name: formData.name,
-        code: formData.code,
+        code: autoCode,
         section: formData.section ? parseInt(formData.section) : null,
         class_level: selectedSecObj ? selectedSecObj.class_level : null,
       };
@@ -152,7 +153,7 @@ const Subjects = () => {
       }
       setModalOpen(false);
       setEditId(null);
-      setFormData({ name: '', code: '', section: '' });
+      setFormData({ name: '', section: '' });
       fetchSubjects();
     } catch (err) {
       console.error("Failed to save subject:", err);
@@ -205,11 +206,6 @@ const Subjects = () => {
       )
     },
     {
-      header: 'Subject Code',
-      accessor: 'code',
-      render: (row) => <span className="font-mono text-xs text-[#1B2A4A] font-bold">{row.code || 'N/A'}</span>
-    },
-    {
       header: 'Actions',
       accessor: 'actions',
       render: (row) => {
@@ -259,16 +255,21 @@ const Subjects = () => {
 
   return (
     <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+      
       {/* Category Pill Indicator */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">
-        <BookOpen className="w-3.5 h-3.5 text-[#5C1D24]" />
-        <span>Syllabus Curriculum</span>
+      <div className="flex items-center gap-2 select-none">
+        <span className="px-2.5 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-[10px] font-bold uppercase tracking-wider">
+          Academics
+        </span>
+        <span className="text-[#64748B] text-xs font-semibold">/</span>
+        <span className="text-xs font-bold text-[#1A1918]">Subjects Management</span>
       </div>
 
+      {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Academics Subjects</h1>
-          <p className="text-xs text-[#64748B] mt-1">Configure subjects, courses, and syllabus codes for each class section.</p>
+          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Subjects</h1>
+          <p className="text-xs text-[#64748B] mt-1">Configure subjects assigned to class sections.</p>
         </div>
         {canCreateSubject && (
           <Button variant="primary" size="sm" onClick={openCreateModal} className="gap-2 shadow-sm">
@@ -277,36 +278,35 @@ const Subjects = () => {
         )}
       </div>
 
-      {/* Filters Bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-sm max-w-sm flex items-center gap-3 w-full">
-          <label className="text-xs font-bold text-[#1A1918] uppercase tracking-wider whitespace-nowrap">
+      {/* Filter Section Dropdown */}
+      <div className="flex items-center justify-between gap-4 bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-xs">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <label className="text-xs font-bold text-[#64748B] uppercase tracking-wider shrink-0">
             Filter Section:
           </label>
           <select
             value={filterSection}
             onChange={(e) => setFilterSection(e.target.value)}
-            className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+            className="bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors w-full sm:w-64"
           >
             <option value="">All Sections</option>
             {sortedSections.map((sec) => (
               <option key={sec.id} value={sec.id.toString()}>
-                {sec.class_name} - {formatSectionName(sec.name)}
+                {sec.class_name || sec.class_level_name} - Section {sec.name}
               </option>
             ))}
           </select>
         </div>
 
-
-        <div className="text-[11px] text-[#64748B] bg-[#F7F5F0] p-3 rounded-xl border border-[#E5E0D8]">
-          🔒 <strong>Section Isolation</strong>: Each class section manages its own independent subjects.
+        <div className="text-xs font-bold text-[#64748B] hidden sm:block">
+          Total Subjects: <span className="text-[#1B2A4A] font-extrabold">{getDisplaySubjects().length}</span>
         </div>
       </div>
 
-      {/* Subjects Registry Table */}
-      <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm overflow-hidden">
+      {/* Table Section */}
+      <div>
         {loading ? (
-          <div className="py-20 text-center text-xs text-[#64748B] font-semibold animate-pulse">
+          <div className="py-12 text-center text-xs text-[#64748B] font-semibold">
             Synchronizing curriculum and syllabus registries...
           </div>
         ) : (
@@ -327,12 +327,6 @@ const Subjects = () => {
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
-          />
-          <Input
-            label="Subject Code"
-            placeholder="e.g. MATH-10"
-            value={formData.code}
-            onChange={(e) => setFormData({ ...formData, code: e.target.value })}
           />
           {/* Target Class & Section Display */}
           {formData.section ? (

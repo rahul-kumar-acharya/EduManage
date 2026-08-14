@@ -126,8 +126,10 @@ const AppRoutes = () => {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardRouter />} />
           <Route path="profile" element={<ProfileSettings />} />
-          <Route path="academics/sessions" element={<Sessions />} />
-          <Route path="academics/classes" element={<ClassesSections />} />
+          <Route element={<RoleRoute allowedRoles={['SCHOOL_ADMIN', 'SUPER_ADMIN']} />}>
+            <Route path="academics/sessions" element={<Sessions />} />
+            <Route path="academics/classes" element={<ClassesSections />} />
+          </Route>
           <Route path="academics/subjects" element={<Subjects />} />
           <Route element={<RoleRoute allowedRoles={['SCHOOL_ADMIN', 'SUPER_ADMIN']} />}>
             <Route path="accountants" element={<AccountantList />} />

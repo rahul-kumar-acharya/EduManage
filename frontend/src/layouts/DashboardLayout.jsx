@@ -141,17 +141,19 @@ const DashboardLayout = () => {
                         Sessions
                       </Link>
                     )}
-                    <Link
-                      to="/dashboard/academics/classes"
-                      onClick={closeMobileSidebar}
-                      className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
-                        location.pathname === '/dashboard/academics/classes'
-                          ? 'text-[#1B2A4A] bg-[#1B2A4A]/10 font-bold'
-                          : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
-                      }`}
-                    >
-                      Classes & Sections
-                    </Link>
+                    {user?.role === 'SCHOOL_ADMIN' && (
+                      <Link
+                        to="/dashboard/academics/classes"
+                        onClick={closeMobileSidebar}
+                        className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                          location.pathname === '/dashboard/academics/classes'
+                            ? 'text-[#1B2A4A] bg-[#1B2A4A]/10 font-bold'
+                            : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                        }`}
+                      >
+                        Classes & Sections
+                      </Link>
+                    )}
                     <Link
                       to="/dashboard/academics/subjects"
                       onClick={closeMobileSidebar}

@@ -21,4 +21,8 @@ export const studentService = {
     const res = await api.put(`/students/profiles/${id}/`, data);
     return res.data;
   },
+  bulkCreateStudents: async (data) => {
+    const res = await api.post('/students/profiles/bulk-create/', data);
+    return res.data;
+  },
 };

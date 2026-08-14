@@ -2,6 +2,7 @@ from apps.academics.views import BaseTenantViewSet
 from apps.students.models import StudentProfile
 from apps.students.serializers import StudentProfileSerializer, StudentCreateSerializer
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from apps.common.permissions import IsTeacher, HasTenantAccess
 
@@ -49,6 +50,60 @@ class StudentProfileViewSet(BaseTenantViewSet):
                 from rest_framework.exceptions import PermissionDenied
                 raise PermissionDenied("You can only delete students in your assigned Class Section.")
         return super().destroy(request, *args, **kwargs)
+
+    @action(detail=False, methods=['post'], url_path='bulk-create')
+    def bulk_create(self, request):
+        from django.db import transaction
+        section_id = request.data.get('section')
+        records = request.data.get('records', [])
+
+        if not section_id:
+            return Response({"detail": "Target section is required for bulk enrollment."}, status=status.HTTP_400_BAD_REQUEST)
+        if not records or not isinstance(records, list):
+            return Response({"detail": "Please provide a valid list of student records."}, status=status.HTTP_400_BAD_REQUEST)
+
+        school = request.school
+        
+        # Calculate current max roll number in section
+        existing_rolls = StudentProfile.objects.filter(school=school, section_id=section_id).values_list('roll_number', flat=True)
+        valid_nums = [int(r) for r in existing_rolls if r and r.isdigit()]
+        start_roll = max(valid_nums) + 1 if valid_nums else 1
+
+        created_profiles = []
+        errors = []
+
+        with transaction.atomic():
+            for idx, item in enumerate(records):
+                first_name = (item.get('first_name') or '').strip()
+                last_name = (item.get('last_name') or '').strip()
+                if not first_name or not last_name:
+                    errors.append(f"Row #{idx+1}: First name and last name are required.")
+                    continue
+
+                serializer = StudentCreateSerializer(data={
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'section': int(section_id),
+                    'admission_number': (item.get('admission_number') or '').strip(),
+                    'roll_number': str(start_roll),
+                    'guardian_name': (item.get('guardian_name') or '').strip(),
+                    'guardian_phone': (item.get('guardian_phone') or '').strip(),
+                    'guardian_email': (item.get('guardian_email') or '').strip(),
+                }, context={'request': request})
+
+                if serializer.is_valid():
+                    profile = serializer.save()
+                    created_profiles.append(profile.id)
+                    start_roll += 1
+                else:
+                    err_msg = ", ".join([f"{k}: {' '.join(v)}" if isinstance(v, list) else str(v) for k, v in serializer.errors.items()])
+                    errors.append(f"Row #{idx+1} ({first_name} {last_name}): {err_msg}")
+
+        return Response({
+            "created_count": len(created_profiles),
+            "errors": errors
+        }, status=status.HTTP_201_CREATED if created_profiles else status.HTTP_400_BAD_REQUEST)
+
 
     def get_queryset(self):
         qs = super().get_queryset()
