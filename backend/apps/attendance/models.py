@@ -4,7 +4,7 @@ from apps.common.models import TenantModel
 class StudentAttendance(TenantModel):
     student = models.ForeignKey('students.StudentProfile', on_delete=models.CASCADE, related_name='attendances')
     date = models.DateField()
-    status = models.CharField(max_length=20, choices=[('PRESENT', 'Present'), ('ABSENT', 'Absent'), ('LATE', 'Late'), ('LEAVE', 'On Leave')], default='PRESENT')
+    status = models.CharField(max_length=20, choices=[('PRESENT', 'Present'), ('ABSENT', 'Absent')], default='PRESENT')
 
     class Meta:
         unique_together = ('student', 'date')

@@ -57,12 +57,22 @@ const TeacherDashboard = () => {
   // Find the current logged in teacher profile
   const currentTeacher = teachers.find(t => t.user?.id === user?.id);
   
+  const getStudentSecId = (st) => {
+    if (!st) return null;
+    if (typeof st.section === 'object' && st.section?.id) return st.section.id;
+    if (st.section) return st.section;
+    if (st.section_details?.id) return st.section_details.id;
+    return null;
+  };
+
   // Find all sections where the current teacher is assigned as class teacher
   const mySections = [];
   classes.forEach(cls => {
     if (cls.sections) {
       cls.sections.forEach(sec => {
-        if (currentTeacher && sec.class_teacher === currentTeacher.id) {
+        const isMySection = (currentTeacher && sec.class_teacher === currentTeacher.id) ||
+          user?.class_teacher_sections?.some(cts => cts.id === sec.id);
+        if (isMySection) {
           mySections.push({
             ...sec,
             class_name: cls.name
@@ -73,7 +83,10 @@ const TeacherDashboard = () => {
   });
 
   // Calculate stats
-  const totalMyStudentsCount = students.filter(s => mySections.some(sec => sec.id === s.section?.id)).length;
+  const totalMyStudentsCount = students.filter(s => {
+    const sSecId = getStudentSecId(s);
+    return sSecId && mySections.some(sec => sec.id.toString() === sSecId.toString());
+  }).length;
   
   // Find periods taught by this teacher
   const myPeriods = periods.filter(p => currentTeacher && p.teacher?.id === currentTeacher.id);
@@ -228,7 +241,10 @@ const TeacherDashboard = () => {
                         </tr>
                       ) : (
                         mySections.map((row, idx) => {
-                          const sectionStudentsCount = students.filter(s => s.section?.id === row.id).length;
+                          const sectionStudentsCount = students.filter(s => {
+                            const sSecId = getStudentSecId(s);
+                            return sSecId && sSecId.toString() === row.id.toString();
+                          }).length;
                           return (
                             <tr key={idx} className="hover:bg-[#F7F5F0]/50">
                               <td className="py-3.5 font-bold text-[#1A1918]">{row.class_name} - {row.name}</td>

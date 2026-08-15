@@ -28,6 +28,7 @@ const AttendanceSheet = () => {
 
   const [students, setStudents] = useState([]);
   const [attendanceMap, setAttendanceMap] = useState({});
+  const [hasExistingRecords, setHasExistingRecords] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
@@ -59,7 +60,9 @@ const AttendanceSheet = () => {
   const isClassTeacherOfSelected = user?.role === 'TEACHER' && 
     user.class_teacher_sections?.some(sec => sec.id?.toString() === selectedSection.toString());
 
-  const canMarkCurrentSection = isSchoolAdmin || isClassTeacherOfSelected;
+  // Admins can mark & edit any section at any time.
+  // Class Teachers can mark attendance ONLY for their assigned section AND if not submitted yet today.
+  const canMarkCurrentSection = isSchoolAdmin || (isClassTeacherOfSelected && !hasExistingRecords);
 
   useEffect(() => {
     const fetchSessionAndSections = async () => {
@@ -69,10 +72,10 @@ const AttendanceSheet = () => {
         const activeSess = sessList.find((s) => s.is_current) || sessList[0];
         if (activeSess) {
           setCurrentSession(activeSess);
-          const sYr = new Date(activeSess.start_date).getFullYear().toString();
-          const sMo = (new Date(activeSess.start_date).getMonth() + 1).toString();
-          setSelectedYear(sYr);
-          setSelectedMonth(sMo);
+          const currentY = new Date().getFullYear().toString();
+          const currentM = (new Date().getMonth() + 1).toString();
+          setSelectedYear(currentY);
+          setSelectedMonth(currentM);
         }
 
         const data = await academicService.getSections();
@@ -121,6 +124,14 @@ const AttendanceSheet = () => {
     return true;
   });
 
+  const sortStudentsAscending = (studsList) => {
+    return (studsList || []).slice().sort((a, b) => {
+      const rA = parseInt(a.roll_number) || 999999;
+      const rB = parseInt(b.roll_number) || 999999;
+      return rA - rB;
+    });
+  };
+
   // Ensure selected month is within availableMonths range
   useEffect(() => {
     if (availableMonths.length > 0) {
@@ -137,11 +148,12 @@ const AttendanceSheet = () => {
     setMessage('');
     try {
       const studsData = await studentService.getStudents({ section: selectedSection });
-      const studsList = studsData.results || studsData;
+      const studsList = sortStudentsAscending(studsData.results || studsData);
       setStudents(studsList);
 
       const attData = await attendanceService.getAttendance({ section: selectedSection, date: selectedDate });
       const attList = attData.results || attData;
+      setHasExistingRecords(attList.length > 0);
 
       const map = {};
       studsList.forEach((s) => {
@@ -161,7 +173,7 @@ const AttendanceSheet = () => {
     setLoadingMonthly(true);
     try {
       const studsData = await studentService.getStudents({ section: selectedSection });
-      const studsList = studsData.results || studsData;
+      const studsList = sortStudentsAscending(studsData.results || studsData);
       setStudents(studsList);
 
       const attData = await attendanceService.getAttendance({
@@ -200,7 +212,11 @@ const AttendanceSheet = () => {
   };
 
   const handleSave = async () => {
-    if (!canMarkCurrentSection || !selectedSection || !selectedDate || students.length === 0) return;
+    if (!canMarkCurrentSection) {
+      setMessage('Read-only mode: Only the assigned Class Teacher or School Admin can save attendance for this section.');
+      return;
+    }
+    if (!selectedSection || !selectedDate || students.length === 0) return;
     setSaving(true);
     setMessage('');
     try {
@@ -208,15 +224,22 @@ const AttendanceSheet = () => {
         student_id: parseInt(sid),
         status: attendanceMap[sid],
       }));
-      await attendanceService.bulkMarkAttendance({
+      const res = await attendanceService.bulkMarkAttendance({
         section_id: parseInt(selectedSection),
         date: selectedDate,
         records: records,
       });
-      setMessage('Daily attendance register saved successfully!');
+      setMessage(res.message || 'Daily attendance register saved successfully!');
+      setHasExistingRecords(true);
     } catch (err) {
       console.error("Failed to save attendance:", err);
-      setMessage('Failed to save attendance.');
+      if (err.response && err.response.status === 401) {
+        setMessage('Your login session token has expired. Please re-login to save attendance.');
+      } else if (err.response && err.response.data && err.response.data.detail) {
+        setMessage(`Save failed: ${err.response.data.detail}`);
+      } else {
+        setMessage('Failed to save attendance. Please verify your connection.');
+      }
     } finally {
       setSaving(false);
     }
@@ -226,8 +249,6 @@ const AttendanceSheet = () => {
   const totalCount = students.length;
   const presentCount = Object.values(attendanceMap).filter((s) => s === 'PRESENT').length;
   const absentCount = Object.values(attendanceMap).filter((s) => s === 'ABSENT').length;
-  const lateCount = Object.values(attendanceMap).filter((s) => s === 'LATE').length;
-  const leaveCount = Object.values(attendanceMap).filter((s) => s === 'LEAVE').length;
   const presentPercent = totalCount > 0 ? Math.round((presentCount / totalCount) * 100) : 0;
 
   // Monthly Matrix Helpers
@@ -257,8 +278,6 @@ const AttendanceSheet = () => {
         const stCode = getStudentStatusForDay(st.id, d);
         if (stCode === 'PRESENT') { line += `,P`; pCount++; totalMarked++; }
         else if (stCode === 'ABSENT') { line += `,A`; aCount++; totalMarked++; }
-        else if (stCode === 'LATE') { line += `,L`; pCount++; totalMarked++; }
-        else if (stCode === 'LEAVE') { line += `,LV`; totalMarked++; }
         else { line += `,-`; }
       });
 
@@ -300,19 +319,6 @@ const AttendanceSheet = () => {
           </p>
         </div>
         
-        {activeTab === 'daily' && students.length > 0 && (
-          canMarkCurrentSection ? (
-            <Button variant="primary" size="sm" onClick={handleSave} loading={saving} className="gap-2 shadow-sm">
-              <Save className="w-4 h-4" /> Save Register
-            </Button>
-          ) : (
-            <div className="px-3 py-1.5 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] text-[#64748B] text-xs font-semibold flex items-center gap-1.5 shadow-2xs select-none">
-              <Eye className="w-4 h-4 text-[#1B2A4A]" />
-              <span>Read-Only View (Class Teacher Only)</span>
-            </div>
-          )
-        )}
-
         {activeTab === 'monthly' && students.length > 0 && (
           <Button variant="secondary" size="sm" onClick={handleExportMonthlyCSV} className="gap-2 shadow-xs">
             <Download className="w-4 h-4" /> Export Report (CSV)
@@ -367,12 +373,11 @@ const AttendanceSheet = () => {
         {activeTab === 'daily' ? (
           <div className="sm:col-span-2">
             <Input
-              label="Attendance Date"
+              label="Attendance Date (Today)"
               type="date"
-              min={currentSession?.start_date}
-              max={currentSession?.end_date}
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
+              value={todayStr}
+              readOnly={true}
+              disabled={true}
               icon={Calendar}
             />
           </div>
@@ -424,9 +429,9 @@ const AttendanceSheet = () => {
           {/* Live Summary Cards & Shortcuts */}
           {students.length > 0 && (
             <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-xs">
-              <div className="grid grid-cols-4 gap-3 flex-1">
+              <div className="grid grid-cols-3 gap-3 flex-1">
                 <div className="bg-[#F7F5F0] p-2.5 rounded-lg border border-[#E5E0D8] text-center">
-                  <span className="text-[10px] font-bold text-[#64748B] uppercase block">Total</span>
+                  <span className="text-[10px] font-bold text-[#64748B] uppercase block">Total Enrolled</span>
                   <span className="text-lg font-bold text-[#1B2A4A]">{totalCount}</span>
                 </div>
                 <div className="bg-emerald-50 p-2.5 rounded-lg border border-emerald-200 text-center">
@@ -437,26 +442,33 @@ const AttendanceSheet = () => {
                   <span className="text-[10px] font-bold text-red-600 uppercase block">Absent</span>
                   <span className="text-lg font-bold text-red-600">{absentCount}</span>
                 </div>
-                <div className="bg-amber-50 p-2.5 rounded-lg border border-amber-200 text-center">
-                  <span className="text-[10px] font-bold text-amber-700 uppercase block">Late / Leave</span>
-                  <span className="text-lg font-bold text-amber-700">{lateCount + leaveCount}</span>
-                </div>
               </div>
 
-              {canMarkCurrentSection && (
+              {canMarkCurrentSection ? (
                 <div className="flex items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-[#E5E0D8]">
                   <button
+                    type="button"
                     onClick={() => markAllStatus('PRESENT')}
-                    className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition-colors shadow-2xs flex items-center gap-1"
+                    className="px-3.5 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition-colors shadow-2xs flex items-center gap-1.5"
                   >
-                    <UserCheck className="w-3.5 h-3.5" /> Mark All Present
+                    <UserCheck className="w-4 h-4" /> Mark All Present
                   </button>
                   <button
+                    type="button"
                     onClick={() => markAllStatus('ABSENT')}
-                    className="px-3 py-1.5 bg-[#5C1D24] text-white rounded-lg text-xs font-bold hover:bg-[#5C1D24]/90 transition-colors shadow-2xs flex items-center gap-1"
+                    className="px-3.5 py-2 bg-[#5C1D24] text-white rounded-lg text-xs font-bold hover:bg-[#5C1D24]/90 transition-colors shadow-2xs flex items-center gap-1.5"
                   >
-                    <UserX className="w-3.5 h-3.5" /> Mark All Absent
+                    <UserX className="w-4 h-4" /> Mark All Absent
                   </button>
+                </div>
+              ) : (
+                <div className="px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold flex items-center gap-1.5 shadow-2xs select-none">
+                  <Lock className="w-4 h-4 text-amber-600" />
+                  <span>
+                    {hasExistingRecords 
+                      ? 'Attendance Submitted & Locked for Today' 
+                      : 'Read-Only View (Class Teacher Only)'}
+                  </span>
                 </div>
               )}
             </div>
@@ -478,7 +490,7 @@ const AttendanceSheet = () => {
                   students.map((st) => (
                     <tr key={st.id} className="hover:bg-[#F7F5F0]/50 transition-colors">
                       <td className="px-5 py-3.5">
-                        <span className="font-mono text-xs font-bold bg-[#F7F5F0] px-2 py-0.5 rounded text-[#1B2A4A] border border-[#E5E0D8]">
+                        <span className="font-mono text-xs font-bold bg-[#F7F5F0] px-2.5 py-1 rounded text-[#1B2A4A] border border-[#E5E0D8]">
                           {st.roll_number || 'N/A'}
                         </span>
                       </td>
@@ -489,12 +501,10 @@ const AttendanceSheet = () => {
                         {st.admission_number || 'N/A'}
                       </td>
                       <td className="px-5 py-3.5 text-right">
-                        <div className="inline-flex items-center gap-1.5">
+                        <div className="inline-flex items-center gap-2">
                           {[
                             { key: 'PRESENT', label: 'Present', activeClass: 'bg-emerald-600 text-white border-emerald-600' },
                             { key: 'ABSENT', label: 'Absent', activeClass: 'bg-[#5C1D24] text-white border-[#5C1D24]' },
-                            { key: 'LATE', label: 'Late', activeClass: 'bg-amber-600 text-white border-amber-600' },
-                            { key: 'LEAVE', label: 'On Leave', activeClass: 'bg-[#1B2A4A] text-white border-[#1B2A4A]' },
                           ].map((btn) => {
                             const isSelected = attendanceMap[st.id] === btn.key;
                             return (
@@ -503,7 +513,7 @@ const AttendanceSheet = () => {
                                 type="button"
                                 onClick={() => handleStatusChange(st.id, btn.key)}
                                 disabled={!canMarkCurrentSection}
-                                className={`px-2.5 py-1 rounded text-[10px] font-bold transition-all border shadow-2xs ${
+                                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all border shadow-2xs ${
                                   !canMarkCurrentSection 
                                     ? isSelected
                                       ? `${btn.activeClass} opacity-70 cursor-not-allowed`
@@ -531,6 +541,24 @@ const AttendanceSheet = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Single Dedicated Save Register Footer Bar */}
+          {students.length > 0 && canMarkCurrentSection && (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-xs">
+              <div className="text-xs font-semibold text-[#64748B]">
+                Done marking? Click <strong className="text-[#1A1918]">Save Register</strong> to submit attendance and dispatch absentee notices.
+              </div>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleSave}
+                loading={saving}
+                className="gap-2 shadow-sm font-bold bg-[#1B2A4A] hover:bg-[#5C1D24] px-6 py-2.5 text-xs shrink-0"
+              >
+                <Save className="w-4 h-4" /> Save Register
+              </Button>
+            </div>
+          )}
         </div>
       )}
 
@@ -544,8 +572,6 @@ const AttendanceSheet = () => {
             <div className="flex items-center gap-3 text-[10px] font-bold">
               <span className="flex items-center gap-1 text-emerald-700"><span className="w-2 h-2 rounded-full bg-emerald-600" /> P = Present</span>
               <span className="flex items-center gap-1 text-red-600"><span className="w-2 h-2 rounded-full bg-red-600" /> A = Absent</span>
-              <span className="flex items-center gap-1 text-amber-600"><span className="w-2 h-2 rounded-full bg-amber-600" /> L = Late</span>
-              <span className="flex items-center gap-1 text-[#1B2A4A]"><span className="w-2 h-2 rounded-full bg-[#1B2A4A]" /> LV = Leave</span>
             </div>
           </div>
 
@@ -573,15 +599,11 @@ const AttendanceSheet = () => {
                       const stCode = getStudentStatusForDay(st.id, d);
                       if (stCode === 'PRESENT') { presentCnt++; totalMarked++; }
                       else if (stCode === 'ABSENT') { totalMarked++; }
-                      else if (stCode === 'LATE') { presentCnt++; totalMarked++; }
-                      else if (stCode === 'LEAVE') { totalMarked++; }
 
                       let badgeClass = 'text-[#64748B]/40 bg-transparent';
                       let letter = '-';
                       if (stCode === 'PRESENT') { badgeClass = 'bg-emerald-100 text-emerald-700 font-bold'; letter = 'P'; }
                       else if (stCode === 'ABSENT') { badgeClass = 'bg-red-100 text-red-700 font-bold'; letter = 'A'; }
-                      else if (stCode === 'LATE') { badgeClass = 'bg-amber-100 text-amber-700 font-bold'; letter = 'L'; }
-                      else if (stCode === 'LEAVE') { badgeClass = 'bg-slate-200 text-[#1B2A4A] font-bold'; letter = 'LV'; }
 
                       return (
                         <td key={d} className="px-1 py-1.5 text-center border-l border-[#E5E0D8] font-mono text-[10px]">
