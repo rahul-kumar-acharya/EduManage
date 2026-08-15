@@ -29,6 +29,10 @@ class StudentAttendanceViewSet(BaseTenantViewSet):
         date_val = self.request.query_params.get('date')
         if date_val:
             qs = qs.filter(date=date_val)
+        year = self.request.query_params.get('year')
+        month = self.request.query_params.get('month')
+        if year and month:
+            qs = qs.filter(date__year=year, date__month=month)
         return qs
 
     @action(detail=False, methods=['post'], url_path='bulk-mark')

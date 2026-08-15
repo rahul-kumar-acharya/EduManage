@@ -60,7 +60,7 @@ class ClassLevelViewSet(BaseTenantViewSet):
         serializer.save(school=self.request.school, academic_session=current_session)
 
 class SectionViewSet(BaseTenantViewSet):
-    queryset = Section.objects.all().order_by('name')
+    queryset = Section.objects.all().order_by('class_level__id', 'name')
     serializer_class = SectionSerializer
 
     def get_queryset(self):
