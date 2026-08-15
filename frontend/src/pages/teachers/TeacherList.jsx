@@ -148,6 +148,19 @@ const TeacherList = () => {
   };
 
   const validateForm = () => {
+    const nameRegex = /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/;
+    const cleanFn = formData.first_name.trim().replace(/\s+/g, ' ');
+    const cleanLn = formData.last_name.trim().replace(/\s+/g, ' ');
+
+    if (!cleanFn || !nameRegex.test(cleanFn)) {
+      setError("First Name must contain alphabetic letters only. Numbers, special characters, and extra spaces are blocked.");
+      return false;
+    }
+    if (!cleanLn || !nameRegex.test(cleanLn)) {
+      setError("Last Name must contain alphabetic letters only. Numbers, special characters, and extra spaces are blocked.");
+      return false;
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email || !emailRegex.test(formData.email.trim())) {
       setError("Please enter a valid official email address (e.g. name@school.com).");
@@ -159,6 +172,13 @@ const TeacherList = () => {
       const phoneRegex = /^[6-9][0-9]{9}$/;
       if (!phoneRegex.test(cleanPhone)) {
         setError("Phone number must be a valid 10-digit mobile number starting with 6, 7, 8, or 9 (e.g. 9876543210).");
+        return false;
+      }
+      const duplicatePhone = teachers.some(
+        (t) => t.id !== editTeacher?.id && t.user?.phone === cleanPhone
+      );
+      if (duplicatePhone) {
+        setError("A user with this phone number already exists.");
         return false;
       }
     }

@@ -28,3 +28,27 @@ def extract_subdomain(host):
             return parts[0]
 
     return None
+
+import re
+from rest_framework.exceptions import ValidationError
+
+def clean_name(value, field_name="Name"):
+    """
+    Validates and cleans names:
+    - Removes extra consecutive, leading, and trailing whitespace
+    - Ensures ONLY letters (a-z, A-Z) and single spaces between words
+    - Blocks numbers and special characters
+    """
+    if not value:
+        return ""
+    
+    cleaned = re.sub(r'\s+', ' ', str(value).strip())
+    
+    if not cleaned:
+        return ""
+        
+    if not re.match(r'^[a-zA-Z]+(?:\s[a-zA-Z]+)*$', cleaned):
+        raise ValidationError(f"{field_name} can only contain alphabetic letters and spaces. Numbers, special characters, and extra spaces are not allowed.")
+        
+    return cleaned
+

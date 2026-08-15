@@ -23,10 +23,19 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
+        first_name = request.data.get('first_name')
+        last_name = request.data.get('last_name')
         password = request.data.get('password')
         email = request.data.get('email')
         phone = request.data.get('phone')
         user = self.get_object()
+
+        from apps.common.utils import clean_name
+        if first_name is not None:
+            user.first_name = clean_name(first_name, "First Name")
+        if last_name is not None:
+            user.last_name = clean_name(last_name, "Last Name")
+        user.save()
 
         if email and email.lower() != user.email.lower():
             if User.objects.filter(email__iexact=email).exists():
@@ -39,6 +48,9 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
             digits = re.sub(r'[\s\-\(\)\+]', '', phone)
             if not re.match(r'^[6-9]\d{9}$', digits):
                 return Response({'phone': ['Phone number must be a valid 10-digit mobile number starting with 6, 7, 8, or 9.']}, status=status.HTTP_400_BAD_REQUEST)
+            if User.objects.filter(phone=digits).exclude(id=user.id).exists():
+                return Response({'phone': ['A user with this phone number already exists.']}, status=status.HTTP_400_BAD_REQUEST)
+
 
         if password:
             if len(password) < 8:

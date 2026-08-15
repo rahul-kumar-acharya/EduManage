@@ -143,6 +143,19 @@ const ProfileSettings = () => {
     setMessage('');
     setError('');
 
+    const nameRegex = /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/;
+    const cleanFn = formData.first_name.trim().replace(/\s+/g, ' ');
+    const cleanLn = formData.last_name.trim().replace(/\s+/g, ' ');
+
+    if (!cleanFn || !nameRegex.test(cleanFn)) {
+      setError("First Name must contain alphabetic letters only. Numbers, special characters, and extra spaces are blocked.");
+      return;
+    }
+    if (!cleanLn || !nameRegex.test(cleanLn)) {
+      setError("Last Name must contain alphabetic letters only. Numbers, special characters, and extra spaces are blocked.");
+      return;
+    }
+
     if (formData.phone) {
       const cleanPhone = formData.phone.replace(/[^0-9]/g, '');
       const phoneRegex = /^[6-9][0-9]{9}$/;

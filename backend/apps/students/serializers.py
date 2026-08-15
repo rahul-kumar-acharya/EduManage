@@ -71,6 +71,31 @@ class StudentCreateSerializer(serializers.Serializer):
     guardian_phone = serializers.CharField(max_length=20, required=False, allow_blank=True)
     guardian_email = serializers.EmailField(required=False, allow_blank=True)
 
+    def validate_first_name(self, value):
+        from apps.common.utils import clean_name
+        return clean_name(value, "First Name")
+
+    def validate_last_name(self, value):
+        from apps.common.utils import clean_name
+        return clean_name(value, "Last Name")
+
+    def validate_guardian_name(self, value):
+        if value:
+            from apps.common.utils import clean_name
+            return clean_name(value, "Guardian Name")
+        return value
+
+    def validate_guardian_phone(self, value):
+        if value:
+            import re
+            digits = re.sub(r'[\s\-\(\)\+]', '', value)
+            if not re.match(r'^[6-9]\d{9}$', digits):
+                raise serializers.ValidationError("Guardian Phone must be a valid 10-digit mobile number starting with 6, 7, 8, or 9.")
+            if User.objects.filter(phone=digits).exists():
+                raise serializers.ValidationError("A user with this phone number already exists.")
+            return digits
+        return value
+
     def validate(self, attrs):
         request = self.context['request']
         school = request.school

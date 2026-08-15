@@ -47,6 +47,10 @@ class SchoolRegistrationSerializer(serializers.Serializer):
     admin_email = serializers.EmailField()
     admin_password = serializers.CharField(write_only=True, min_length=8)
 
+    def validate_admin_name(self, value):
+        from apps.common.utils import clean_name
+        return clean_name(value, "Admin Name")
+
     def validate_subdomain(self, value):
         value = value.lower().strip()
         reserved = ['admin', 'api', 'www', 'mail', 'app', 'localhost', 'dashboard']
@@ -55,6 +59,17 @@ class SchoolRegistrationSerializer(serializers.Serializer):
         if School.objects.filter(subdomain=value).exists():
             raise serializers.ValidationError("This subdomain is already taken.")
         return value
+
+    def validate_phone(self, value):
+        val = (value or '').strip()
+        if val:
+            import re
+            digits = re.sub(r'[\s\-\(\)\+]', '', val)
+            if not re.match(r'^[6-9]\d{9}$', digits):
+                raise serializers.ValidationError("Phone number must be a valid 10-digit mobile number starting with 6, 7, 8, or 9.")
+            if User.objects.filter(phone=digits).exists():
+                raise serializers.ValidationError("A user with this phone number already exists.")
+        return val
 
     def validate_email(self, value):
         if School.objects.filter(email=value).exists():

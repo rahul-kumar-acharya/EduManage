@@ -40,6 +40,20 @@ class TeacherProfileSerializer(serializers.ModelSerializer):
                 qs = qs.exclude(pk=self.instance.pk)
             if qs.exists():
                 raise serializers.ValidationError({"employee_id": "A teacher with this Employee ID already exists in your school."})
+
+        user_data = attrs.get('user', {})
+        phone = user_data.get('phone')
+        if phone:
+            import re
+            digits = re.sub(r'[\s\-\(\)\+]', '', phone)
+            if not re.match(r'^[6-9]\d{9}$', digits):
+                raise serializers.ValidationError({"phone": "Phone number must be a valid 10-digit mobile number starting with 6, 7, 8, or 9."})
+            user_qs = User.objects.filter(phone=digits)
+            if self.instance and self.instance.user:
+                user_qs = user_qs.exclude(pk=self.instance.user.pk)
+            if user_qs.exists():
+                raise serializers.ValidationError({"phone": "A user with this phone number already exists."})
+
         return attrs
 
     @transaction.atomic
@@ -74,6 +88,14 @@ class TeacherCreateSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True, required=False, allow_blank=True)
     phone = serializers.CharField(max_length=20, required=False, allow_blank=True)
 
+    def validate_first_name(self, value):
+        from apps.common.utils import clean_name
+        return clean_name(value, "First Name")
+
+    def validate_last_name(self, value):
+        from apps.common.utils import clean_name
+        return clean_name(value, "Last Name")
+
     employee_id = serializers.CharField(max_length=50)
     department = serializers.CharField(max_length=100, required=False, allow_blank=True)
     qualification = serializers.CharField(max_length=100, required=False, allow_blank=True)
@@ -89,6 +111,9 @@ class TeacherCreateSerializer(serializers.Serializer):
             digits = re.sub(r'[\s\-\(\)\+]', '', value)
             if not re.match(r'^[6-9]\d{9}$', digits):
                 raise serializers.ValidationError("Phone number must be a valid 10-digit mobile number starting with 6, 7, 8, or 9.")
+            if User.objects.filter(phone=digits).exists():
+                raise serializers.ValidationError("A user with this phone number already exists.")
+            return digits
         return value
 
 

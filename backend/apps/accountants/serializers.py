@@ -28,6 +28,20 @@ class AccountantProfileSerializer(serializers.ModelSerializer):
                 qs = qs.exclude(pk=self.instance.pk)
             if qs.exists():
                 raise serializers.ValidationError({"employee_id": "An accountant with this Employee ID already exists in your school."})
+
+        user_data = attrs.get('user', {})
+        phone = user_data.get('phone')
+        if phone:
+            import re
+            digits = re.sub(r'[\s\-\(\)\+]', '', phone)
+            if not re.match(r'^[6-9]\d{9}$', digits):
+                raise serializers.ValidationError({"phone": "Phone number must be a valid 10-digit mobile number starting with 6, 7, 8, or 9."})
+            user_qs = User.objects.filter(phone=digits)
+            if self.instance and self.instance.user:
+                user_qs = user_qs.exclude(pk=self.instance.user.pk)
+            if user_qs.exists():
+                raise serializers.ValidationError({"phone": "A user with this phone number already exists."})
+
         return attrs
 
     @transaction.atomic
@@ -62,6 +76,14 @@ class AccountantCreateSerializer(serializers.Serializer):
     phone = serializers.CharField(max_length=20, required=False, allow_blank=True)
     employee_id = serializers.CharField(max_length=50)
 
+    def validate_first_name(self, value):
+        from apps.common.utils import clean_name
+        return clean_name(value, "First Name")
+
+    def validate_last_name(self, value):
+        from apps.common.utils import clean_name
+        return clean_name(value, "Last Name")
+
     def validate_email(self, value):
         email_clean = value.strip().lower()
         if User.objects.filter(email=email_clean).exists():
@@ -73,6 +95,9 @@ class AccountantCreateSerializer(serializers.Serializer):
             digits = re.sub(r'[\s\-\(\)\+]', '', value)
             if not re.match(r'^[6-9]\d{9}$', digits):
                 raise serializers.ValidationError("Phone number must be a valid 10-digit mobile number starting with 6, 7, 8, or 9.")
+            if User.objects.filter(phone=digits).exists():
+                raise serializers.ValidationError("A user with this phone number already exists.")
+            return digits
         return value
 
     def validate_employee_id(self, value):

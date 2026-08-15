@@ -317,29 +317,44 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
     setSubmitting(true);
     setError('');
 
-    // Name validations (letters and spaces only)
-    const nameRegex = /^[a-zA-Z\s]+$/;
-    if (!nameRegex.test(formData.first_name.trim())) {
-      setError('First Name can only contain letters and spaces.');
+    // Name validations (letters and single spaces only, no numbers/special chars/extra spaces)
+    const nameRegex = /^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/;
+    const cleanFn = formData.first_name.trim().replace(/\s+/g, ' ');
+    const cleanLn = formData.last_name.trim().replace(/\s+/g, ' ');
+    const cleanGn = formData.guardian_name ? formData.guardian_name.trim().replace(/\s+/g, ' ') : '';
+
+    if (!cleanFn || !nameRegex.test(cleanFn)) {
+      setError('First Name must contain alphabetic letters only. Numbers, special characters, and extra spaces are blocked.');
       setSubmitting(false);
       return;
     }
-    if (!nameRegex.test(formData.last_name.trim())) {
-      setError('Last Name can only contain letters and spaces.');
+    if (!cleanLn || !nameRegex.test(cleanLn)) {
+      setError('Last Name must contain alphabetic letters only. Numbers, special characters, and extra spaces are blocked.');
       setSubmitting(false);
       return;
     }
-    if (formData.guardian_name && !nameRegex.test(formData.guardian_name.trim())) {
-      setError('Guardian Name can only contain letters and spaces.');
+    if (cleanGn && !nameRegex.test(cleanGn)) {
+      setError('Guardian Name must contain alphabetic letters only. Numbers, special characters, and extra spaces are blocked.');
       setSubmitting(false);
       return;
     }
 
     // Guardian phone validation (10-digit Indian phone starting 6-9)
-    if (formData.guardian_phone && !/^[6-9]\d{9}$/.test(formData.guardian_phone.trim())) {
-      setError('Guardian Phone must be a valid 10-digit mobile number starting with 6–9.');
-      setSubmitting(false);
-      return;
+    if (formData.guardian_phone) {
+      const cleanPhone = formData.guardian_phone.trim();
+      if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
+        setError('Guardian Phone must be a valid 10-digit mobile number starting with 6–9.');
+        setSubmitting(false);
+        return;
+      }
+      const duplicatePhone = students.some(
+        (s) => s.id !== editStudent?.id && (s.guardian_phone === cleanPhone || s.user?.phone === cleanPhone)
+      );
+      if (duplicatePhone) {
+        setError('A user with this phone number already exists.');
+        setSubmitting(false);
+        return;
+      }
     }
 
     // Guardian email validation
@@ -368,7 +383,12 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
     }
 
     try {
-      const payload = { ...formData };
+      const payload = {
+        ...formData,
+        first_name: cleanFn,
+        last_name: cleanLn,
+        guardian_name: cleanGn,
+      };
 
       if (editStudent) {
         await studentService.updateStudent(editStudent.id, payload);
