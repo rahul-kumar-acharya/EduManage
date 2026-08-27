@@ -73,7 +73,7 @@ const Contact = () => {
               <div className="space-y-3 text-sm text-[#1A1918]">
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
                   <Mail className="w-5 h-5 text-[#1B2A4A] shrink-0" />
-                  <span className="font-semibold text-xs sm:text-sm">support.edumanage@gmail.com</span>
+                  <span className="font-semibold text-xs sm:text-sm">support.acharyacampus@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
                   <Phone className="w-5 h-5 text-[#1B2A4A] shrink-0" />
@@ -112,7 +112,7 @@ const Contact = () => {
                   Message Sent Successfully!
                 </h3>
                 <p className="text-sm text-[#64748B] max-w-xs mx-auto">
-                  {responseMsg || 'Thank you for reaching out. Our support team will respond shortly at support.edumanage@gmail.com.'}
+                  {responseMsg || 'Thank you for reaching out. Our support team will respond shortly at support.acharyacampus@gmail.com.'}
                 </p>
                 <button 
                   onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: '', message: '' }); }}
@@ -167,7 +167,7 @@ const Contact = () => {
                     <input
                       type="text"
                       name="subject"
-                      placeholder="Inquiry about EduManage Multi-Tenant SaaS"
+                      placeholder="Inquiry about AcharyaCampus Multi-Tenant School OS"
                       value={formData.subject}
                       onChange={handleChange}
                       className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"

@@ -132,11 +132,11 @@ class SchoolRegistrationSerializer(serializers.Serializer):
         school_name = school.name
         subdomain = school.subdomain
 
-        portal_login_url = f"http://{subdomain}.edumanage.acharyaworks.in/login"
+        portal_login_url = f"http://{subdomain}.campus.acharyaworks.in/login"
         local_dev_url = f"http://{subdomain}.localhost:5173/login"
 
         welcome_email_body = f"""
-Welcome to EduManage Multi-Tenant SaaS Platform!
+Welcome to AcharyaCampus Multi-Tenant School OS Platform!
 
 Dear {admin_full_name},
 
@@ -146,7 +146,7 @@ Congratulations! Your school management portal for "{school_name}" has been succ
 🔑 YOUR ADMINISTRATOR LOGIN CREDENTIALS
 ----------------------------------------------------------------------
 School Name       : {school_name}
-Subdomain Portal  : {subdomain}.edumanage.acharyaworks.in
+Subdomain Portal  : {subdomain}.campus.acharyaworks.in
 Portal Login URL  : {portal_login_url}
 Dev Local URL     : {local_dev_url}
 
@@ -161,18 +161,18 @@ Quick Setup Guide:
 2. Sign in using your Admin Email and Password shown above.
 3. Setup Class Sections, Assign Subjects, and Add Teachers & Students.
 
-For support or custom setup help, contact support.edumanage@gmail.com.
+For support or custom setup help, contact support.acharyacampus@gmail.com.
 
 Best regards,
-EduManage Systems Team
-https://edumanage.acharyaworks.in
+AcharyaCampus Systems Team
+https://campus.acharyaworks.in
 """
 
         try:
             send_mail(
-                subject=f"🚀 Welcome to EduManage — Portal Credentials for {school_name}",
+                subject=f"🚀 Welcome to AcharyaCampus — Portal Credentials for {school_name}",
                 message=welcome_email_body,
-                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', '"EduManage Platform" <support.edumanage@gmail.com>'),
+                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', '"AcharyaCampus Platform" <support.acharyacampus@gmail.com>'),
                 recipient_list=[admin_email],
                 fail_silently=False,
             )

@@ -55,7 +55,7 @@ const SuperAdminPlans = () => {
           </div>
           <div>
             <div className="font-bold text-[#1A1918]">{row.name}</div>
-            <div className="text-[10px] text-[#5C1D24] font-mono font-semibold">{row.subdomain}.edumanage.acharyaworks.in</div>
+            <div className="text-[10px] text-[#5C1D24] font-mono font-semibold">{row.subdomain}.campus.acharyaworks.in</div>
           </div>
         </div>
       )

@@ -16,10 +16,10 @@ const PrivacyPolicy = () => {
             Privacy Policy
           </h1>
           <p className="text-[#64748B] text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
-            How EduManage safeguards multi-tenant student records, staff details, and financial data.
+            How AcharyaCampus safeguards multi-tenant student records, staff details, and financial data.
           </p>
           <div className="text-xs text-[#64748B] font-mono">
-            Last Updated: July 22, 2026
+            Last Updated: August 16, 2026
           </div>
         </div>
 
@@ -31,7 +31,7 @@ const PrivacyPolicy = () => {
               <Lock className="w-5 h-5 text-[#1B2A4A]" /> 1. Multi-Tenant Data Isolation
             </h2>
             <p className="text-sm text-[#64748B] leading-relaxed">
-              EduManage operates on a strict multi-tenant architecture. Every registered educational institution is assigned an isolated database tenant scope bound to its specific subdomain. Data belonging to your school is strictly segregated and cannot be queried or viewed by users from other institutions.
+              AcharyaCampus operates on a strict multi-tenant architecture. Every registered educational institution is assigned an isolated database tenant scope bound to its specific subdomain. Data belonging to your school is strictly segregated and cannot be queried or viewed by users from other institutions.
             </p>
           </section>
 

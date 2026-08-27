@@ -16,7 +16,7 @@ const TermsOfService = () => {
             Terms of Service
           </h1>
           <p className="text-[#64748B] text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
-            Agreement governing your institution's subscription and use of the EduManage SaaS platform.
+            Agreement governing your institution's subscription and use of the AcharyaCampus OS platform.
           </p>
           <div className="text-xs text-[#64748B] font-mono">
             Effective Date: July 22, 2026
@@ -31,7 +31,7 @@ const TermsOfService = () => {
               <CheckCircle2 className="w-5 h-5 text-[#1B2A4A]" /> 1. Acceptance & Tenant Registration
             </h2>
             <p className="text-sm text-[#64748B] leading-relaxed">
-              By registering your school on EduManage SaaS, you agree to these Terms of Service. As an authorized school administrator, you represent that you have legal authority to bind your educational institution to this agreement.
+              By registering your school on AcharyaCampus OS, you agree to these Terms of Service. As an authorized school administrator, you represent that you have legal authority to bind your educational institution to this agreement.
             </p>
           </section>
 
@@ -40,7 +40,7 @@ const TermsOfService = () => {
               <ShieldCheck className="w-5 h-5 text-[#1B2A4A]" /> 2. Platform Usage & Acceptable Conduct
             </h2>
             <p className="text-sm text-[#64748B] leading-relaxed">
-              Subdomains allocated to institutions (e.g. `your-school.edumanage.acharyaworks.in`) are for exclusive educational administration. Institutions are responsible for managing access credentials for teachers, students, parents, and financial accountants, and preventing unauthorized system access.
+              Subdomains allocated to institutions (e.g. `your-school.campus.acharyaworks.in`) are for exclusive educational administration. Institutions are responsible for managing access credentials for teachers, students, parents, and financial accountants, and preventing unauthorized system access.
             </p>
           </section>
 
@@ -49,7 +49,7 @@ const TermsOfService = () => {
               <Scale className="w-5 h-5 text-[#1B2A4A]" /> 3. Subscriptions & Billing
             </h2>
             <p className="text-sm text-[#64748B] leading-relaxed">
-              EduManage offers a 14-day free trial. Following trial expiration, continued service requires selection of a paid subscription plan (Starter, Growth, or Enterprise). Subscriptions renew automatically per monthly or annual billing cycles unless cancelled prior to renewal.
+              AcharyaCampus offers a 14-day free trial. Following trial expiration, continued service requires selection of a paid subscription plan (Starter, Growth, or Enterprise). Subscriptions renew automatically per monthly or annual billing cycles unless cancelled prior to renewal.
             </p>
           </section>
 

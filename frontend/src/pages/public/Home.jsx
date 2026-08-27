@@ -108,7 +108,7 @@ const Home = () => {
                     className="w-full bg-transparent py-3 text-xs text-[#1A1918] placeholder-slate-400 focus:outline-none font-medium"
                     required
                   />
-                  <span className="text-xs font-mono text-[#64748B] font-bold">.edumanage.acharyaworks.in</span>
+                  <span className="text-xs font-mono text-[#64748B] font-bold">.campus.acharyaworks.in</span>
                 </div>
                 <button 
                   type="submit" 
@@ -137,7 +137,7 @@ const Home = () => {
               {/* Main Dashboard Image */}
               <img 
                 src="/hero_dashboard.png" 
-                alt="EduManage Platform Dashboard Preview" 
+                alt="AcharyaCampus Platform Dashboard Preview" 
                 className="w-full h-auto rounded-xl object-cover transform group-hover:scale-[1.02] transition-transform duration-500"
               />
 
@@ -376,7 +376,7 @@ const Home = () => {
           {[
             {
               q: "How does custom subdomain provisioning work?",
-              a: "When you register your school name, our automated DNS router instantly allocates an isolated tenant instance under your chosen domain (e.g. stmarys.edumanage.acharyaworks.in)."
+              a: "When you register your school name, our automated DNS router instantly allocates an isolated tenant instance under your chosen domain (e.g. stmarys.campus.acharyaworks.in)."
             },
             {
               q: "Can parents pay fees online securely?",

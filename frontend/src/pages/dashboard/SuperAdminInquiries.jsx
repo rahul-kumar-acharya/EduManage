@@ -89,7 +89,7 @@ const SuperAdminInquiries = () => {
               Website Contact Inquiries
             </h1>
             <span className="px-3 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-xs font-semibold uppercase tracking-wider">
-              support.edumanage@gmail.com
+              support.acharyacampus@gmail.com
             </span>
           </div>
           <p className="text-[#64748B] text-xs sm:text-sm">

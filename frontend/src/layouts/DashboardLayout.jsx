@@ -66,7 +66,7 @@ const DashboardLayout = () => {
                 </div>
                 <div className="truncate">
                   <h2 className="text-sm font-['Newsreader'] font-bold text-[#1A1918] truncate leading-tight">{school.name}</h2>
-                  <p className="text-[9px] text-[#5C1D24] font-semibold tracking-wider truncate mt-0.5">{school.subdomain}.edumanage.acharyaworks.in</p>
+                  <p className="text-[9px] text-[#5C1D24] font-semibold tracking-wider truncate mt-0.5">{school.subdomain}.campus.acharyaworks.in</p>
                 </div>
               </div>
             ) : (

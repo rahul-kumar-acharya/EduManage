@@ -63,7 +63,7 @@ const SuperAdminLayout = () => {
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h2 className="text-base font-['Newsreader'] font-bold text-[#1A1918] tracking-tight">EduManage</h2>
+                  <h2 className="text-base font-['Newsreader'] font-bold text-[#1A1918] tracking-tight">AcharyaCampus</h2>
                 </div>
                 <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#5C1D24]/10 text-[#5C1D24] text-[9px] font-bold uppercase tracking-wider border border-[#5C1D24]/20">
                   <ShieldCheck className="w-2.5 h-2.5" /> Super Admin
@@ -149,7 +149,7 @@ const SuperAdminLayout = () => {
                   <div className="text-xs font-bold text-[#1A1918] truncate">
                     {user?.first_name || 'Super'} {user?.last_name || 'Admin'}
                   </div>
-                  <div className="text-[10px] text-[#64748B] truncate">{user?.email || 'admin@edumanage.com'}</div>
+                  <div className="text-[10px] text-[#64748B] truncate">{user?.email || 'admin@acharyacampus.com'}</div>
                   <div className="text-[9px] text-[#5C1D24] uppercase font-bold tracking-wider">Root Administrator</div>
                 </div>
               </div>

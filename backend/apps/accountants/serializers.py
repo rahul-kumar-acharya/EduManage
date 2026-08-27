@@ -139,7 +139,7 @@ class AccountantCreateSerializer(serializers.Serializer):
 
         # Dispatch welcome email with temporary password & login URL
         try:
-            school_name = school.name if school else "EduManage School"
+            school_name = school.name if school else "AcharyaCampus School"
             login_url = f"http://{school.subdomain}.localhost:5173/login" if (school and school.subdomain) else "http://localhost:5173/login"
             
             subject = f"Welcome to {school_name} — Your Accountant Login Credentials"
@@ -162,7 +162,7 @@ class AccountantCreateSerializer(serializers.Serializer):
             send_mail(
                 subject=subject,
                 message=message,
-                from_email=settings.DEFAULT_FROM_EMAIL or 'noreply@edumanage.com',
+                from_email=settings.DEFAULT_FROM_EMAIL or 'noreply@acharyacampus.com',
                 recipient_list=[user.email],
                 fail_silently=True
             )

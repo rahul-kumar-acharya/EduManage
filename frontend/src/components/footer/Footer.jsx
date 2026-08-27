@@ -14,10 +14,10 @@ const Footer = () => {
             </div>
             <div>
               <span className="font-['Newsreader'] font-bold text-xl text-[#1A1918] block leading-none">
-                EduManage
+                AcharyaCampus
               </span>
               <span className="block text-[10px] uppercase font-bold tracking-widest text-[#5C1D24] mt-1">
-                Multi-Tenant SaaS
+                School OS Platform
               </span>
             </div>
           </Link>
@@ -57,7 +57,7 @@ const Footer = () => {
           <div className="space-y-2 text-xs">
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 text-[#1B2A4A]" />
-              <span>support.edumanage@gmail.com</span>
+              <span>support.acharyacampus@gmail.com</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone className="w-4 h-4 text-[#1B2A4A]" />
@@ -72,7 +72,7 @@ const Footer = () => {
       </div>
 
       <div className="max-w-7xl mx-auto pt-6 border-t border-[#E5E0D8] flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
-        <span>&copy; {new Date().getFullYear()} EduManage Multi-Tenant SaaS. All rights reserved.</span>
+        <span>&copy; {new Date().getFullYear()} AcharyaCampus Multi-Tenant School OS. All rights reserved.</span>
         <div className="flex items-center gap-6">
           <Link to="/privacy-policy" className="hover:text-[#1B2A4A] transition-colors">Privacy Policy</Link>
           <Link to="/terms-of-service" className="hover:text-[#1B2A4A] transition-colors">Terms of Service</Link>

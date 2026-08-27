@@ -4,8 +4,8 @@ import { Settings, Shield, Mail, Lock, Server, Save, CheckCircle2, AlertTriangle
 const SuperAdminSettings = () => {
   const [isSaved, setIsSaved] = useState(false);
   const [settings, setSettings] = useState({
-    platformName: 'EduManage SaaS Engine',
-    supportEmail: 'support.edumanage@gmail.com',
+    platformName: 'AcharyaCampus School OS Engine',
+    supportEmail: 'support.acharyacampus@gmail.com',
     defaultTrialDays: '14',
     allowPublicRegistrations: true,
     maintenanceMode: false,

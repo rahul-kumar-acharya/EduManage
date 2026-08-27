@@ -200,7 +200,7 @@ Best regards,
                 send_mail(
                     subject,
                     message,
-                    settings.DEFAULT_FROM_EMAIL or 'noreply@edumanage.com',
+                    settings.DEFAULT_FROM_EMAIL or 'noreply@acharyacampus.com',
                     [guardian_email],
                     fail_silently=True
                 )

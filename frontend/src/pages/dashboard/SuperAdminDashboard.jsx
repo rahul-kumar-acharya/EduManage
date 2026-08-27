@@ -163,7 +163,7 @@ const SuperAdminDashboard = () => {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 font-mono text-xs text-blue-600 hover:underline font-bold"
         >
-          {row.subdomain}.edumanage.acharyaworks.in <ExternalLink className="w-3 h-3 text-blue-600" />
+          {row.subdomain}.campus.acharyaworks.in <ExternalLink className="w-3 h-3 text-blue-600" />
         </a>
       )
     },
@@ -339,7 +339,7 @@ const SuperAdminDashboard = () => {
                       onChange={(e) => setFormData({ ...formData, subdomain: e.target.value.toLowerCase().replace(/[^a-z0-9]/g, '') })}
                       className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-l-lg px-3.5 py-2.5 text-xs text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
                     />
-                    <span className="bg-[#E5E0D8] text-[#64748B] text-[11px] font-mono px-3 py-2.5 rounded-r-lg border border-l-0 border-[#E5E0D8]">.edumanage</span>
+                    <span className="bg-[#E5E0D8] text-[#64748B] text-[11px] font-mono px-3 py-2.5 rounded-r-lg border border-l-0 border-[#E5E0D8]">.campus</span>
                   </div>
                 </div>
 

@@ -112,7 +112,7 @@ def send_absentee_notifications(absent_students, att_date, school):
 
         student_name = f"{student.user.first_name} {student.user.last_name}".strip()
         guardian_name = student.guardian_name or "Parent / Guardian"
-        school_name = school.name if school else "EduManage School"
+        school_name = school.name if school else "AcharyaCampus School"
         roll_no = student.roll_number or 'N/A'
 
         subject = f"[{school_name}] Attendance Notice: {student_name} marked ABSENT on {formatted_date}"
@@ -149,7 +149,7 @@ def send_absentee_notifications(absent_students, att_date, school):
             send_mail(
                 subject=subject,
                 message=f"Dear {guardian_name}, {student_name} was marked ABSENT today ({formatted_date}) at {school_name}.",
-                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@edumanage.com'),
+                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@acharyacampus.com'),
                 recipient_list=[guardian_email],
                 html_message=html_message,
                 fail_silently=True,

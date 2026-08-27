@@ -15,8 +15,8 @@ const Faq = () => {
       icon: Building2,
       questions: [
         {
-          q: 'What is EduManage Multi-Tenant School OS?',
-          a: 'EduManage is an enterprise multi-tenant SaaS platform that provides dedicated isolated portals for schools. Each school operates on its own subdomain (e.g. stmarys.edumanage.acharyaworks.in) with separate data stores, role-based access, student admissions, attendance, digital gradebooks, and online fee collection.'
+          q: 'What is AcharyaCampus Multi-Tenant School OS?',
+          a: 'AcharyaCampus is an enterprise multi-tenant SaaS platform that provides dedicated isolated portals for schools. Each school operates on its own subdomain (e.g. stmarys.campus.acharyaworks.in) with separate data stores, role-based access, student admissions, attendance, digital gradebooks, and online fee collection.'
         },
         {
           q: 'How does custom subdomain provisioning work?',

@@ -24,10 +24,10 @@ const PublicNavbar = () => {
           </div>
           <div>
             <span className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] tracking-tight block leading-none">
-              EduManage
+              AcharyaCampus
             </span>
             <span className="block text-xs uppercase font-bold tracking-widest text-[#5C1D24] mt-1">
-              SaaS Engine
+              School OS Engine
             </span>
           </div>
         </Link>

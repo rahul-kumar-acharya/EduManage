@@ -61,7 +61,7 @@ const SuperAdminAnalytics = () => {
           <div className="space-y-3 text-xs">
             <div className="flex items-center justify-between p-3 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
               <span className="font-semibold text-[#1A1918]">Primary Edge Host:</span>
-              <span className="font-mono text-[#5C1D24] font-bold">edumanage.acharyaworks.in</span>
+              <span className="font-mono text-[#5C1D24] font-bold">campus.acharyaworks.in</span>
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
               <span className="font-semibold text-[#1A1918]">Local Sandbox Alias:</span>
@@ -84,7 +84,7 @@ const SuperAdminAnalytics = () => {
           <div className="space-y-3 text-xs">
             <div className="flex items-center justify-between p-3 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
               <span className="font-semibold text-[#1A1918]">Outbound Address:</span>
-              <span className="font-mono text-[#1A1918] font-bold">support.edumanage@gmail.com</span>
+              <span className="font-mono text-[#1A1918] font-bold">support.acharyacampus@gmail.com</span>
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
               <span className="font-semibold text-[#1A1918]">SMTP Port & Security:</span>

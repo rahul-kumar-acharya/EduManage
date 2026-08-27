@@ -85,7 +85,7 @@ const SuperAdminLogin = () => {
             <GraduationCap className="w-6 h-6" />
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-['Newsreader'] font-bold text-2xl text-[#1A1918] tracking-tight">EduManage</span>
+            <span className="font-['Newsreader'] font-bold text-2xl text-[#1A1918] tracking-tight">AcharyaCampus</span>
             <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20">
               Infrastructure Control
             </span>
@@ -184,7 +184,7 @@ const SuperAdminLogin = () => {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="admin@edumanage.com"
+                      placeholder="admin@acharyacampus.com"
                       className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-10 pr-4 py-3 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
                     />
                   </div>
@@ -245,7 +245,7 @@ const SuperAdminLogin = () => {
 
       {/* Fixed Footer */}
       <footer className="text-center text-[11px] text-[#64748B] shrink-0 pt-2">
-        © {new Date().getFullYear()} EduManage SaaS Infrastructure Platform. Restricted Administrator Operations.
+        © {new Date().getFullYear()} AcharyaCampus SaaS Infrastructure Platform. Restricted Administrator Operations.
       </footer>
     </div>
   );

@@ -118,7 +118,7 @@ const Login = () => {
           <div className="space-y-6">
             <div className="space-y-2">
               <h3 className="text-2xl font-['Newsreader'] font-bold text-[#1A1918]">
-                Welcome Back to EduManage
+                Welcome Back to AcharyaCampus
               </h3>
               <p className="text-[#64748B] text-sm leading-relaxed">
                 Access your institution's central operating system for attendance, gradebooks, fees, and circulars.

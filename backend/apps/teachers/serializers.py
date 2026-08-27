@@ -158,30 +158,40 @@ class TeacherCreateSerializer(serializers.Serializer):
 
         # Dispatch welcome email with temporary password & login URL
         try:
-            school_name = school.name if school else "EduManage School"
-            login_url = f"http://{school.subdomain}.localhost:5173/login" if (school and school.subdomain) else "http://localhost:5173/login"
-            
-            subject = f"Welcome to {school_name} — Your Faculty Login Credentials"
-            message = (
-                f"Dear {user.first_name} {user.last_name},\n\n"
-                f"Welcome to {school_name}! Your faculty instructor account has been registered successfully.\n\n"
-                f"ACCOUNT CREDENTIALS:\n"
-                f"• Official Email: {user.email}\n"
-                f"• Employee ID: {profile.employee_id}\n"
-                f"• Temporary Password: {raw_password}\n\n"
-                f"LOGIN PORTAL LINK:\n"
-                f"{login_url}\n\n"
-                f"INSTRUCTIONS:\n"
-                f"1. Open the login portal link above.\n"
-                f"2. Log in using your official email and temporary password.\n"
-                f"3. Go to Profile Settings to update your password for security.\n\n"
-                f"Best regards,\n"
-                f"{school_name} Administration"
-            )
+            school_name = school.name if school else "AcharyaCampus School"
+            teacher_name = f"{user.first_name} {user.last_name}"
+            teacher_email = user.email
+            login_url = f"http://{school.subdomain}.campus.acharyaworks.in/login" if school else "http://localhost:5173/login"
+            local_dev_url = f"http://{school.subdomain}.localhost:5173/login" if school else "http://localhost:5173/login"
+
+            email_body = f"""
+Welcome to AcharyaCampus!
+
+Dear {teacher_name},
+
+Your Teacher Portal account for {school_name} has been created successfully.
+
+----------------------------------------------------------------------
+🔑 YOUR TEACHER LOGIN CREDENTIALS
+----------------------------------------------------------------------
+School Name      : {school_name}
+Portal Login URL : {login_url}
+Dev Local URL    : {local_dev_url}
+
+Email            : {teacher_email}
+Password         : {raw_password}
+Role             : Teacher
+----------------------------------------------------------------------
+
+Please log in and update your password after your first login.
+
+Best regards,
+{school_name} Administration
+"""
             send_mail(
-                subject=subject,
-                message=message,
-                from_email=settings.DEFAULT_FROM_EMAIL or 'noreply@edumanage.com',
+                subject=f"[{school_name}] Teacher Portal Account Created — AcharyaCampus",
+                message=email_body,
+                from_email=settings.DEFAULT_FROM_EMAIL or 'noreply@acharyacampus.com',
                 recipient_list=[user.email],
                 fail_silently=True
             )

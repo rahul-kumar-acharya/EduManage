@@ -146,31 +146,28 @@ class ContactSupportView(APIView):
             message=message
         )
 
-        recipient_email = getattr(settings, 'SUPPORT_EMAIL', 'support.edumanage@gmail.com')
+        recipient_email = getattr(settings, 'SUPPORT_EMAIL', 'support.acharyacampus@gmail.com')
+        full_message = f"""
+New Contact Inquiry from AcharyaCampus Landing Page:
 
-        email_body = f"""
-📩 NEW CONTACT INQUIRY RECEIVED VIA WEBSITE
-
-From: {name}
+Name: {name}
 Email: {email}
 Subject: {subject}
 
-Message Content:
-----------------------------------------------------------------------
+Message:
 {message}
-----------------------------------------------------------------------
 
-Target Recipient: {recipient_email}
-EduManage Multi-Tenant SaaS Platform
+--------------------------------------------------
+Sent via AcharyaCampus Multi-Tenant School OS Platform
 """
 
         try:
             send_mail(
-                subject=f"[EduManage Contact] {subject}",
-                message=email_body,
-                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'rahulkumaracharya199@gmail.com'),
-                recipient_list=[recipient_email, "rahulkumaracharya199@gmail.com"],
-                fail_silently=False,
+                subject=f"[AcharyaCampus Contact] {subject}",
+                message=full_message,
+                from_email=email,
+                recipient_list=[recipient_email],
+                fail_silently=False
             )
             return Response({
                 'message': f'Thank you {name}! Your message has been saved and dispatched to {recipient_email}.',

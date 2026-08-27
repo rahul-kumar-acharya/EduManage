@@ -53,31 +53,24 @@ const About = () => {
             <span>Our Mission & Vision</span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Newsreader'] font-normal text-[#1A1918] tracking-tight">
-            About EduManage School OS
+            About AcharyaCampus School OS
           </h1>
-          <p className="text-[#64748B] text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            Building modern, resilient, and intuitive software to streamline educational administration globally.
+          <p className="text-[#64748B] text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+            Building the world's most elegant multi-tenant operating system for schools, academies, and educational groups.
           </p>
         </div>
 
-        {/* Story Banner Box */}
-        <div className="bg-white p-8 sm:p-12 rounded-xl border border-[#E5E0D8] shadow-sm space-y-6 max-w-5xl mx-auto">
-          <div className="flex items-center gap-3 border-b border-[#F7F5F0] pb-4">
-            <div className="w-10 h-10 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
-              <Building2 className="w-5 h-5" />
-            </div>
-            <h2 className="text-2xl font-['Newsreader'] font-bold text-[#1A1918]">
-              Empowering Educational Excellence
-            </h2>
-          </div>
-          <div className="space-y-4 text-[#64748B] text-sm sm:text-base leading-relaxed">
-            <p>
-              EduManage School OS was created to empower educational institutions of all sizes with enterprise-grade multi-tenant technology. We believe every school deserves a fast, secure, and dignified digital portal without the burden of maintaining servers or writing custom code.
-            </p>
-            <p>
-              Our platform leverages strict tenant query isolation, instant subdomain provisioning, role-based security, and real-time operational tools so school administrators can focus on what matters most—delivering quality education.
-            </p>
-          </div>
+        {/* Story & Vision */}
+        <div className="bg-white p-8 sm:p-12 rounded-xl border border-[#E5E0D8] shadow-sm space-y-6">
+          <h2 className="text-2xl sm:text-3xl font-['Newsreader'] font-bold text-[#1A1918]">
+            Empowering Modern Educational Institutions
+          </h2>
+          <p className="text-sm sm:text-base text-[#64748B] leading-relaxed">
+            AcharyaCampus School OS was created to empower educational institutions of all sizes with enterprise-grade multi-tenant technology. We believe every school deserves a fast, secure, and dignified digital portal without the burden of maintaining servers or writing custom code.
+          </p>
+          <p className="text-sm sm:text-base text-[#64748B] leading-relaxed">
+            Our platform leverages strict tenant query isolation, instant subdomain provisioning, role-based security, and real-time operational tools so school administrators can focus on what matters most—delivering quality education.
+          </p>
         </div>
 
         {/* Impact Numbers Grid */}
