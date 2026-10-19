@@ -162,7 +162,7 @@ class AccountantCreateSerializer(serializers.Serializer):
             send_mail(
                 subject=subject,
                 message=message,
-                from_email=settings.DEFAULT_FROM_EMAIL or 'noreply@acharyacampus.com',
+                from_email=settings.DEFAULT_FROM_EMAIL or 'support.acharyacampus@gmail.com',
                 recipient_list=[user.email],
                 fail_silently=True
             )

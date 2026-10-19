@@ -249,7 +249,7 @@ const SuperAdminUsers = () => {
                 <input
                   type="email"
                   required
-                  placeholder="admin.personnel@acharyacampus.com"
+                  placeholder="support.acharyacampus@gmail.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"

@@ -149,7 +149,7 @@ def send_absentee_notifications(absent_students, att_date, school):
             send_mail(
                 subject=subject,
                 message=f"Dear {guardian_name}, {student_name} was marked ABSENT today ({formatted_date}) at {school_name}.",
-                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@acharyacampus.com'),
+                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'support.acharyacampus@gmail.com'),
                 recipient_list=[guardian_email],
                 html_message=html_message,
                 fail_silently=True,

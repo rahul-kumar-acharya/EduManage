@@ -191,7 +191,7 @@ Best regards,
             send_mail(
                 subject=f"[{school_name}] Teacher Portal Account Created — AcharyaCampus",
                 message=email_body,
-                from_email=settings.DEFAULT_FROM_EMAIL or 'noreply@acharyacampus.com',
+                from_email=settings.DEFAULT_FROM_EMAIL or 'support.acharyacampus@gmail.com',
                 recipient_list=[user.email],
                 fail_silently=True
             )

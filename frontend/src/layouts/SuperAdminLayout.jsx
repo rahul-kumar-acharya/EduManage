@@ -149,7 +149,7 @@ const SuperAdminLayout = () => {
                   <div className="text-xs font-semibold text-slate-900 truncate">
                     {user?.first_name || 'Super'} {user?.last_name || 'Admin'}
                   </div>
-                  <div className="text-[10px] text-slate-400 truncate">{user?.email || 'admin@acharyacampus.com'}</div>
+                  <div className="text-[10px] text-slate-400 truncate">{user?.email || 'support.acharyacampus@gmail.com'}</div>
                   <div className="text-[9px] text-indigo-600 uppercase font-bold tracking-wider">Root Administrator</div>
                 </div>
               </div>
