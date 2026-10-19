@@ -40,7 +40,7 @@ const TermsOfService = () => {
               <ShieldCheck className="w-5 h-5 text-indigo-600" /> 2. Platform Usage & Acceptable Conduct
             </h2>
             <p className="text-sm text-slate-600 leading-relaxed">
-              Subdomains allocated to institutions (e.g. `your-school.campus.acharyaworks.in`) are for exclusive educational administration. Institutions are responsible for managing access credentials for teachers, students, parents, and financial accountants, and preventing unauthorized system access.
+              Subdomains allocated to institutions (e.g. `your-school.campus.acharyarahul.in`) are for exclusive educational administration. Institutions are responsible for managing access credentials for teachers, students, parents, and financial accountants, and preventing unauthorized system access.
             </p>
           </section>
 

@@ -88,7 +88,7 @@ const PublicNavbar = () => {
 
               <Link to="/register-school">
                 <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold transition-all shadow-sm shadow-indigo-600/20 active:scale-[0.99]">
-                  <Sparkles className="w-4 h-4" />
+                  
                   Register School
                 </button>
               </Link>

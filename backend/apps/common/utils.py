@@ -3,7 +3,7 @@ from django.conf import settings
 def extract_subdomain(host):
     """
     Extracts subdomain from HTTP Host header.
-    Handles 'abcschool.campus.acharyaworks.in', 'abcschool.localhost:8000', etc.
+    Handles 'abcschool.acharyarahul.in', 'abcschool.localhost:8000', etc.
     Returns None if main domain or IP address.
     """
     if not host:
@@ -13,7 +13,7 @@ def extract_subdomain(host):
     host_without_port = host.split(':')[0].lower()
 
     # Ignored exact hosts
-    if host_without_port in ['localhost', '127.0.0.1', 'campus.acharyaworks.in', 'acharyacampus.acharyaworks.in', 'admin.campus.acharyaworks.in']:
+    if host_without_port in ['localhost', '127.0.0.1', 'campus.acharyarahul.in', 'www.campus.acharyarahul.in', 'admin.campus.acharyarahul.in']:
         return None
 
     parts = host_without_port.split('.')
@@ -22,9 +22,14 @@ def extract_subdomain(host):
     if len(parts) == 2 and parts[1] == 'localhost':
         return parts[0]
 
-    # e.g., abcschool.campus.acharyaworks.in -> ['abcschool', 'campus', 'acharyaworks', 'in']
-    if len(parts) >= 3:
+    # e.g., abcschool.campus.acharyarahul.in -> ['abcschool', 'campus', 'acharyarahul', 'in']
+    if len(parts) >= 4 and parts[-3:] == ['campus', 'acharyarahul', 'in']:
         if parts[0] != 'www' and parts[0] != 'admin':
+            return parts[0]
+
+    # Generic fallback
+    if len(parts) >= 3:
+        if parts[0] != 'www' and parts[0] != 'admin' and parts[0] != 'campus':
             return parts[0]
 
     return None

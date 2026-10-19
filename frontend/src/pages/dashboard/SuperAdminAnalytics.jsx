@@ -61,7 +61,7 @@ const SuperAdminAnalytics = () => {
           <div className="space-y-3 text-xs">
             <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
               <span className="font-semibold text-slate-700">Primary Edge Host:</span>
-              <span className="font-mono text-indigo-600 font-semibold">campus.acharyaworks.in</span>
+              <span className="font-mono text-indigo-600 font-semibold">campus.acharyarahul.in</span>
             </div>
             <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
               <span className="font-semibold text-slate-700">Local Sandbox Alias:</span>

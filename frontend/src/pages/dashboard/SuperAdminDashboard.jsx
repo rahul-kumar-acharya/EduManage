@@ -163,7 +163,7 @@ const SuperAdminDashboard = () => {
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 font-mono text-xs text-indigo-600 hover:text-indigo-700 hover:underline font-semibold"
         >
-          {row.subdomain}.campus.acharyaworks.in <ExternalLink className="w-3 h-3 text-indigo-500" />
+          {row.subdomain}.campus.acharyarahul.in <ExternalLink className="w-3 h-3 text-indigo-500" />
         </a>
       )
     },

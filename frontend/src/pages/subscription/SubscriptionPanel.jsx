@@ -66,7 +66,7 @@ const SubscriptionPanel = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px] text-slate-500 gap-2 font-semibold text-xs uppercase tracking-wider font-['Inter']">
+      <div className="flex items-center justify-center min-h-100 text-slate-500 gap-2 font-semibold text-xs uppercase tracking-wider font-['Inter']">
         <div className="animate-spin rounded-full h-5 w-5 border-2 border-indigo-600 border-t-transparent"></div>
         <span>Loading subscriptions registry...</span>
       </div>

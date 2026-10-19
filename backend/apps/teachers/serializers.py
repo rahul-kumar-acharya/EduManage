@@ -161,7 +161,7 @@ class TeacherCreateSerializer(serializers.Serializer):
             school_name = school.name if school else "AcharyaCampus School"
             teacher_name = f"{user.first_name} {user.last_name}"
             teacher_email = user.email
-            login_url = f"http://{school.subdomain}.campus.acharyaworks.in/login" if school else "http://localhost:5173/login"
+            login_url = f"http://{school.subdomain}.campus.acharyarahul.in/login" if school else "http://localhost:5173/login"
             local_dev_url = f"http://{school.subdomain}.localhost:5173/login" if school else "http://localhost:5173/login"
 
             email_body = f"""

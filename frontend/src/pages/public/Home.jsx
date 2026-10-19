@@ -70,7 +70,6 @@ const Home = () => {
           <div className="lg:col-span-7 space-y-6 text-left">
             {/* Category Pill */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-200/80 text-xs font-semibold text-indigo-700 tracking-wide">
-              <Sparkles className="w-4 h-4 text-indigo-600" />
               <span>Next-Generation Multi-Tenant School OS</span>
             </div>
 
@@ -110,7 +109,7 @@ const Home = () => {
                     className="w-full bg-transparent py-3 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none font-medium"
                     required
                   />
-                  <span className="text-xs font-mono text-indigo-600 font-semibold">.campus.acharyaworks.in</span>
+                  <span className="text-xs font-mono text-indigo-600 font-semibold">.campus.acharyarahul.in</span>
                 </div>
                 <button 
                   type="submit" 
@@ -377,7 +376,7 @@ const Home = () => {
           {[
             {
               q: "How does custom subdomain provisioning work?",
-              a: "When you register your school name, our automated DNS router instantly allocates an isolated tenant instance under your chosen domain (e.g. stmarys.campus.acharyaworks.in)."
+              a: "When you register your school name, our automated DNS router instantly allocates an isolated tenant instance under your chosen domain (e.g. stmarys.campus.acharyarahul.in)."
             },
             {
               q: "Can parents pay fees online securely?",

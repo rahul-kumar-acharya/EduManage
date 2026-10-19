@@ -204,7 +204,7 @@ const RegisterSchool = () => {
                 <strong className="text-slate-900">{successResult.name}</strong> is ready on subdomain:
               </p>
               <div className="inline-block px-4 py-2 bg-indigo-50 rounded-xl border border-indigo-100 text-indigo-700 font-mono font-bold text-base">
-                {successResult.subdomain}.campus.acharyaworks.in
+                {successResult.subdomain}.campus.acharyarahul.in
               </div>
             </div>
 
@@ -277,7 +277,7 @@ const RegisterSchool = () => {
                   <Globe className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                   <div className="space-y-0.5">
                     <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">Dedicated Subdomain</h4>
-                    <p className="text-xs text-slate-500 leading-relaxed">Your school gets its own unique portal URL (e.g., yourschool.campus.acharyaworks.in) for students, staff, and parents.</p>
+                    <p className="text-xs text-slate-500 leading-relaxed">Your school gets its own unique portal URL (e.g., yourschool.campus.acharyarahul.in) for students, staff, and parents.</p>
                   </div>
                 </div>
 
@@ -376,7 +376,7 @@ const RegisterSchool = () => {
                         required
                         className="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-48 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-3 focus:ring-indigo-500/15 transition-all"
                       />
-                      <span className="absolute right-3.5 text-xs font-mono text-indigo-600 font-semibold">.campus.acharyaworks.in</span>
+                      <span className="absolute right-3.5 text-xs font-mono text-indigo-600 font-semibold">.campus.acharyarahul.in</span>
                     </div>
 
                     {formData.subdomain && (

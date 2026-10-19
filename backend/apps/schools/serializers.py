@@ -132,7 +132,7 @@ class SchoolRegistrationSerializer(serializers.Serializer):
         school_name = school.name
         subdomain = school.subdomain
 
-        portal_login_url = f"http://{subdomain}.campus.acharyaworks.in/login"
+        portal_login_url = f"http://{subdomain}.campus.acharyarahul.in/login"
         local_dev_url = f"http://{subdomain}.localhost:5173/login"
 
         welcome_email_body = f"""
@@ -146,7 +146,7 @@ Congratulations! Your school management portal for "{school_name}" has been succ
 🔑 YOUR ADMINISTRATOR LOGIN CREDENTIALS
 ----------------------------------------------------------------------
 School Name       : {school_name}
-Subdomain Portal  : {subdomain}.campus.acharyaworks.in
+Subdomain Portal  : {subdomain}.campus.acharyarahul.in
 Portal Login URL  : {portal_login_url}
 Dev Local URL     : {local_dev_url}
 
@@ -165,7 +165,7 @@ For support or custom setup help, contact support.acharyacampus@gmail.com.
 
 Best regards,
 AcharyaCampus Systems Team
-https://campus.acharyaworks.in
+https://campus.acharyarahul.in
 """
 
         try:

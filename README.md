@@ -2,21 +2,21 @@
 
 AcharyaCampus is an enterprise-grade multi-tenant School Operating System built with **React (Vite)** and **Django REST Framework**.
 
-AcharyaCampus delivers isolated tenant workspaces for schools with wildcard subdomain routing (`abcschool.campus.acharyaworks.in`), custom role-based permissions, automated subscription management, academic operations, attendance tracking, exam management, fee collection, and comprehensive reporting.
+AcharyaCampus delivers isolated tenant workspaces for schools with wildcard subdomain routing (`abcschool.campus.acharyarahul.in`), custom role-based permissions, automated subscription management, academic operations, attendance tracking, exam management, fee collection, and comprehensive reporting.
 
 ---
 
 ## 🏛️ Multi-Tenant Architecture
 
 ```text
-campus.acharyaworks.in (Main Marketing & Registration Website)
+campus.acharyarahul.in (Main Marketing & Registration Website)
    │
-   ├── admin.campus.acharyaworks.in (Super Admin Panel for SaaS operations)
+   ├── admin.campus.acharyarahul.in (Super Admin Panel for SaaS operations)
    │
    └── [Tenant Subdomains]
-         ├── abcschool.campus.acharyaworks.in
-         ├── dpspatna.campus.acharyaworks.in
-         └── stmary.campus.acharyaworks.in
+         ├── abcschool.campus.acharyarahul.in
+         ├── dpspatna.campus.acharyarahul.in
+         └── stmary.campus.acharyarahul.in
 ```
 
 ---

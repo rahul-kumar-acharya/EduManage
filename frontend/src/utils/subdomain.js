@@ -8,7 +8,12 @@ export const getSubdomain = () => {
   }
 
   // Exact main domain matches
-  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === 'campus.acharyaworks.in' || hostname === 'acharyacampus.acharyaworks.in') {
+  if (
+    hostname === 'localhost' ||
+    hostname === '127.0.0.1' ||
+    hostname === 'campus.acharyarahul.in' ||
+    hostname === 'www.campus.acharyarahul.in'
+  ) {
     return null;
   }
 
@@ -19,9 +24,15 @@ export const getSubdomain = () => {
     return parts[0] === 'www' ? null : parts[0];
   }
 
-  // e.g. abcschool.campus.acharyaworks.in -> ['abcschool', 'campus', 'acharyaworks', 'in']
-  if (parts.length >= 3) {
+  // e.g. abcschool.campus.acharyarahul.in -> ['abcschool', 'campus', 'acharyarahul', 'in']
+  if (parts.length >= 4 && parts.slice(-3).join('.') === 'campus.acharyarahul.in') {
     if (parts[0] === 'www') return null;
+    return parts[0];
+  }
+
+  // Fallback for custom domains or other multi-level subdomains
+  if (parts.length >= 3) {
+    if (parts[0] === 'www' || parts[0] === 'campus') return null;
     return parts[0];
   }
 

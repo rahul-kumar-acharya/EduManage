@@ -34,7 +34,7 @@ const ReportsDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px] text-slate-500 gap-2 font-semibold text-xs uppercase tracking-wider font-['Inter']">
+      <div className="flex items-center justify-center min-h-100 text-slate-500 gap-2 font-semibold text-xs uppercase tracking-wider font-['Inter']">
         <RefreshCw className="w-5 h-5 animate-spin text-indigo-600" />
         <span>Aggregating analytics data...</span>
       </div>
@@ -311,7 +311,7 @@ const ReportsDashboard = () => {
             <CalendarCheck className="w-4 h-4 text-amber-600" /> Attendance Breakdown by Section
           </h3>
 
-          <div className="space-y-4 max-h-[250px] overflow-y-auto pr-1">
+          <div className="space-y-4 max-h-62.5 overflow-y-auto pr-1">
             {data.attendance_analytics?.section_attendance?.map((sec, idx) => (
               <div key={idx} className="space-y-1.5">
                 <div className="flex justify-between text-xs font-semibold text-slate-900">
@@ -341,7 +341,7 @@ const ReportsDashboard = () => {
             <Award className="w-4 h-4 text-indigo-600" /> Academic Subject Performance Averages
           </h3>
 
-          <div className="space-y-4 max-h-[250px] overflow-y-auto pr-1">
+          <div className="space-y-4 max-h-62.5 overflow-y-auto pr-1">
             {data.academic_analytics?.average_scores_by_subject?.map((sub, idx) => (
               <div key={idx} className="space-y-1.5">
                 <div className="flex justify-between text-xs font-semibold text-slate-900">

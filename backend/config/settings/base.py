@@ -153,7 +153,7 @@ CORS_ALLOW_HEADERS = [
     'x-tenant-subdomain',
 ]
 
-MAIN_DOMAIN = os.getenv('MAIN_DOMAIN', 'campus.acharyaworks.in')
+MAIN_DOMAIN = os.getenv('MAIN_DOMAIN', 'campus.acharyarahul.in')
 SUPER_ADMIN_SUBDOMAIN = 'admin'
 
 # Email settings

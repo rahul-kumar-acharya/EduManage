@@ -55,7 +55,7 @@ const SuperAdminPlans = () => {
           </div>
           <div>
             <div className="font-semibold text-slate-900 font-['Outfit']">{row.name}</div>
-            <div className="text-[11px] text-indigo-600 font-mono font-medium">{row.subdomain}.campus.acharyaworks.in</div>
+            <div className="text-[11px] text-indigo-600 font-mono font-medium">{row.subdomain}.campus.acharyarahul.in</div>
           </div>
         </div>
       )
@@ -138,7 +138,7 @@ const SuperAdminPlans = () => {
           <div className="space-y-1">
             <span className="text-[11px] uppercase font-bold tracking-wider text-slate-500 block">Monthly Recurring (MRR)</span>
             <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">₹{totalMRR.toLocaleString('en-IN')}</strong>
-            <span className="text-[11px] text-emerald-700 font-semibold block flex items-center gap-1">
+            <span className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
               <TrendingUp className="w-3 h-3 text-emerald-600" /> Active Recurring Cashflow
             </span>
           </div>
