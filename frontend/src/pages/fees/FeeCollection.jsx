@@ -80,39 +80,39 @@ const FeeCollection = () => {
   };
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-6 font-['Inter'] text-slate-900">
       
       {/* Category Pill Indicator */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">
-        <CreditCard className="w-3.5 h-3.5 text-[#5C1D24]" />
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-indigo-50 border border-indigo-200/60 text-[10px] font-bold text-indigo-700 uppercase tracking-wider">
+        <CreditCard className="w-3.5 h-3.5 text-indigo-600" />
         <span>Cashier Collection Register</span>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Fee Collection & Receipts</h1>
-          <p className="text-xs text-[#64748B] mt-1">Record fee payments, issue instant digital receipts, and audit transactions.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Fee Collection & Receipts</h1>
+          <p className="text-sm text-slate-500 mt-1">Record fee payments, issue instant digital receipts, and audit transactions.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Payment Entry Form */}
-        <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4 h-fit">
-          <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-            <CreditCard className="w-4.5 h-4.5 text-[#1B2A4A]" /> Collect Payment
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4 h-fit">
+          <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+            <CreditCard className="w-4.5 h-4.5 text-indigo-600" /> Collect Payment
           </h3>
 
-          {error && <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-bold rounded-lg">{error}</div>}
+          {error && <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium rounded-lg">{error}</div>}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+              <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
                 Select Student
               </label>
               <select
                 value={selectedStudent}
                 onChange={(e) => setSelectedStudent(e.target.value)}
-                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
                 required
               >
                 {students.map((st) => (
@@ -124,13 +124,13 @@ const FeeCollection = () => {
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+              <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
                 Select Fee Category
               </label>
               <select
                 value={selectedStructure}
                 onChange={(e) => handleStructureChange(e.target.value)}
-                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
                 required
               >
                 {structures.map((st) => (
@@ -151,21 +151,21 @@ const FeeCollection = () => {
               required
             />
 
-            <Button type="submit" variant="primary" className="w-full mt-2" loading={submitting}>
+            <Button type="submit" variant="primary" className="w-full mt-2 shadow-xs" loading={submitting}>
               Record Fee Payment
             </Button>
           </form>
         </div>
 
         {/* Transactions Audit Table */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4">
-          <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-            <Receipt className="w-4.5 h-4.5 text-[#5C1D24]" /> Recent Payment Transactions
+        <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
+          <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+            <Receipt className="w-4.5 h-4.5 text-indigo-600" /> Recent Payment Transactions
           </h3>
 
-          <div className="overflow-x-auto rounded-lg border border-[#E5E0D8]">
-            <table className="w-full text-left text-xs font-semibold">
-              <thead className="bg-[#F7F5F0] text-[10px] font-bold text-[#64748B] uppercase tracking-wider border-b border-[#E5E0D8] select-none">
+          <div className="overflow-x-auto rounded-lg border border-slate-200">
+            <table className="w-full text-left text-xs font-medium">
+              <thead className="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 select-none font-['Outfit']">
                 <tr>
                   <th className="px-4 py-3">Receipt No.</th>
                   <th className="px-4 py-3">Student</th>
@@ -175,14 +175,14 @@ const FeeCollection = () => {
                   <th className="px-4 py-3 text-center">View</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#F7F5F0] text-[#64748B]">
+              <tbody className="divide-y divide-slate-100 text-slate-600">
                 {payments.map((p) => (
-                  <tr key={p.id} className="hover:bg-[#F7F5F0]/50 transition-colors">
-                    <td className="px-4 py-3 font-mono text-xs text-[#1B2A4A] font-bold">{p.receipt_number}</td>
-                    <td className="px-4 py-3 font-bold text-[#1A1918]">
+                  <tr key={p.id} className="hover:bg-slate-50/70 transition-colors">
+                    <td className="px-4 py-3 font-mono text-xs text-indigo-600 font-semibold">{p.receipt_number}</td>
+                    <td className="px-4 py-3 font-semibold text-slate-900">
                       {p.student_details?.user?.first_name} {p.student_details?.user?.last_name}
                     </td>
-                    <td className="px-4 py-3 text-xs">{p.fee_structure_details?.name}</td>
+                    <td className="px-4 py-3 text-xs text-slate-600">{p.fee_structure_details?.name}</td>
                     <td className="px-4 py-3 font-bold text-emerald-600">₹{parseFloat(p.amount_paid).toLocaleString('en-IN')}</td>
                     <td className="px-4 py-3">
                       <Badge variant={p.status === 'PAID' ? 'success' : 'warning'}>{p.status}</Badge>
@@ -193,7 +193,7 @@ const FeeCollection = () => {
                           setActiveReceipt(p);
                           setReceiptModalOpen(true);
                         }}
-                        className="text-xs text-blue-600 hover:underline font-bold"
+                        className="text-xs text-indigo-600 hover:text-indigo-700 hover:underline font-semibold"
                       >
                         Receipt
                       </button>
@@ -203,7 +203,7 @@ const FeeCollection = () => {
 
                 {payments.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-4 py-8 text-center text-[#64748B] font-medium italic">
+                    <td colSpan={6} className="px-4 py-8 text-center text-slate-400 font-medium italic">
                       No fee transactions recorded yet.
                     </td>
                   </tr>
@@ -217,46 +217,46 @@ const FeeCollection = () => {
       {/* Digital Receipt Modal */}
       <Modal isOpen={receiptModalOpen} onClose={() => setReceiptModalOpen(false)} title="Official Fee Payment Receipt">
         {activeReceipt && (
-          <div className="space-y-6 pt-2">
-            <div className="text-center border-b border-[#F7F5F0] pb-4">
-              <div className="w-10 h-10 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] text-[#1B2A4A] flex items-center justify-center mx-auto mb-3">
+          <div className="space-y-6 pt-2 font-['Inter']">
+            <div className="text-center border-b border-slate-100 pb-4">
+              <div className="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mx-auto mb-3">
                 <GraduationCap className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-['Newsreader'] font-bold text-[#1A1918] uppercase tracking-wider">Official Payment Receipt</h3>
-              <div className="font-mono text-xs text-[#1B2A4A] font-bold">{activeReceipt.receipt_number}</div>
-              <div className="text-[11px] text-[#64748B] mt-1 font-semibold">{new Date(activeReceipt.created_at).toLocaleString()}</div>
+              <h3 className="text-lg font-['Outfit'] font-bold text-slate-900 uppercase tracking-wider">Official Payment Receipt</h3>
+              <div className="font-mono text-xs text-indigo-600 font-semibold">{activeReceipt.receipt_number}</div>
+              <div className="text-[11px] text-slate-500 mt-1 font-medium">{new Date(activeReceipt.created_at).toLocaleString()}</div>
             </div>
 
-            <div className="space-y-2 text-xs font-semibold">
-              <div className="flex justify-between py-1 border-b border-[#F7F5F0]">
-                <span className="text-[#64748B]">Student Name</span>
-                <span className="font-bold text-[#1A1918]">
+            <div className="space-y-2 text-xs font-medium">
+              <div className="flex justify-between py-1.5 border-b border-slate-100">
+                <span className="text-slate-500">Student Name</span>
+                <span className="font-semibold text-slate-900">
                   {activeReceipt.student_details?.user?.first_name} {activeReceipt.student_details?.user?.last_name}
                 </span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F7F5F0]">
-                <span className="text-[#64748B]">Admission Number</span>
-                <span className="font-mono text-[#1B2A4A] font-bold">{activeReceipt.student_details?.admission_number}</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-100">
+                <span className="text-slate-500">Admission Number</span>
+                <span className="font-mono text-slate-700 font-semibold">{activeReceipt.student_details?.admission_number}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F7F5F0]">
-                <span className="text-[#64748B]">Fee Category</span>
-                <span className="font-bold text-[#1A1918]">{activeReceipt.fee_structure_details?.name}</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-100">
+                <span className="text-slate-500">Fee Category</span>
+                <span className="font-semibold text-slate-900">{activeReceipt.fee_structure_details?.name}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F7F5F0]">
-                <span className="text-[#64748B]">Category Total</span>
-                <span className="font-mono text-[#1A1918]">₹{parseFloat(activeReceipt.fee_structure_details?.amount || 0).toLocaleString('en-IN')}</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-100">
+                <span className="text-slate-500">Category Total</span>
+                <span className="font-mono text-slate-900">₹{parseFloat(activeReceipt.fee_structure_details?.amount || 0).toLocaleString('en-IN')}</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-[#F7F5F0]">
-                <span className="text-[#64748B]">Amount Paid</span>
+              <div className="flex justify-between py-1.5 border-b border-slate-100">
+                <span className="text-slate-500">Amount Paid</span>
                 <span className="font-mono font-bold text-emerald-600 text-sm">₹{parseFloat(activeReceipt.amount_paid || 0).toLocaleString('en-IN')}</span>
               </div>
-              <div className="flex justify-between py-1 items-center">
-                <span className="text-[#64748B]">Payment Status</span>
+              <div className="flex justify-between py-1.5 items-center">
+                <span className="text-slate-500">Payment Status</span>
                 <Badge variant={activeReceipt.status === 'PAID' ? 'success' : 'warning'}>{activeReceipt.status}</Badge>
               </div>
             </div>
 
-            <Button variant="primary" className="w-full gap-2" onClick={() => window.print()}>
+            <Button variant="primary" className="w-full gap-2 shadow-xs" onClick={() => window.print()}>
               <Printer className="w-4 h-4" /> Print Digital Receipt
             </Button>
           </div>

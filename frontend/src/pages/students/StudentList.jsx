@@ -433,10 +433,10 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
       accessor: 'user',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-[#F7F5F0] border border-[#E5E0D8] text-[#1B2A4A] flex items-center justify-center font-bold text-xs">
+          <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs shadow-xs font-['Outfit']">
             {row.user?.first_name?.[0]?.toUpperCase() || 'S'}
           </div>
-          <div className="font-bold text-[#1A1918]">
+          <div className="font-semibold text-slate-900 font-['Outfit']">
             {row.user?.first_name} {row.user?.last_name}
           </div>
         </div>
@@ -446,7 +446,7 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
       header: 'Admission No.',
       accessor: 'admission_number',
       render: (row) => (
-        <span className="font-mono text-xs font-bold text-[#1B2A4A] bg-[#F7F5F0] px-2 py-0.5 rounded border border-[#E5E0D8]">
+        <span className="font-mono text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-200">
           {row.admission_number || 'N/A'}
         </span>
       )
@@ -455,8 +455,8 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
       header: 'Roll No.',
       accessor: 'roll_number',
       render: (row) => (
-        <span className="font-mono text-xs font-bold bg-[#F7F5F0] px-2 py-0.5 rounded text-[#1B2A4A] border border-[#E5E0D8]">
-          {row.roll_number || 'N/A'}
+        <span className="font-mono text-xs font-semibold bg-slate-100 px-2.5 py-0.5 rounded-md text-slate-700 border border-slate-200">
+          #{row.roll_number || 'N/A'}
         </span>
       )
     },
@@ -465,11 +465,11 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
       accessor: 'guardian_name',
       render: (row) => (
         <div>
-          <div className="font-bold text-xs text-[#1A1918]">{row.guardian_name || 'N/A'}</div>
-          <div className="text-[10px] text-[#64748B] font-medium flex flex-col gap-0.5 mt-0.5">
+          <div className="font-semibold text-xs text-slate-900 font-['Outfit']">{row.guardian_name || 'N/A'}</div>
+          <div className="text-[11px] text-slate-500 font-medium flex flex-col gap-0.5 mt-0.5">
             {row.guardian_phone && <span className="font-mono">📞 {row.guardian_phone}</span>}
-            {row.guardian_email && <span className="font-mono text-[#1B2A4A]">✉️ {row.guardian_email}</span>}
-            {!row.guardian_phone && !row.guardian_email && <span className="italic">No contact details</span>}
+            {row.guardian_email && <span className="font-mono text-indigo-600">✉️ {row.guardian_email}</span>}
+            {!row.guardian_phone && !row.guardian_email && <span className="italic text-slate-400">No contact details</span>}
           </div>
         </div>
       )
@@ -479,21 +479,21 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
       accessor: 'actions',
       render: (row) => {
         if (!canManageStudents && user?.role !== 'SUPER_ADMIN') {
-          return <span className="text-xs text-[#64748B] italic">Read-only</span>;
+          return <span className="text-xs text-slate-400 italic">Read-only</span>;
         }
 
         return (
           <div className="flex items-center gap-1">
             <button
               onClick={() => handleStartEdit(row)}
-              className="p-1.5 rounded-lg text-[#64748B] hover:text-[#1B2A4A] hover:bg-[#1B2A4A]/10 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors cursor-pointer"
               title="Edit Student"
             >
               <Edit2 className="w-4 h-4" />
             </button>
             <button
               onClick={() => queueDelete(row.id)}
-              className="p-1.5 rounded-lg text-[#64748B] hover:text-[#5C1D24] hover:bg-[#5C1D24]/10 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
               title="Delete Student"
             >
               <Trash2 className="w-4 h-4" />
@@ -507,29 +507,29 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
   const columns = allColumns;
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-6 font-['Inter'] text-slate-900">
       
       {/* Category Pill Indicator */}
       <div className="flex items-center gap-2 select-none">
-        <span className="px-2.5 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-[10px] font-bold uppercase tracking-wider">
+        <span className="px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-[10px] font-bold uppercase tracking-wider">
           Directory
         </span>
-        <span className="text-[#64748B] text-xs font-semibold">/</span>
-        <span className="text-xs font-bold text-[#1A1918]">Students Directory</span>
+        <span className="text-slate-400 text-xs font-semibold">/</span>
+        <span className="text-xs font-bold text-slate-900">Students Directory</span>
       </div>
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Students Directory</h1>
-          <p className="text-xs text-[#64748B] mt-1">Manage student enrollments, sections, and guardian contacts.</p>
+          <h1 className="text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">Students Directory</h1>
+          <p className="text-xs text-slate-500 mt-1">Manage student enrollments, sections, and guardian contacts.</p>
         </div>
         {(canManageStudents || user?.role === 'SUPER_ADMIN') && (
           <div className="flex items-center gap-2">
             <Button variant="secondary" size="sm" onClick={openBulkModal} className="gap-2 shadow-xs">
-              <Upload className="w-4 h-4" /> Bulk Upload (CSV)
+              <Upload className="w-4 h-4 text-indigo-600" /> Bulk Upload (CSV)
             </Button>
-            <Button variant="primary" size="sm" onClick={openEnrollModal} className="gap-2 shadow-sm">
+            <Button variant="primary" size="sm" onClick={openEnrollModal} className="gap-2 shadow-xs">
               <Plus className="w-4 h-4" /> Enroll Student
             </Button>
           </div>
@@ -537,27 +537,27 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
       </div>
 
       {/* Filter Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-xs">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
         <div className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#64748B]" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             placeholder="Search student or admission no..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-9 pr-4 py-2 text-xs font-semibold text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs font-semibold text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
           />
         </div>
 
         {user?.role !== 'TEACHER' && (
           <div className="flex items-center gap-3 w-full sm:w-auto">
-            <label className="text-xs font-bold text-[#64748B] uppercase tracking-wider shrink-0">
+            <label className="text-xs font-bold text-slate-600 uppercase tracking-wider shrink-0 font-['Outfit']">
               Filter Section:
             </label>
             <select
               value={selectedSection}
               onChange={(e) => setSelectedSection(e.target.value)}
-              className="bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors w-full sm:w-64"
+              className="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:border-indigo-600 transition-colors w-full sm:w-64 cursor-pointer"
             >
               <option value="">All Sections</option>
               {sections.map((sec) => (
@@ -570,9 +570,9 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
         )}
       </div>
 
-      <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm">
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
         {loading ? (
-          <div className="py-20 text-center text-xs text-[#64748B] font-semibold animate-pulse">
+          <div className="py-20 text-center text-xs text-slate-500 font-semibold animate-pulse">
             Retrieving enrolled student accounts...
           </div>
         ) : (
@@ -588,8 +588,8 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
         maxWidth="max-w-xl"
       >
         {error && (
-          <div className="p-2.5 bg-red-50 border border-red-200 text-red-600 text-xs font-bold rounded-lg mb-3 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-600 shrink-0" />
+          <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-xl mb-3 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-600 shrink-0" />
             <span>{error}</span>
           </div>
         )}
@@ -616,11 +616,11 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
           {/* Row 2: Assigned Class Section & Roll Number */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1 font-['Outfit']">
                 Assigned Class & Section
               </label>
               {user?.role === 'TEACHER' ? (
-                <div className="w-full bg-[#F7F5F0]/70 border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-bold text-[#1B2A4A] select-none truncate">
+                <div className="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-indigo-700 select-none truncate">
                   {user.class_teacher_sections?.[0]
                     ? `${user.class_teacher_sections[0].class_level_name} — ${cleanSecDisplay(user.class_teacher_sections[0].section_name)}`
                     : 'Assigned Section'}
@@ -629,7 +629,7 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
                 <select
                   value={formData.section}
                   onChange={(e) => handleSectionSelectChange(e.target.value)}
-                  className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:border-indigo-600 transition-colors cursor-pointer"
                   required
                 >
                   <option value="">Select Section</option>
@@ -686,12 +686,12 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
           </div>
 
           {/* Password Email Note Pill */}
-          <div className="text-[10px] text-[#64748B] bg-[#F7F5F0] px-3 py-2 rounded-lg border border-[#E5E0D8] flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+          <div className="text-[11px] text-slate-600 bg-indigo-50 px-3.5 py-2.5 rounded-xl border border-indigo-100 flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-indigo-600 shrink-0" />
             <span>Temporary login credentials will be automatically emailed to Guardian Email.</span>
           </div>
 
-          <Button type="submit" variant="primary" className="w-full mt-2" loading={submitting}>
+          <Button type="submit" variant="primary" className="w-full mt-2 shadow-xs" loading={submitting}>
             {editStudent ? "Save Changes" : "Enroll Student Account"}
           </Button>
         </form>
@@ -707,27 +707,27 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
         <div className="space-y-4">
           
           {bulkError && (
-            <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-bold rounded-lg flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-xl flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
               <span>{bulkError}</span>
             </div>
           )}
 
           {bulkSuccessMsg && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold rounded-lg flex items-center gap-2">
+            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-xl flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
               <span>{bulkSuccessMsg}</span>
             </div>
           )}
 
           {/* Top Controls: Section & Sample CSV */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-[#F7F5F0] p-3 rounded-xl border border-[#E5E0D8]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1 font-['Outfit']">
                 1. Target Class Section
               </label>
               {user?.role === 'TEACHER' ? (
-                <div className="w-full bg-white border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-bold text-[#1B2A4A] truncate">
+                <div className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-indigo-700 truncate">
                   {user.class_teacher_sections?.[0]
                     ? `${user.class_teacher_sections[0].class_level_name} — ${cleanSecDisplay(user.class_teacher_sections[0].section_name)}`
                     : 'Assigned Section'}
@@ -736,7 +736,7 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
                 <select
                   value={bulkSection}
                   onChange={(e) => setBulkSection(e.target.value)}
-                  className="w-full bg-white border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:border-indigo-600 cursor-pointer"
                 >
                   <option value="">Select Target Section</option>
                   {sections.map((sec) => (
@@ -749,13 +749,13 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-1">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1 font-['Outfit']">
                 2. CSV Template
               </label>
               <button
                 type="button"
                 onClick={handleDownloadSampleCSV}
-                className="w-full py-2 bg-white hover:bg-[#1B2A4A] hover:text-white border border-[#E5E0D8] rounded-lg text-xs font-semibold text-[#1B2A4A] transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
+                className="w-full py-2 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-indigo-600 transition-colors flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
               >
                 <Download className="w-3.5 h-3.5" /> Download Sample CSV
               </button>
@@ -764,12 +764,12 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
 
           {/* CSV File Upload Zone */}
           {bulkRows.length === 0 ? (
-            <div className="border-2 border-dashed border-[#E5E0D8] rounded-xl p-6 text-center hover:border-[#1B2A4A] transition-colors bg-white">
-              <FileSpreadsheet className="w-8 h-8 mx-auto text-[#1B2A4A] mb-2" />
-              <p className="text-xs font-bold text-[#1A1918]">Upload your Student List CSV</p>
-              <p className="text-[10px] text-[#64748B] mt-0.5">Required headers: <code className="font-mono font-bold text-[#1B2A4A]">first_name, last_name</code></p>
+            <div className="border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center hover:border-indigo-400 transition-colors bg-white">
+              <FileSpreadsheet className="w-8 h-8 mx-auto text-indigo-600 mb-2" />
+              <p className="text-xs font-bold text-slate-900 font-['Outfit']">Upload your Student List CSV</p>
+              <p className="text-[11px] text-slate-400 mt-0.5">Required headers: <code className="font-mono font-bold text-indigo-600">first_name, last_name</code></p>
 
-              <label className="mt-3 inline-block px-4 py-2 rounded-lg bg-[#1B2A4A] text-white text-xs font-semibold cursor-pointer hover:bg-[#5C1D24] transition-colors shadow-xs">
+              <label className="mt-3 inline-block px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-semibold cursor-pointer hover:bg-indigo-700 transition-all shadow-xs shadow-indigo-600/20">
                 Select CSV File
                 <input
                   type="file"
@@ -783,21 +783,21 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
             /* Parsed Rows Preview Grid */
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#1A1918]">
+                <span className="text-xs font-bold text-slate-900 font-['Outfit']">
                   Parsed {bulkRows.length} Students for Batch Enrollment:
                 </span>
                 <button
                   type="button"
                   onClick={() => setBulkRows([])}
-                  className="text-xs font-semibold text-[#5C1D24] hover:underline"
+                  className="text-xs font-semibold text-rose-600 hover:underline cursor-pointer"
                 >
                   Clear & Re-upload
                 </button>
               </div>
 
-              <div className="max-h-48 overflow-y-auto border border-[#E5E0D8] rounded-lg">
+              <div className="max-h-48 overflow-y-auto border border-slate-200 rounded-xl">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-[#F7F5F0] text-[#1A1918] uppercase text-[9px] font-bold sticky top-0 border-b border-[#E5E0D8]">
+                  <thead className="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold sticky top-0 border-b border-slate-200 font-['Outfit']">
                     <tr>
                       <th className="px-3 py-2">#</th>
                       <th className="px-3 py-2">Student Name</th>
@@ -805,13 +805,13 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
                       <th className="px-3 py-2">Guardian Contact</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E5E0D8]">
+                  <tbody className="divide-y divide-slate-100">
                     {bulkRows.map((r, idx) => (
-                      <tr key={idx} className="hover:bg-[#F7F5F0]/50">
-                        <td className="px-3 py-1.5 font-mono text-[10px] text-[#64748B]">{idx + 1}</td>
-                        <td className="px-3 py-1.5 font-bold text-[#1A1918]">{r.first_name} {r.last_name}</td>
-                        <td className="px-3 py-1.5 text-[#64748B]">{r.guardian_name || 'N/A'}</td>
-                        <td className="px-3 py-1.5 font-mono text-[10px] text-[#1B2A4A]">{r.guardian_phone || r.guardian_email || 'N/A'}</td>
+                      <tr key={idx} className="hover:bg-slate-50/60">
+                        <td className="px-3 py-1.5 font-mono text-[10px] text-slate-400">{idx + 1}</td>
+                        <td className="px-3 py-1.5 font-semibold text-slate-900 font-['Outfit']">{r.first_name} {r.last_name}</td>
+                        <td className="px-3 py-1.5 text-slate-500">{r.guardian_name || 'N/A'}</td>
+                        <td className="px-3 py-1.5 font-mono text-[10px] text-indigo-600">{r.guardian_phone || r.guardian_email || 'N/A'}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -821,11 +821,11 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
           )}
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#F7F5F0]">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
             <button
               type="button"
               onClick={() => setBulkModalOpen(false)}
-              className="px-4 py-2 rounded-lg text-xs font-semibold text-[#64748B] hover:text-[#1A1918] transition-colors"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
             >
               Cancel
             </button>
@@ -849,13 +849,13 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
         title="Confirm Student Deletion"
       >
         <div className="space-y-4">
-          <p className="text-xs text-[#64748B] leading-relaxed">
+          <p className="text-xs text-slate-500 leading-relaxed">
             Are you sure you want to permanently delete this student record? This will erase the student profile, grade reports, attendance histories, and suspend their login credentials.
           </p>
-          <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#F7F5F0]">
+          <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
             <button
               onClick={() => setDeleteConfirmOpen(false)}
-              className="px-4 py-2 rounded-lg text-xs font-semibold text-[#64748B] hover:text-[#1A1918] transition-colors"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
             >
               Cancel
             </button>

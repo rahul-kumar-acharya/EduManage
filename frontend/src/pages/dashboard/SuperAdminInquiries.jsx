@@ -36,12 +36,12 @@ const SuperAdminInquiries = () => {
       accessor: 'name',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#1B2A4A] text-white flex items-center justify-center font-bold text-xs shrink-0 border border-[#1B2A4A]">
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs shadow-indigo-600/20 font-['Outfit']">
             <Mail className="w-4 h-4" />
           </div>
           <div>
-            <div className="font-bold text-[#1A1918]">{row.name}</div>
-            <div className="text-[10px] text-[#5C1D24] font-mono">{row.email}</div>
+            <div className="font-semibold text-slate-900 font-['Outfit']">{row.name}</div>
+            <div className="text-[11px] text-indigo-600 font-mono font-medium">{row.email}</div>
           </div>
         </div>
       )
@@ -51,8 +51,8 @@ const SuperAdminInquiries = () => {
       accessor: 'subject',
       render: (row) => (
         <div className="space-y-0.5 max-w-md">
-          <div className="text-xs font-bold text-[#1A1918] truncate">{row.subject}</div>
-          <div className="text-[11px] text-[#64748B] line-clamp-2">{row.message}</div>
+          <div className="text-xs font-semibold text-slate-900 truncate font-['Outfit']">{row.subject}</div>
+          <div className="text-[11px] text-slate-500 line-clamp-2">{row.message}</div>
         </div>
       )
     },
@@ -60,10 +60,10 @@ const SuperAdminInquiries = () => {
       header: 'Status',
       accessor: 'is_read',
       render: (row) => (
-        <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider inline-flex items-center gap-1 ${
+        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider inline-flex items-center gap-1 ${
           !row.is_read
-            ? 'bg-amber-500/10 text-amber-700 border border-amber-500/20'
-            : 'bg-emerald-500/10 text-emerald-700 border border-emerald-500/20'
+            ? 'bg-amber-50 text-amber-700 border border-amber-200'
+            : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
         }`}>
           {!row.is_read ? <Clock className="w-3 h-3 text-amber-600" /> : <CheckCircle2 className="w-3 h-3 text-emerald-600" />} {!row.is_read ? 'New Inquiry' : 'Reviewed'}
         </span>
@@ -73,26 +73,26 @@ const SuperAdminInquiries = () => {
       header: 'Received Date',
       accessor: 'created_at',
       render: (row) => (
-        <span className="text-xs text-[#64748B] font-mono">{row.created_at}</span>
+        <span className="text-xs text-slate-500 font-mono">{row.created_at}</span>
       )
     }
   ];
 
   return (
-    <div className="space-y-8 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-8 font-['Inter'] text-slate-900">
       
       {/* Header Banner */}
-      <div className="bg-white p-6 sm:p-8 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div className="space-y-2">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="space-y-1.5">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Newsreader'] font-bold text-[#1A1918]">
+            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
               Website Contact Inquiries
             </h1>
-            <span className="px-3 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-xs font-semibold uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold uppercase tracking-wider">
               support.acharyacampus@gmail.com
             </span>
           </div>
-          <p className="text-[#64748B] text-xs sm:text-sm">
+          <p className="text-slate-500 text-xs sm:text-sm">
             Real contact form messages dispatched from visitors on your website.
           </p>
         </div>
@@ -100,30 +100,30 @@ const SuperAdminInquiries = () => {
         <button 
           onClick={fetchInquiries}
           disabled={loading}
-          className="bg-white hover:bg-[#F7F5F0] text-[#1A1918] border border-[#E5E0D8] px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
+          className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer disabled:opacity-50"
         >
-          <RefreshCw className={`w-4 h-4 text-[#1B2A4A] ${loading ? 'animate-spin' : ''}`} /> Refresh Messages
+          <RefreshCw className={`w-4 h-4 text-indigo-600 ${loading ? 'animate-spin' : ''}`} /> Refresh Messages
         </button>
       </div>
 
       {/* Inquiries Table */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="text-lg font-['Newsreader'] font-bold text-[#1A1918]">Inquiries Received ({inquiries.length})</h2>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <h2 className="text-lg font-['Outfit'] font-bold text-slate-900">Inquiries Received ({inquiries.length})</h2>
           
-          <div className="relative w-64">
-            <Search className="w-3.5 h-3.5 text-[#64748B] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <div className="relative w-full sm:w-64">
+            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               placeholder="Search inquiry..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-white border border-[#E5E0D8] rounded-lg pl-9 pr-3 py-1.5 text-xs text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+              className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-600 transition-colors"
             />
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
           <Table columns={columns} data={filteredInquiries} emptyMessage="No contact inquiries received yet. Any messages submitted through the website contact page will appear here live." />
         </div>
       </div>

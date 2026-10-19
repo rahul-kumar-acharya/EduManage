@@ -5,12 +5,12 @@ import Footer from '../components/footer/Footer';
 
 const PublicLayout = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F5F0] text-[#1A1918] selection:bg-[#1B2A4A] selection:text-white font-['Plus_Jakarta_Sans'] relative">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-800 selection:bg-indigo-600 selection:text-white font-['Inter'] relative">
       {/* Fixed Top Navbar */}
       <PublicNavbar />
 
-      {/* Main Content Area - Standardized Top Padding (pt-28) */}
-      <main className="flex-1 pt-28 pb-16">
+      {/* Main Content Area */}
+      <main className="flex-1 pt-24 pb-16">
         <Outlet />
       </main>
 

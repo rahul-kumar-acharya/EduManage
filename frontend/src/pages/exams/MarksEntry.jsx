@@ -134,36 +134,36 @@ const MarksEntry = () => {
   };
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-6 font-['Inter'] text-slate-900">
       
       {/* Category Pill Indicator */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">
-        <Award className="w-3.5 h-3.5 text-[#5C1D24]" />
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-indigo-50 border border-indigo-200/60 text-[10px] font-bold text-indigo-700 uppercase tracking-wider">
+        <Award className="w-3.5 h-3.5 text-indigo-600" />
         <span>Institutional Gradebook Ledger</span>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Subject Gradebook Entry</h1>
-          <p className="text-xs text-[#64748B] mt-1">Log exam scores for enrolled students with automatic grade scale mapping.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Subject Gradebook Entry</h1>
+          <p className="text-sm text-slate-500 mt-1">Log exam scores for enrolled students with automatic grade scale mapping.</p>
         </div>
         {students.length > 0 && (
-          <Button variant="primary" size="sm" onClick={handleSave} loading={saving} className="gap-2 shadow-sm">
+          <Button variant="primary" size="sm" onClick={handleSave} loading={saving} className="gap-2 shadow-xs">
             <Save className="w-4 h-4" /> Save Marks
           </Button>
         )}
       </div>
 
       {/* Selectors */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-sm">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
         <div>
-          <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
             Examination Term
           </label>
           <select
             value={selectedExam}
             onChange={(e) => setSelectedExam(e.target.value)}
-            className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
           >
             {exams.map((ex) => (
               <option key={ex.id} value={ex.id}>
@@ -174,13 +174,13 @@ const MarksEntry = () => {
         </div>
 
         <div>
-          <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
             Class Section
           </label>
           <select
             value={selectedSection}
             onChange={(e) => setSelectedSection(e.target.value)}
-            className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
           >
             {sections.map((sec) => (
               <option key={sec.id} value={sec.id}>
@@ -191,13 +191,13 @@ const MarksEntry = () => {
         </div>
 
         <div>
-          <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
             Subject
           </label>
           <select
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
-            className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
           >
             {subjects.map((sub) => (
               <option key={sub.id} value={sub.id}>
@@ -209,16 +209,16 @@ const MarksEntry = () => {
       </div>
 
       {message && (
-        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs font-semibold rounded-lg flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4" />
+        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium rounded-lg flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
           <span>{message}</span>
         </div>
       )}
 
       {/* Gradebook Table */}
-      <div className="w-full overflow-x-auto rounded-xl border border-[#E5E0D8] bg-white shadow-sm font-semibold">
-        <table className="w-full text-left text-xs text-[#1A1918]">
-          <thead className="bg-[#F7F5F0] text-[10px] font-bold text-[#64748B] uppercase tracking-wider border-b border-[#E5E0D8] select-none">
+      <div className="w-full overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xs font-medium">
+        <table className="w-full text-left text-xs text-slate-900">
+          <thead className="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 select-none font-['Outfit']">
             <tr>
               <th className="px-6 py-4">Student</th>
               <th className="px-6 py-4">Admission No.</th>
@@ -228,7 +228,7 @@ const MarksEntry = () => {
               <th className="px-6 py-4">Grade</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#F7F5F0] text-[#64748B]">
+          <tbody className="divide-y divide-slate-100 text-slate-600">
             {students.length > 0 ? (
               students.map((st) => {
                 const rec = scoresMap[st.id] || { marks_obtained: 0, max_marks: 100 };
@@ -238,11 +238,11 @@ const MarksEntry = () => {
                 const gInfo = computeGrade(pct);
 
                 return (
-                  <tr key={st.id} className="hover:bg-[#F7F5F0]/50 transition-colors">
-                    <td className="px-6 py-4 font-bold text-[#1A1918]">
+                  <tr key={st.id} className="hover:bg-slate-50/70 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-slate-900">
                       {st.user?.first_name} {st.user?.last_name}
                     </td>
-                    <td className="px-6 py-4 font-mono text-xs text-[#1B2A4A] font-bold">{st.admission_number}</td>
+                    <td className="px-6 py-4 font-mono text-xs text-slate-700 font-semibold">{st.admission_number}</td>
                     <td className="px-6 py-4 w-40">
                       <input
                         type="number"
@@ -251,7 +251,7 @@ const MarksEntry = () => {
                         step="0.5"
                         value={rec.marks_obtained}
                         onChange={(e) => handleScoreChange(st.id, 'marks_obtained', e.target.value)}
-                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded px-3 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600"
                       />
                     </td>
                     <td className="px-6 py-4 w-32">
@@ -260,10 +260,10 @@ const MarksEntry = () => {
                         min="1"
                         value={rec.max_marks}
                         onChange={(e) => handleScoreChange(st.id, 'max_marks', e.target.value)}
-                        className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded px-3 py-1.5 text-xs text-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600"
                       />
                     </td>
-                    <td className="px-6 py-4 font-mono text-xs font-bold text-[#1A1918]">{pct}%</td>
+                    <td className="px-6 py-4 font-mono text-xs font-bold text-slate-900">{pct}%</td>
                     <td className="px-6 py-4">
                       <Badge variant={gInfo.variant}>{gInfo.letter}</Badge>
                     </td>
@@ -272,7 +272,7 @@ const MarksEntry = () => {
               })
             ) : (
               <tr>
-                <td colSpan={6} className="px-6 py-10 text-center text-[#64748B] font-medium italic">
+                <td colSpan={6} className="px-6 py-10 text-center text-slate-400 font-medium italic">
                   {loading ? 'Loading gradebook...' : 'No enrolled students found in this section.'}
                 </td>
               </tr>

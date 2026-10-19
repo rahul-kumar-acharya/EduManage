@@ -64,27 +64,27 @@ const AccountantDashboard = () => {
   }).format(totalDuesVal);
 
   return (
-    <div className="space-y-8 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-8 font-['Inter'] text-slate-800">
       
       {/* Welcome Banner */}
-      <div className="bg-white p-6 sm:p-8 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Newsreader'] font-bold text-[#1A1918]">
+            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900">
               Financial Control Board 👋
             </h1>
-            <span className="px-3 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-xs font-semibold uppercase tracking-wider">
+            <span className="px-3 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold tracking-wide">
               Accountant Workspace
             </span>
           </div>
-          <p className="text-[#64748B] text-xs sm:text-sm">
+          <p className="text-slate-500 text-xs sm:text-sm">
             Log invoice collections, provision digital transaction receipts, and audit overdue student balances.
           </p>
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <Link
             to="/dashboard/fees/collection"
-            className="flex-1 sm:flex-none bg-[#1B2A4A] hover:bg-[#5C1D24] text-white px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm"
+            className="flex-1 sm:flex-none bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-sm shadow-indigo-600/25 flex items-center justify-center gap-2 active:scale-[0.99]"
           >
             <Plus className="w-4 h-4" /> Collect Student Fee
           </Link>
@@ -92,7 +92,7 @@ const AccountantDashboard = () => {
       </div>
 
       {loading ? (
-        <div className="py-20 text-center text-xs text-[#64748B] font-semibold">
+        <div className="py-20 text-center text-xs text-slate-400 font-semibold">
           Recalculating real-time ledger indexes...
         </div>
       ) : (
@@ -107,13 +107,13 @@ const AccountantDashboard = () => {
             ].map((m, idx) => {
               const Icon = m.icon;
               return (
-                <div key={idx} className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+                <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-md transition-all flex items-center justify-between">
                   <div className="space-y-1">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">{m.title}</span>
-                    <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">{m.value}</strong>
-                    <span className="text-[11px] text-[#64748B] block">{m.desc}</span>
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">{m.title}</span>
+                    <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">{m.value}</strong>
+                    <span className="text-[11px] text-slate-500 block">{m.desc}</span>
                   </div>
-                  <div className="w-10 h-10 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-2xs">
                     <Icon className="w-5 h-5" />
                   </div>
                 </div>
@@ -126,42 +126,42 @@ const AccountantDashboard = () => {
             
             {/* Left Side recent ledger table */}
             <div className="lg:col-span-8 space-y-6">
-              <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4">
-                <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-                  <Receipt className="w-4.5 h-4.5 text-[#1B2A4A]" /> Recent Receipts Issued
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
+                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                  <Receipt className="w-4.5 h-4.5 text-indigo-600" /> Recent Receipts Issued
                 </h3>
 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs font-semibold">
                     <thead>
-                      <tr className="text-[#64748B] border-b border-[#E5E0D8]">
-                        <th className="pb-3 font-bold uppercase tracking-wider">Receipt No.</th>
-                        <th className="pb-3 font-bold uppercase tracking-wider">Student Name</th>
-                        <th className="pb-3 font-bold uppercase tracking-wider">Structure Category</th>
-                        <th className="pb-3 font-bold uppercase tracking-wider">Amount Paid</th>
-                        <th className="pb-3 font-bold uppercase tracking-wider">Payment Mode</th>
+                      <tr className="text-slate-500 border-b border-slate-200">
+                        <th className="pb-3 font-semibold uppercase tracking-wider text-[11px]">Receipt No.</th>
+                        <th className="pb-3 font-semibold uppercase tracking-wider text-[11px]">Student Name</th>
+                        <th className="pb-3 font-semibold uppercase tracking-wider text-[11px]">Structure Category</th>
+                        <th className="pb-3 font-semibold uppercase tracking-wider text-[11px]">Amount Paid</th>
+                        <th className="pb-3 font-semibold uppercase tracking-wider text-[11px]">Payment Mode</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#F7F5F0] text-[#64748B]">
+                    <tbody className="divide-y divide-slate-100 text-slate-600">
                       {payments.length === 0 ? (
                         <tr>
-                          <td colSpan="5" className="py-8 text-center text-xs text-[#64748B] font-semibold">
+                          <td colSpan="5" className="py-8 text-center text-xs text-slate-400 font-medium">
                             No receipts issued yet.
                           </td>
                         </tr>
                       ) : (
                         payments.slice(0, 5).map((row, i) => (
-                          <tr key={i} className="hover:bg-[#F7F5F0]/50">
+                          <tr key={i} className="hover:bg-slate-50/60 transition-colors">
                             <td className="py-3.5 font-bold font-mono text-emerald-600">{row.receipt_number}</td>
-                            <td className="py-3.5 text-[#1A1918] font-bold">
+                            <td className="py-3.5 text-slate-900 font-bold">
                               {row.student?.user?.first_name} {row.student?.user?.last_name}
                             </td>
                             <td className="py-3.5">{row.fee_structure_name || row.fee_structure?.name}</td>
-                            <td className="py-3.5 font-mono font-bold text-[#1A1918]">
+                            <td className="py-3.5 font-mono font-bold text-slate-900">
                               {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(row.amount_paid)}
                             </td>
                             <td className="py-3.5">
-                              <span className="px-2 py-0.5 rounded bg-[#F7F5F0] border border-[#E5E0D8] text-[#64748B] font-mono text-[9px]">
+                              <span className="px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 font-mono text-[10px]">
                                 {row.status}
                               </span>
                             </td>
@@ -176,61 +176,61 @@ const AccountantDashboard = () => {
 
             {/* Right Side Quick Operations */}
             <div className="lg:col-span-4 space-y-6">
-              <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4">
-                <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-[#5C1D24]" /> Fast Action Portal
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
+                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-indigo-600" /> Fast Action Portal
                 </h3>
 
-                <div className="grid grid-cols-1 gap-3">
+                <div className="grid grid-cols-1 gap-2.5">
                   <Link 
                     to="/dashboard/fees/collection"
-                    className="p-3 bg-[#F7F5F0] hover:bg-[#E5E0D8]/40 border border-[#E5E0D8] rounded-xl flex items-center justify-between transition-colors group"
+                    className="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl flex items-center justify-between transition-colors group"
                   >
                     <div className="flex items-center gap-3">
                       <Receipt className="w-4 h-4 text-emerald-600" />
-                      <span className="text-xs font-bold text-[#1A1918]">Collect Student Fee</span>
+                      <span className="text-xs font-bold text-slate-900">Collect Student Fee</span>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#64748B] group-hover:text-[#1B2A4A] transition-colors" />
+                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors" />
                   </Link>
 
                   <Link 
                     to="/dashboard/fees/structures"
-                    className="p-3 bg-[#F7F5F0] hover:bg-[#E5E0D8]/40 border border-[#E5E0D8] rounded-xl flex items-center justify-between transition-colors group"
+                    className="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl flex items-center justify-between transition-colors group"
                   >
                     <div className="flex items-center gap-3">
-                      <Layers className="w-4 h-4 text-purple-600" />
-                      <span className="text-xs font-bold text-[#1A1918]">Fee Structure Editor</span>
+                      <Layers className="w-4 h-4 text-indigo-600" />
+                      <span className="text-xs font-bold text-slate-900">Fee Structure Editor</span>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#64748B] group-hover:text-[#1B2A4A] transition-colors" />
+                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors" />
                   </Link>
 
                   <Link 
                     to="/dashboard/fees/dues"
-                    className="p-3 bg-[#F7F5F0] hover:bg-[#E5E0D8]/40 border border-[#E5E0D8] rounded-xl flex items-center justify-between transition-colors group"
+                    className="p-3.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl flex items-center justify-between transition-colors group"
                   >
                     <div className="flex items-center gap-3">
                       <ArrowDownCircle className="w-4 h-4 text-rose-600" />
-                      <span className="text-xs font-bold text-[#1A1918]">Due Outstanding Audits</span>
+                      <span className="text-xs font-bold text-slate-900">Due Outstanding Audits</span>
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-[#64748B] group-hover:text-[#1B2A4A] transition-colors" />
+                    <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors" />
                   </Link>
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4">
-                <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[#1B2A4A]" /> Academic Billing Session
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
+                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-indigo-600" /> Academic Billing Session
                 </h3>
                 
-                <div className="p-3.5 bg-[#F7F5F0] border border-[#E5E0D8] rounded-xl text-xs space-y-2">
-                  <div className="flex justify-between items-center text-[10px] text-[#64748B] uppercase font-bold tracking-wider">
+                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-2">
+                  <div className="flex justify-between items-center text-[10px] text-slate-500 uppercase font-bold tracking-wider">
                     <span>Active Session</span>
-                    <span className="px-2 py-0.5 bg-[#1B2A4A]/10 text-[#1B2A4A] rounded text-[9px] font-bold">Current</span>
+                    <span className="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-full border border-indigo-100 text-[9px] font-semibold">Current</span>
                   </div>
-                  <p className="text-[#1A1918] font-bold text-sm">
+                  <p className="text-slate-900 font-bold text-sm font-['Outfit']">
                     {currentSession ? currentSession.name : 'No Active Session'}
                   </p>
-                  <div className="text-[10px] text-[#64748B] leading-relaxed">
+                  <div className="text-[10px] text-slate-500 leading-relaxed">
                     {currentSession ? (
                       `Term period spans from ${new Date(currentSession.start_date).toLocaleDateString()} to ${new Date(currentSession.end_date).toLocaleDateString()}.`
                     ) : (

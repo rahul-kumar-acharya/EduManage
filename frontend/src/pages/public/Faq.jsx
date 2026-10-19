@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { ChevronDown, HelpCircle, ArrowRight, ShieldCheck, Sparkles, Building2, CreditCard } from 'lucide-react';
 
 const Faq = () => {
-  const [openIndex, setOpenIndex] = useState(0);
+  const [openIndex, setOpenIndex] = useState('0-0');
 
   const toggleFaq = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -59,19 +59,19 @@ const Faq = () => {
   ];
 
   return (
-    <div className="space-y-16 font-['Plus_Jakarta_Sans']">
+    <div className="space-y-16 font-['Inter'] text-slate-800">
       <div className="max-w-4xl mx-auto px-6 space-y-12">
         
         {/* Page Header */}
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-xs font-semibold text-[#5C1D24] uppercase tracking-wider">
-            <HelpCircle className="w-4 h-4 text-[#5C1D24]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-200/80 text-xs font-semibold text-indigo-700 tracking-wide">
+            <HelpCircle className="w-4 h-4 text-indigo-600" />
             <span>Help Center & Knowledge Base</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-['Newsreader'] font-normal text-[#1A1918] tracking-tight">
+          <h1 className="text-4xl sm:text-5xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
             Frequently Asked Questions
           </h1>
-          <p className="text-[#64748B] text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
             Have questions about subdomain routing, multi-tenant security, or fee collection? Find clear answers below.
           </p>
         </div>
@@ -82,9 +82,9 @@ const Faq = () => {
             const Icon = cat.icon;
             return (
               <div key={catIdx} className="space-y-4">
-                <div className="flex items-center gap-2 border-b border-[#E5E0D8] pb-3">
-                  <Icon className="w-5 h-5 text-[#1B2A4A]" />
-                  <h2 className="text-xl font-['Newsreader'] font-bold text-[#1A1918]">
+                <div className="flex items-center gap-2.5 border-b border-slate-200 pb-3">
+                  <Icon className="w-5 h-5 text-indigo-600" />
+                  <h2 className="text-xl font-['Outfit'] font-bold text-slate-900">
                     {cat.category}
                   </h2>
                 </div>
@@ -94,16 +94,16 @@ const Faq = () => {
                     const uniqueId = `${catIdx}-${qIdx}`;
                     const isOpen = openIndex === uniqueId;
                     return (
-                      <div key={qIdx} className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm overflow-hidden transition-all">
+                      <div key={qIdx} className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden transition-all">
                         <button
                           onClick={() => toggleFaq(uniqueId)}
-                          className="w-full text-left p-5 flex items-center justify-between font-['Newsreader'] font-semibold text-[#1A1918] text-base sm:text-lg hover:bg-[#F7F5F0]/50 transition-colors"
+                          className="w-full text-left p-5 flex items-center justify-between font-['Outfit'] font-semibold text-slate-900 text-base hover:bg-slate-50/80 transition-colors cursor-pointer"
                         >
                           <span>{item.q}</span>
-                          <ChevronDown className={`w-4 h-4 text-[#64748B] shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                         </button>
                         {isOpen && (
-                          <div className="px-5 pb-5 text-sm text-[#64748B] leading-relaxed border-t border-[#F7F5F0] pt-3">
+                          <div className="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
                             {item.a}
                           </div>
                         )}
@@ -117,16 +117,16 @@ const Faq = () => {
         </div>
 
         {/* Still Have Questions Box */}
-        <div className="bg-white p-8 rounded-xl border border-[#E5E0D8] text-center space-y-4 shadow-sm">
-          <h3 className="text-2xl font-['Newsreader'] font-bold text-[#1A1918]">
+        <div className="bg-white p-8 sm:p-10 rounded-2xl border border-slate-200 text-center space-y-4 shadow-2xs">
+          <h3 className="text-2xl font-['Outfit'] font-bold text-slate-900">
             Still Have Questions?
           </h3>
-          <p className="text-xs sm:text-sm text-[#64748B] max-w-md mx-auto">
+          <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
             Can't find what you're looking for? Contact our dedicated support engineering team for assistance.
           </p>
           <div className="pt-2">
             <RouterLink to="/contact">
-              <button className="bg-[#1B2A4A] hover:bg-[#5C1D24] text-white font-semibold text-xs sm:text-sm px-6 py-3 rounded-lg transition-colors shadow-sm inline-flex items-center gap-2">
+              <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm px-6 py-3 rounded-xl transition-all shadow-sm shadow-indigo-600/25 inline-flex items-center gap-2 active:scale-[0.99] cursor-pointer">
                 Contact Support Desk <ArrowRight className="w-4 h-4" />
               </button>
             </RouterLink>

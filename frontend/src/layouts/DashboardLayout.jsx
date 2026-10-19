@@ -39,7 +39,7 @@ const DashboardLayout = () => {
   const closeMobileSidebar = () => setMobileSidebarOpen(false);
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] flex font-['Plus_Jakarta_Sans'] text-[#1A1918] overflow-hidden selection:bg-[#1B2A4A] selection:text-white">
+    <div className="min-h-screen bg-[#F8FAFC] flex font-['Inter'] text-slate-800 overflow-hidden selection:bg-indigo-600 selection:text-white">
       
       {/* Mobile Drawer Overlay Backdrop */}
       {mobileSidebarOpen && (
@@ -50,7 +50,7 @@ const DashboardLayout = () => {
       )}
 
       {/* 1. Sidebar (Fixed Drawer on Mobile, Static w-64 on Desktop) */}
-      <aside className={`fixed lg:static inset-y-0 left-0 border-r border-[#E5E0D8] bg-white flex flex-col justify-between transition-transform duration-300 z-50 h-screen w-64 shrink-0 shadow-lg lg:shadow-none ${
+      <aside className={`fixed lg:static inset-y-0 left-0 border-r border-slate-200 bg-white flex flex-col justify-between transition-transform duration-300 z-50 h-screen w-64 shrink-0 shadow-lg lg:shadow-none ${
         mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         
@@ -58,28 +58,28 @@ const DashboardLayout = () => {
         <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
           
           {/* Logo Bar */}
-          <div className="p-4 flex items-center justify-between border-b border-[#E5E0D8] h-16 shrink-0 bg-white">
+          <div className="p-4 flex items-center justify-between border-b border-slate-200 h-16 shrink-0 bg-white">
             {school ? (
               <div className="flex items-center gap-3 overflow-hidden truncate">
-                <div className="w-9 h-9 rounded-lg bg-[#1B2A4A] flex items-center justify-center text-[#F7F5F0] shrink-0 border border-[#1B2A4A]">
+                <div className="w-9 h-9 rounded-lg bg-linear-to-br from-indigo-600 to-indigo-700 flex items-center justify-center text-white shrink-0 shadow-xs">
                   <SchoolIcon className="w-5 h-5" />
                 </div>
                 <div className="truncate">
-                  <h2 className="text-sm font-['Newsreader'] font-bold text-[#1A1918] truncate leading-tight">{school.name}</h2>
-                  <p className="text-[9px] text-[#5C1D24] font-semibold tracking-wider truncate mt-0.5">{school.subdomain}.campus.acharyaworks.in</p>
+                  <h2 className="text-sm font-['Outfit'] font-bold text-slate-900 truncate leading-tight">{school.name}</h2>
+                  <p className="text-[10px] text-indigo-600 font-mono font-medium truncate mt-0.5">{school.subdomain}.campus.acharyaworks.in</p>
                 </div>
               </div>
             ) : (
-              <div className="flex items-center gap-2 text-[#5C1D24]">
+              <div className="flex items-center gap-2 text-indigo-600">
                 <Shield className="w-5 h-5 shrink-0" />
-                <span className="text-xs font-bold uppercase tracking-wider font-['Plus_Jakarta_Sans']">School Portal</span>
+                <span className="text-xs font-bold uppercase tracking-wider font-['Outfit']">School Portal</span>
               </div>
             )}
             
             {/* Mobile Close Button */}
             <button
               onClick={closeMobileSidebar}
-              className="lg:hidden p-1.5 rounded-lg text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0] transition-colors"
+              className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -89,7 +89,7 @@ const DashboardLayout = () => {
           <div className="p-3 space-y-1 overflow-y-auto flex-1 select-none">
             
             {/* Group Title: Workspace */}
-            <div className="text-[10px] uppercase font-bold text-[#5C1D24] tracking-wider px-3 mt-2 mb-2">
+            <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider px-3 mt-2 mb-2">
               School Workspace
             </div>
 
@@ -98,8 +98,8 @@ const DashboardLayout = () => {
               onClick={closeMobileSidebar}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                 location.pathname === '/dashboard'
-                  ? 'bg-[#1B2A4A] text-white shadow-sm'
-                  : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                  ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
               title="Dashboard"
             >
@@ -114,8 +114,8 @@ const DashboardLayout = () => {
                   onClick={() => setAcademicsOpen(!academicsOpen)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                     isAcademicsActive
-                      ? 'text-[#1B2A4A] bg-[#F7F5F0]'
-                      : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                      ? 'text-indigo-600 bg-indigo-50/60'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                   title="Academics"
                 >
@@ -132,10 +132,10 @@ const DashboardLayout = () => {
                       <Link
                         to="/dashboard/academics/sessions"
                         onClick={closeMobileSidebar}
-                        className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                        className={`block px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                           location.pathname === '/dashboard/academics/sessions'
-                            ? 'text-[#1B2A4A] bg-[#1B2A4A]/10 font-bold'
-                            : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                            ? 'text-indigo-600 bg-indigo-50 font-bold'
+                            : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                         }`}
                       >
                         Sessions
@@ -145,10 +145,10 @@ const DashboardLayout = () => {
                       <Link
                         to="/dashboard/academics/classes"
                         onClick={closeMobileSidebar}
-                        className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                        className={`block px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                           location.pathname === '/dashboard/academics/classes'
-                            ? 'text-[#1B2A4A] bg-[#1B2A4A]/10 font-bold'
-                            : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                            ? 'text-indigo-600 bg-indigo-50 font-bold'
+                            : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                         }`}
                       >
                         Classes & Sections
@@ -157,10 +157,10 @@ const DashboardLayout = () => {
                     <Link
                       to="/dashboard/academics/subjects"
                       onClick={closeMobileSidebar}
-                      className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                      className={`block px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         location.pathname === '/dashboard/academics/subjects'
-                          ? 'text-[#1B2A4A] bg-[#1B2A4A]/10 font-bold'
-                          : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                          ? 'text-indigo-600 bg-indigo-50 font-bold'
+                          : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                       }`}
                     >
                       Subjects
@@ -177,8 +177,8 @@ const DashboardLayout = () => {
                 onClick={closeMobileSidebar}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                   location.pathname === '/dashboard/teachers'
-                    ? 'bg-[#1B2A4A] text-white shadow-sm'
-                    : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                    ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
                 title="Teachers"
               >
@@ -194,8 +194,8 @@ const DashboardLayout = () => {
                 onClick={closeMobileSidebar}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                   location.pathname === '/dashboard/accountants'
-                    ? 'bg-[#1B2A4A] text-white shadow-sm'
-                    : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                    ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
                 title="Accountants"
               >
@@ -211,8 +211,8 @@ const DashboardLayout = () => {
                 onClick={closeMobileSidebar}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                   location.pathname === '/dashboard/students'
-                    ? 'bg-[#1B2A4A] text-white shadow-sm'
-                    : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                    ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
                 title="Students Directory"
               >
@@ -224,7 +224,7 @@ const DashboardLayout = () => {
             {/* Operations Group (Teacher, Student & Parent) */}
             {(user?.role === 'TEACHER' || user?.role === 'STUDENT' || user?.role === 'PARENT') && (
               <>
-                <div className="text-[10px] uppercase font-bold text-[#5C1D24] tracking-wider px-3 pt-4 mb-2">
+                <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider px-3 pt-4 mb-2">
                   Class Operations
                 </div>
 
@@ -234,8 +234,8 @@ const DashboardLayout = () => {
                   onClick={closeMobileSidebar}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                     location.pathname.startsWith('/dashboard/attendance')
-                      ? 'bg-[#1B2A4A] text-white shadow-sm'
-                      : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                      ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                   title="Daily Attendance"
                 >
@@ -249,8 +249,8 @@ const DashboardLayout = () => {
                   onClick={closeMobileSidebar}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                     location.pathname.startsWith('/dashboard/timetable')
-                      ? 'bg-[#1B2A4A] text-white shadow-sm'
-                      : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                      ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                   title="Timetable"
                 >
@@ -264,8 +264,8 @@ const DashboardLayout = () => {
                   onClick={closeMobileSidebar}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                     location.pathname.startsWith('/dashboard/homework')
-                      ? 'bg-[#1B2A4A] text-white shadow-sm'
-                      : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                      ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                   title="Homework"
                 >
@@ -279,8 +279,8 @@ const DashboardLayout = () => {
                   onClick={closeMobileSidebar}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                     location.pathname.startsWith('/dashboard/exams')
-                      ? 'bg-[#1B2A4A] text-white shadow-sm'
-                      : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                      ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                   title="Exams & Marks"
                 >
@@ -297,8 +297,8 @@ const DashboardLayout = () => {
                   onClick={() => setFeesOpen(!feesOpen)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                     isFeesActive
-                      ? 'text-[#1B2A4A] bg-[#F7F5F0]'
-                      : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                      ? 'text-indigo-600 bg-indigo-50/60'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                   title="Fees"
                 >
@@ -315,10 +315,10 @@ const DashboardLayout = () => {
                       <Link
                         to="/dashboard/fees/structure"
                         onClick={closeMobileSidebar}
-                        className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                        className={`block px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                           location.pathname === '/dashboard/fees/structure'
-                            ? 'text-[#1B2A4A] bg-[#1B2A4A]/10 font-bold'
-                            : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                            ? 'text-indigo-600 bg-indigo-50 font-bold'
+                            : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                         }`}
                       >
                         Fee Structure
@@ -327,10 +327,10 @@ const DashboardLayout = () => {
                     <Link
                       to="/dashboard/fees/collection"
                       onClick={closeMobileSidebar}
-                      className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                      className={`block px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                         location.pathname === '/dashboard/fees/collection'
-                          ? 'text-[#1B2A4A] bg-[#1B2A4A]/10 font-bold'
-                          : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                          ? 'text-indigo-600 bg-indigo-50 font-bold'
+                          : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                       }`}
                     >
                       {user?.role === 'ACCOUNTANT' ? 'Fee Collection' : 'My Fee Receipts'}
@@ -346,8 +346,8 @@ const DashboardLayout = () => {
               onClick={closeMobileSidebar}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                 location.pathname.startsWith('/dashboard/notices')
-                  ? 'bg-[#1B2A4A] text-white shadow-sm'
-                  : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                  ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
               title="Notices"
             >
@@ -362,8 +362,8 @@ const DashboardLayout = () => {
                 onClick={closeMobileSidebar}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                   location.pathname.startsWith('/dashboard/reports')
-                    ? 'bg-[#1B2A4A] text-white shadow-sm'
-                    : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                    ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
                 title="Reports"
               >
@@ -379,8 +379,8 @@ const DashboardLayout = () => {
                 onClick={closeMobileSidebar}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                   location.pathname === '/dashboard/subscription'
-                    ? 'bg-[#1B2A4A] text-white shadow-sm'
-                    : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                    ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
                 title="Subscription"
               >
@@ -390,7 +390,7 @@ const DashboardLayout = () => {
             )}
 
             {/* Settings (All User Roles) */}
-            <div className="text-[10px] uppercase font-bold text-[#5C1D24] tracking-wider px-3 pt-4 mb-2">
+            <div className="text-[10px] uppercase font-bold text-slate-400 tracking-wider px-3 pt-4 mb-2">
               Settings
             </div>
             <Link
@@ -398,8 +398,8 @@ const DashboardLayout = () => {
               onClick={closeMobileSidebar}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
                 location.pathname === '/dashboard/profile'
-                  ? 'bg-[#1B2A4A] text-white shadow-sm'
-                  : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                  ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-600/20'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
               title="Profile Settings"
             >
@@ -411,25 +411,25 @@ const DashboardLayout = () => {
         </div>
 
         {/* Sidebar Bottom: User Profile Info Card */}
-        <div className="border-t border-[#E5E0D8] p-3 bg-white shrink-0">
-          <div className="p-3 bg-[#F7F5F0] rounded-xl select-none">
+        <div className="border-t border-slate-200 p-3 bg-white shrink-0">
+          <div className="p-2.5 bg-slate-50 border border-slate-200/80 rounded-xl select-none">
             <div className="flex items-center justify-between gap-2 overflow-hidden">
-              <Link to="/dashboard/profile" onClick={closeMobileSidebar} className="flex items-center gap-2 truncate hover:opacity-80 transition-opacity cursor-pointer group" title="Edit Profile Settings">
+              <Link to="/dashboard/profile" onClick={closeMobileSidebar} className="flex items-center gap-2.5 truncate hover:opacity-85 transition-opacity cursor-pointer group" title="Edit Profile Settings">
                 {user?.profile_picture ? (
                   <img
                     src={user.profile_picture}
                     alt="Avatar"
-                    className="w-9 h-9 rounded-lg object-cover border border-[#E5E0D8] shadow-sm shrink-0"
+                    className="w-9 h-9 rounded-lg object-cover border border-slate-200 shadow-2xs shrink-0"
                   />
                 ) : (
-                  <div className="w-9 h-9 rounded-lg bg-[#1B2A4A] border border-[#1B2A4A] flex items-center justify-center text-[#F7F5F0] font-bold text-xs shrink-0 group-hover:bg-[#5C1D24] group-hover:border-[#5C1D24] transition-colors">
+                  <div className="w-9 h-9 rounded-lg bg-linear-to-br from-indigo-600 to-indigo-700 flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-2xs">
                     {user?.first_name?.charAt(0) || 'U'}
                   </div>
                 )}
                 <div className="truncate">
-                  <div className="text-xs font-bold text-[#1A1918] truncate group-hover:text-[#1B2A4A] transition-colors">{user?.first_name} {user?.last_name}</div>
-                  <div className="text-[10px] text-[#64748B] truncate">{user?.email}</div>
-                  <div className="text-[9px] text-[#5C1D24] uppercase font-bold tracking-wider truncate">
+                  <div className="text-xs font-semibold text-slate-900 truncate group-hover:text-indigo-600 transition-colors">{user?.first_name} {user?.last_name}</div>
+                  <div className="text-[10px] text-slate-400 truncate">{user?.email}</div>
+                  <div className="text-[9px] text-indigo-600 uppercase font-bold tracking-wider truncate">
                     {user?.role === 'SUPER_ADMIN' ? 'Super Admin' :
                      user?.role === 'SCHOOL_ADMIN' ? 'School Admin' :
                      user?.role === 'TEACHER' ? 'Faculty' :
@@ -441,7 +441,7 @@ const DashboardLayout = () => {
               </Link>
               <button
                 onClick={logout}
-                className="p-2 rounded-lg text-[#64748B] hover:text-[#5C1D24] hover:bg-white transition-colors shrink-0"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-white transition-colors shrink-0"
                 title="Sign Out"
               >
                 <LogOut className="w-4 h-4" />
@@ -452,7 +452,7 @@ const DashboardLayout = () => {
       </aside>
 
       {/* 2. Main Container */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden bg-[#F7F5F0]">
+      <div className="flex-1 flex flex-col h-screen overflow-hidden bg-[#F8FAFC]">
         
         {/* Top Header/Navbar */}
         <DashboardNavbar onToggleMobileSidebar={() => setMobileSidebarOpen(!mobileSidebarOpen)} />

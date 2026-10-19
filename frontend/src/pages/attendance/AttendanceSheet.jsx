@@ -297,24 +297,24 @@ const AttendanceSheet = () => {
   };
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-6 font-['Inter'] text-slate-900">
       
       {/* Category Pill Indicator */}
       <div className="flex items-center gap-2 select-none">
-        <span className="px-2.5 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-[10px] font-bold uppercase tracking-wider">
+        <span className="px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200/60 text-[10px] font-bold uppercase tracking-wider">
           Academic ERP
         </span>
-        <span className="text-[#64748B] text-xs font-semibold">/</span>
-        <span className="text-xs font-bold text-[#1A1918]">
+        <span className="text-slate-400 text-xs font-semibold">/</span>
+        <span className="text-xs font-semibold text-slate-600">
           Attendance Register {currentSession ? `(${currentSession.name})` : ''}
         </span>
       </div>
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Attendance Register</h1>
-          <p className="text-xs text-[#64748B] mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Attendance Register</h1>
+          <p className="text-sm text-slate-500 mt-1">
             Record daily presence and view monthly class attendance reports for session {currentSession?.name || '2026-2027'}.
           </p>
         </div>
@@ -327,23 +327,23 @@ const AttendanceSheet = () => {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex items-center gap-2 border-b border-[#E5E0D8] pb-1">
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-1">
         <button
           onClick={() => setActiveTab('daily')}
-          className={`px-4 py-2 rounded-t-lg text-xs font-bold transition-colors flex items-center gap-2 ${
+          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 ${
             activeTab === 'daily'
-              ? 'bg-[#1B2A4A] text-white'
-              : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+              ? 'bg-indigo-600 text-white shadow-xs'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
           }`}
         >
           <CalendarCheck className="w-4 h-4" /> Daily Register
         </button>
         <button
           onClick={() => setActiveTab('monthly')}
-          className={`px-4 py-2 rounded-t-lg text-xs font-bold transition-colors flex items-center gap-2 ${
+          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 ${
             activeTab === 'monthly'
-              ? 'bg-[#1B2A4A] text-white'
-              : 'text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+              ? 'bg-indigo-600 text-white shadow-xs'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
           }`}
         >
           <FileSpreadsheet className="w-4 h-4" /> Monthly Matrix & Analytics
@@ -351,15 +351,15 @@ const AttendanceSheet = () => {
       </div>
 
       {/* Selectors Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
         <div>
-          <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-1.5">
+          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-['Outfit']">
             Select Class Section
           </label>
           <select
             value={selectedSection}
             onChange={(e) => setSelectedSection(e.target.value)}
-            className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
           >
             {sections.length === 0 && <option value="">Loading class sections...</option>}
             {sections.map((sec) => (
@@ -384,13 +384,13 @@ const AttendanceSheet = () => {
         ) : (
           <div className="sm:col-span-2 grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-['Outfit']">
                 Select Month ({availableMonths.length} Months)
               </label>
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
-                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600"
               >
                 {availableMonths.map((m) => (
                   <option key={m.num} value={m.num.toString()}>{m.name}</option>
@@ -398,13 +398,13 @@ const AttendanceSheet = () => {
               </select>
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-['Outfit']">
                 Select Year (Session {currentSession?.name || ''})
               </label>
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
-                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-2 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600"
               >
                 {yearOptions.map((y) => (
                   <option key={y} value={y}>{y}</option>
@@ -416,7 +416,7 @@ const AttendanceSheet = () => {
       </div>
 
       {message && (
-        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold rounded-lg flex items-center gap-2">
+        <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium rounded-lg flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           <span>{message}</span>
         </div>
@@ -428,41 +428,41 @@ const AttendanceSheet = () => {
           
           {/* Live Summary Cards & Shortcuts */}
           {students.length > 0 && (
-            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-xs">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
               <div className="grid grid-cols-3 gap-3 flex-1">
-                <div className="bg-[#F7F5F0] p-2.5 rounded-lg border border-[#E5E0D8] text-center">
-                  <span className="text-[10px] font-bold text-[#64748B] uppercase block">Total Enrolled</span>
-                  <span className="text-lg font-bold text-[#1B2A4A]">{totalCount}</span>
+                <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-center">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase block font-['Outfit']">Total Enrolled</span>
+                  <span className="text-lg font-bold text-slate-900 font-['Outfit']">{totalCount}</span>
                 </div>
-                <div className="bg-emerald-50 p-2.5 rounded-lg border border-emerald-200 text-center">
-                  <span className="text-[10px] font-bold text-emerald-700 uppercase block">Present</span>
-                  <span className="text-lg font-bold text-emerald-700">{presentCount} <span className="text-[10px] font-semibold">({presentPercent}%)</span></span>
+                <div className="bg-emerald-50/80 p-2.5 rounded-lg border border-emerald-200 text-center">
+                  <span className="text-[10px] font-bold text-emerald-700 uppercase block font-['Outfit']">Present</span>
+                  <span className="text-lg font-bold text-emerald-700 font-['Outfit']">{presentCount} <span className="text-[10px] font-semibold">({presentPercent}%)</span></span>
                 </div>
-                <div className="bg-red-50 p-2.5 rounded-lg border border-red-200 text-center">
-                  <span className="text-[10px] font-bold text-red-600 uppercase block">Absent</span>
-                  <span className="text-lg font-bold text-red-600">{absentCount}</span>
+                <div className="bg-rose-50/80 p-2.5 rounded-lg border border-rose-200 text-center">
+                  <span className="text-[10px] font-bold text-rose-600 uppercase block font-['Outfit']">Absent</span>
+                  <span className="text-lg font-bold text-rose-600 font-['Outfit']">{absentCount}</span>
                 </div>
               </div>
 
               {canMarkCurrentSection ? (
-                <div className="flex items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-[#E5E0D8]">
+                <div className="flex items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-slate-200">
                   <button
                     type="button"
                     onClick={() => markAllStatus('PRESENT')}
-                    className="px-3.5 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition-colors shadow-2xs flex items-center gap-1.5"
+                    className="px-3.5 py-2 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-xs flex items-center gap-1.5"
                   >
                     <UserCheck className="w-4 h-4" /> Mark All Present
                   </button>
                   <button
                     type="button"
                     onClick={() => markAllStatus('ABSENT')}
-                    className="px-3.5 py-2 bg-[#5C1D24] text-white rounded-lg text-xs font-bold hover:bg-[#5C1D24]/90 transition-colors shadow-2xs flex items-center gap-1.5"
+                    className="px-3.5 py-2 bg-rose-600 text-white rounded-lg text-xs font-semibold hover:bg-rose-700 transition-colors shadow-xs flex items-center gap-1.5"
                   >
                     <UserX className="w-4 h-4" /> Mark All Absent
                   </button>
                 </div>
               ) : (
-                <div className="px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold flex items-center gap-1.5 shadow-2xs select-none">
+                <div className="px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold flex items-center gap-1.5 shadow-xs select-none">
                   <Lock className="w-4 h-4 text-amber-600" />
                   <span>
                     {hasExistingRecords 
@@ -475,9 +475,9 @@ const AttendanceSheet = () => {
           )}
 
           {/* Daily Table */}
-          <div className="w-full overflow-x-auto rounded-xl border border-[#E5E0D8] bg-white shadow-sm">
-            <table className="w-full text-left text-xs font-semibold text-[#1A1918]">
-              <thead className="bg-[#F7F5F0] text-[10px] font-bold text-[#64748B] uppercase tracking-wider border-b border-[#E5E0D8] select-none">
+          <div className="w-full overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xs">
+            <table className="w-full text-left text-xs font-medium text-slate-800">
+              <thead className="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 select-none font-['Outfit']">
                 <tr>
                   <th className="px-5 py-3.5">Roll No.</th>
                   <th className="px-5 py-3.5">Student Name</th>
@@ -485,26 +485,26 @@ const AttendanceSheet = () => {
                   <th className="px-5 py-3.5 text-right">Attendance Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E5E0D8] text-[#64748B]">
+              <tbody className="divide-y divide-slate-100 text-slate-600">
                 {students.length > 0 ? (
                   students.map((st) => (
-                    <tr key={st.id} className="hover:bg-[#F7F5F0]/50 transition-colors">
+                    <tr key={st.id} className="hover:bg-slate-50/70 transition-colors">
                       <td className="px-5 py-3.5">
-                        <span className="font-mono text-xs font-bold bg-[#F7F5F0] px-2.5 py-1 rounded text-[#1B2A4A] border border-[#E5E0D8]">
+                        <span className="font-mono text-xs font-semibold bg-slate-100 px-2.5 py-1 rounded-md text-slate-800 border border-slate-200">
                           {st.roll_number || 'N/A'}
                         </span>
                       </td>
-                      <td className="px-5 py-3.5 font-bold text-[#1A1918]">
+                      <td className="px-5 py-3.5 font-semibold text-slate-900">
                         {st.user?.first_name} {st.user?.last_name}
                       </td>
-                      <td className="px-5 py-3.5 font-mono text-xs text-[#1B2A4A] font-bold">
+                      <td className="px-5 py-3.5 font-mono text-xs text-slate-700 font-medium">
                         {st.admission_number || 'N/A'}
                       </td>
                       <td className="px-5 py-3.5 text-right">
                         <div className="inline-flex items-center gap-2">
                           {[
                             { key: 'PRESENT', label: 'Present', activeClass: 'bg-emerald-600 text-white border-emerald-600' },
-                            { key: 'ABSENT', label: 'Absent', activeClass: 'bg-[#5C1D24] text-white border-[#5C1D24]' },
+                            { key: 'ABSENT', label: 'Absent', activeClass: 'bg-rose-600 text-white border-rose-600' },
                           ].map((btn) => {
                             const isSelected = attendanceMap[st.id] === btn.key;
                             return (
@@ -513,14 +513,14 @@ const AttendanceSheet = () => {
                                 type="button"
                                 onClick={() => handleStatusChange(st.id, btn.key)}
                                 disabled={!canMarkCurrentSection}
-                                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all border shadow-2xs ${
+                                className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all border shadow-xs ${
                                   !canMarkCurrentSection 
                                     ? isSelected
                                       ? `${btn.activeClass} opacity-70 cursor-not-allowed`
-                                      : 'bg-white border-[#E5E0D8] text-[#64748B] opacity-50 cursor-not-allowed'
+                                      : 'bg-white border-slate-200 text-slate-400 opacity-50 cursor-not-allowed'
                                     : isSelected
                                       ? `${btn.activeClass}`
-                                      : 'bg-white border-[#E5E0D8] text-[#64748B] hover:text-[#1A1918] hover:bg-[#F7F5F0]'
+                                      : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                                 }`}
                               >
                                 {btn.label}
@@ -533,7 +533,7 @@ const AttendanceSheet = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={4} className="px-6 py-12 text-center text-[#64748B] font-medium italic">
+                    <td colSpan={4} className="px-6 py-12 text-center text-slate-400 font-medium italic">
                       {loading ? 'Loading register data...' : 'No enrolled students found in this section.'}
                     </td>
                   </tr>
@@ -544,16 +544,16 @@ const AttendanceSheet = () => {
 
           {/* Single Dedicated Save Register Footer Bar */}
           {students.length > 0 && canMarkCurrentSection && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-xs">
-              <div className="text-xs font-semibold text-[#64748B]">
-                Done marking? Click <strong className="text-[#1A1918]">Save Register</strong> to submit attendance and dispatch absentee notices.
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+              <div className="text-xs font-medium text-slate-600">
+                Done marking? Click <strong className="text-slate-900 font-semibold">Save Register</strong> to submit attendance and dispatch absentee notices.
               </div>
               <Button
                 variant="primary"
                 size="sm"
                 onClick={handleSave}
                 loading={saving}
-                className="gap-2 shadow-sm font-bold bg-[#1B2A4A] hover:bg-[#5C1D24] px-6 py-2.5 text-xs shrink-0"
+                className="gap-2 shadow-xs font-semibold px-6 py-2.5 text-xs shrink-0"
               >
                 <Save className="w-4 h-4" /> Save Register
               </Button>
@@ -564,32 +564,32 @@ const AttendanceSheet = () => {
 
       {/* TAB 2: MONTHLY MATRIX & ANALYTICS */}
       {activeTab === 'monthly' && (
-        <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm p-4 space-y-4">
+        <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-4 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-[#1A1918]">
+            <h3 className="text-sm font-bold text-slate-900 font-['Outfit']">
               Monthly Presence Matrix — {ALL_MONTHS.find(m => m.num.toString() === selectedMonth)?.name || ''} {selectedYear}
             </h3>
-            <div className="flex items-center gap-3 text-[10px] font-bold">
+            <div className="flex items-center gap-3 text-[10px] font-semibold">
               <span className="flex items-center gap-1 text-emerald-700"><span className="w-2 h-2 rounded-full bg-emerald-600" /> P = Present</span>
-              <span className="flex items-center gap-1 text-red-600"><span className="w-2 h-2 rounded-full bg-red-600" /> A = Absent</span>
+              <span className="flex items-center gap-1 text-rose-600"><span className="w-2 h-2 rounded-full bg-rose-600" /> A = Absent</span>
             </div>
           </div>
 
-          <div className="w-full overflow-x-auto border border-[#E5E0D8] rounded-lg">
-            <table className="w-full text-left text-xs font-semibold">
-              <thead className="bg-[#F7F5F0] text-[9px] font-bold text-[#64748B] uppercase tracking-wider border-b border-[#E5E0D8] sticky top-0">
+          <div className="w-full overflow-x-auto border border-slate-200 rounded-lg">
+            <table className="w-full text-left text-xs font-medium">
+              <thead className="bg-slate-50 text-[9px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 sticky top-0 font-['Outfit']">
                 <tr>
                   <th className="px-3 py-2 shrink-0">Student</th>
                   <th className="px-2 py-2 text-center">Roll</th>
                   {daysArray.map((d) => (
-                    <th key={d} className="px-1.5 py-2 text-center border-l border-[#E5E0D8] min-w-6.5">
+                    <th key={d} className="px-1.5 py-2 text-center border-l border-slate-200 min-w-6.5">
                       {d}
                     </th>
                   ))}
-                  <th className="px-3 py-2 text-center border-l border-[#E5E0D8]">Rate %</th>
+                  <th className="px-3 py-2 text-center border-l border-slate-200">Rate %</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E5E0D8]">
+              <tbody className="divide-y divide-slate-100">
                 {students.length > 0 ? (
                   students.map((st) => {
                     let presentCnt = 0;
@@ -600,13 +600,13 @@ const AttendanceSheet = () => {
                       if (stCode === 'PRESENT') { presentCnt++; totalMarked++; }
                       else if (stCode === 'ABSENT') { totalMarked++; }
 
-                      let badgeClass = 'text-[#64748B]/40 bg-transparent';
+                      let badgeClass = 'text-slate-300 bg-transparent';
                       let letter = '-';
                       if (stCode === 'PRESENT') { badgeClass = 'bg-emerald-100 text-emerald-700 font-bold'; letter = 'P'; }
-                      else if (stCode === 'ABSENT') { badgeClass = 'bg-red-100 text-red-700 font-bold'; letter = 'A'; }
+                      else if (stCode === 'ABSENT') { badgeClass = 'bg-rose-100 text-rose-700 font-bold'; letter = 'A'; }
 
                       return (
-                        <td key={d} className="px-1 py-1.5 text-center border-l border-[#E5E0D8] font-mono text-[10px]">
+                        <td key={d} className="px-1 py-1.5 text-center border-l border-slate-200 font-mono text-[10px]">
                           <span className={`inline-block w-5 h-5 leading-5 rounded text-center ${badgeClass}`}>
                             {letter}
                           </span>
@@ -617,17 +617,17 @@ const AttendanceSheet = () => {
                     const rate = totalMarked > 0 ? Math.round((presentCnt / totalMarked) * 100) : 100;
 
                     return (
-                      <tr key={st.id} className="hover:bg-[#F7F5F0]/40 transition-colors">
-                        <td className="px-3 py-2 font-bold text-[#1A1918] whitespace-nowrap">
+                      <tr key={st.id} className="hover:bg-slate-50/70 transition-colors">
+                        <td className="px-3 py-2 font-semibold text-slate-900 whitespace-nowrap">
                           {st.user?.first_name} {st.user?.last_name}
                         </td>
-                        <td className="px-2 py-2 text-center font-mono text-xs font-bold text-[#64748B]">
+                        <td className="px-2 py-2 text-center font-mono text-xs font-medium text-slate-500">
                           {st.roll_number || '-'}
                         </td>
                         {dayCells}
-                        <td className="px-3 py-2 text-center border-l border-[#E5E0D8] font-bold text-xs">
-                          <span className={`px-2 py-0.5 rounded ${
-                            rate >= 85 ? 'bg-emerald-100 text-emerald-700' : rate >= 75 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'
+                        <td className="px-3 py-2 text-center border-l border-slate-200 font-semibold text-xs">
+                          <span className={`px-2 py-0.5 rounded-md ${
+                            rate >= 85 ? 'bg-emerald-100 text-emerald-700' : rate >= 75 ? 'bg-amber-100 text-amber-700' : 'bg-rose-100 text-rose-700'
                           }`}>
                             {rate}%
                           </span>
@@ -637,7 +637,7 @@ const AttendanceSheet = () => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={daysInMonth + 3} className="px-6 py-10 text-center text-[#64748B] font-medium italic">
+                    <td colSpan={daysInMonth + 3} className="px-6 py-10 text-center text-slate-400 font-medium italic">
                       {loadingMonthly ? 'Generating monthly matrix...' : 'No enrolled students found.'}
                     </td>
                   </tr>

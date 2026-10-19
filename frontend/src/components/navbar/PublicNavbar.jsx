@@ -5,35 +5,35 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const PublicNavbar = () => {
   const { isAuthenticated, user } = useAuth();
-  // Helper function for active link styling with larger text
+  
   const navLinkStyles = ({ isActive }) =>
-    `relative py-1 transition-colors ${
+    `relative py-1 text-sm transition-colors ${
       isActive
-        ? 'text-[#1B2A4A] font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-[#1B2A4A]'
-        : 'text-[#64748B] hover:text-[#1B2A4A] font-semibold'
+        ? 'text-indigo-600 font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-indigo-600'
+        : 'text-slate-600 hover:text-slate-900 font-medium'
     }`;
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 bg-[#F7F5F0]/90 backdrop-blur-md border-b border-[#E5E0D8] font-['Plus_Jakarta_Sans'] transition-all">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-md border-b border-slate-200/80 font-['Inter'] transition-all">
+      <div className="max-w-7xl mx-auto px-6 py-3.5 flex items-center justify-between">
         
         {/* Brand Logo */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-11 h-11 rounded-lg bg-[#1B2A4A] flex items-center justify-center text-[#F7F5F0] border border-[#1B2A4A] group-hover:bg-[#5C1D24] transition-colors">
-            <GraduationCap className="w-6 h-6" />
+          <div className="w-10 h-10 rounded-xl bg-linear-to-br from-indigo-600 to-indigo-700 flex items-center justify-center text-white shadow-sm shadow-indigo-500/25 group-hover:scale-105 transition-transform">
+            <GraduationCap className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] tracking-tight block leading-none">
+            <span className="text-xl font-['Outfit'] font-bold text-slate-900 tracking-tight block leading-none">
               AcharyaCampus
             </span>
-            <span className="block text-xs uppercase font-bold tracking-widest text-[#5C1D24] mt-1">
+            <span className="block text-[10px] uppercase font-bold tracking-wider text-indigo-600 mt-1">
               School OS Engine
             </span>
           </div>
         </Link>
 
-        {/* Center Navigation Links (Increased to text-base) */}
-        <div className="hidden md:flex items-center gap-8 text-base">
+        {/* Center Navigation Links */}
+        <div className="hidden md:flex items-center gap-8">
           <NavLink to="/" className={navLinkStyles} end>
             Home
           </NavLink>
@@ -54,16 +54,15 @@ const PublicNavbar = () => {
           </NavLink>
         </div>
 
-
-        {/* Action Buttons (Increased to text-sm) */}
+        {/* Action Buttons */}
         <div className="flex items-center gap-3">
           {isAuthenticated ? (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <div className="text-right hidden sm:block">
-                <div className="text-xs font-bold text-[#1A1918]">
+                <div className="text-xs font-semibold text-slate-900">
                   {user?.first_name} {user?.last_name}
                 </div>
-                <div className="text-[9px] text-[#5C1D24] uppercase font-bold tracking-wider">
+                <div className="text-[10px] text-indigo-600 uppercase font-bold tracking-wider">
                   {user?.role === 'SUPER_ADMIN' ? 'Super Admin' :
                    user?.role === 'SCHOOL_ADMIN' ? 'School Admin' :
                    user?.role === 'TEACHER' ? 'Faculty' :
@@ -73,23 +72,22 @@ const PublicNavbar = () => {
                 </div>
               </div>
               <Link to={user?.role === 'SUPER_ADMIN' ? '/super-admin' : '/dashboard'}>
-                <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#1B2A4A] hover:bg-[#5C1D24] text-white text-sm font-semibold transition-colors shadow-sm cursor-pointer">
+                <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold transition-all shadow-sm shadow-indigo-600/20 active:scale-[0.99] cursor-pointer">
                   {user?.role === 'SUPER_ADMIN' ? 'Super Admin Board' : 'Go to Dashboard'}
                 </button>
               </Link>
-
             </div>
           ) : (
             <>
               <Link to="/login">
-                <button className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white border border-[#E5E0D8] text-sm font-semibold text-[#1A1918] hover:bg-[#F7F5F0] transition-colors shadow-sm">
-                  <LogIn className="w-4 h-4 text-[#1B2A4A]" />
+                <button className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-slate-200 text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors shadow-2xs">
+                  <LogIn className="w-4 h-4 text-slate-500" />
                   Sign In
                 </button>
               </Link>
 
               <Link to="/register-school">
-                <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#1B2A4A] hover:bg-[#5C1D24] text-white text-sm font-semibold transition-colors shadow-sm">
+                <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold transition-all shadow-sm shadow-indigo-600/20 active:scale-[0.99]">
                   <Sparkles className="w-4 h-4" />
                   Register School
                 </button>

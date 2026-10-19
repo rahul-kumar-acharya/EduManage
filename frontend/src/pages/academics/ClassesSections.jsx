@@ -240,80 +240,80 @@ const ClassesSections = () => {
   const availableUnassignedTeachers = teachers.filter(t => (t.user?.is_active ?? true) && !assignedTeacherIds.has(t.id));
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-6 font-['Inter'] text-slate-900">
       
       {/* Category Pill Indicator */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">
-        <GraduationCap className="w-3.5 h-3.5 text-[#5C1D24]" />
+      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-200/80 text-[11px] font-semibold text-indigo-700 uppercase tracking-wider">
+        <GraduationCap className="w-3.5 h-3.5 text-indigo-600" />
         <span>Academic Infrastructure Setup</span>
       </div>
 
       {!hasActiveSession && (
-        <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 text-xs rounded-lg flex items-center gap-3 font-semibold shadow-sm">
+        <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 text-xs rounded-xl flex items-center gap-3 font-semibold shadow-xs">
           <span>⚠️ No active academic session found. You must create and set an active Academic Session in the Sessions tab before managing classes or sections.</span>
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Classes & Sections</h1>
-          <p className="text-xs text-[#64748B] mt-1">Manage class levels (Nursery, LKG, UKG, Grade 1 to 10), create sections, and assign class teachers.</p>
+          <h1 className="text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">Classes & Sections</h1>
+          <p className="text-xs text-slate-500 mt-1">Manage class levels (Nursery, LKG, UKG, Grade 1 to 10), create sections, and assign class teachers.</p>
         </div>
-        <Button variant="primary" size="sm" onClick={openClassModal} className="gap-2 shadow-sm" disabled={!hasActiveSession}>
+        <Button variant="primary" size="sm" onClick={openClassModal} className="gap-2 shadow-xs" disabled={!hasActiveSession}>
           <Plus className="w-4 h-4" /> Add Class
         </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {classes.map((cls) => (
-          <div key={cls.id} className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4 flex flex-col justify-between">
+          <div key={cls.id} className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs space-y-4 flex flex-col justify-between">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] text-[#1B2A4A] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shadow-xs">
                     <GraduationCap className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-[#1A1918]">{cls.name}</h3>
-                    <div className="text-xs text-[#64748B]">{cls.sections?.length || 0} Sections</div>
+                    <h3 className="text-base font-bold text-slate-900 font-['Outfit']">{cls.name}</h3>
+                    <div className="text-xs text-slate-500">{cls.sections?.length || 0} Sections</div>
                   </div>
                 </div>
                 <button
                   onClick={() => initiateDeleteClass(cls.id, cls.name)}
-                  className="text-[#64748B] hover:text-[#5C1D24] p-1.5 rounded hover:bg-[#5C1D24]/10 transition-colors"
+                  className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
                   title="Delete Class"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
 
-              <div className="space-y-3 border-t border-[#F7F5F0] pt-3">
-                <div className="text-[10px] font-bold text-[#64748B] uppercase tracking-wider">Sections</div>
-                <div className="grid grid-cols-1 gap-2">
+              <div className="space-y-3 border-t border-slate-100 pt-3">
+                <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider font-['Outfit']">Sections</div>
+                <div className="grid grid-cols-1 gap-2.5">
                   {cls.sections && cls.sections.length > 0 ? (
                     cls.sections.map((sec) => {
                       const availableTeachers = teachers.filter(t => (t.user?.is_active ?? true) && (!assignedTeacherIds.has(t.id) || sec.class_teacher === t.id));
                       return (
                         <div
                           key={sec.id}
-                          className="flex flex-col gap-2 p-3 bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg text-xs"
+                          className="flex flex-col gap-2 p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl text-xs"
                         >
-                          <div className="flex items-center justify-between font-bold text-[#1A1918]">
+                          <div className="flex items-center justify-between font-bold text-slate-900 font-['Outfit']">
                             <span className="flex items-center gap-2">
-                              <Layers className="w-4 h-4 text-[#1B2A4A]" />
+                              <Layers className="w-4 h-4 text-indigo-600" />
                               {sec.name}
                             </span>
                             <button
                               onClick={() => initiateDeleteSection(sec.id, sec.name)}
-                              className="text-[#64748B] hover:text-[#5C1D24] font-bold text-sm"
+                              className="text-slate-400 hover:text-rose-600 font-bold p-1 rounded-md hover:bg-rose-50 transition-colors cursor-pointer"
                               title="Delete Section"
                             >
-                              <Trash2 className="w-3 h-3" />
+                              <Trash2 className="w-3.5 h-3.5" />
                             </button>
                           </div>
                           
                           <div className="space-y-1">
-                            <label className="block text-[8px] font-extrabold text-[#64748B] uppercase tracking-wider">
+                            <label className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
                               Class Teacher
                             </label>
                             <select
@@ -325,7 +325,7 @@ const ClassesSections = () => {
                                 }
                                 handleAssignTeacher(sec.id, e.target.value);
                               }}
-                              className="w-full bg-white border border-[#E5E0D8] rounded px-2 py-1 text-[10px] font-bold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] cursor-pointer"
+                              className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-medium text-slate-800 focus:outline-none focus:border-indigo-600 transition-colors cursor-pointer"
                             >
                               <option value="">Not Assigned</option>
                               {availableTeachers.map((t) => (
@@ -334,7 +334,7 @@ const ClassesSections = () => {
                                 </option>
                               ))}
                               {availableTeachers.length === 0 && (
-                                <option value="ADD_TEACHER" className="font-bold text-[#5C1D24]">
+                                <option value="ADD_TEACHER" className="font-semibold text-indigo-600">
                                   + Add Teacher
                                 </option>
                               )}
@@ -344,7 +344,7 @@ const ClassesSections = () => {
                       );
                     })
                   ) : (
-                    <span className="text-xs text-[#64748B] italic">No sections added yet.</span>
+                    <span className="text-xs text-slate-400 italic">No sections added yet.</span>
                   )}
                 </div>
               </div>
@@ -357,13 +357,13 @@ const ClassesSections = () => {
               onClick={() => openSectionModal(cls.id)}
               disabled={!hasActiveSession}
             >
-              <Plus className="w-3.5 h-3.5 text-[#1B2A4A]" /> Add Section
+              <Plus className="w-3.5 h-3.5 text-indigo-600" /> Add Section
             </Button>
           </div>
         ))}
 
         {classes.length === 0 && !loading && (
-          <div className="col-span-full bg-white p-12 text-center text-[#64748B] rounded-xl border border-[#E5E0D8] shadow-sm font-medium italic">
+          <div className="col-span-full bg-white p-12 text-center text-slate-500 rounded-2xl border border-slate-200 shadow-xs font-medium italic">
             No classes configured yet. Click "Add Class" to start.
           </div>
         )}
@@ -373,17 +373,17 @@ const ClassesSections = () => {
       <Modal isOpen={classModalOpen} onClose={() => { setClassModalOpen(false); setError(''); }} title="Add Class Levels">
         <form onSubmit={handleAddClass} className="space-y-4">
           {error && (
-            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg font-medium">
+            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
               {error}
             </div>
           )}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider font-['Outfit']">
                 Select Class Levels to Add *
               </label>
               {selectedClassNames.length > 0 && (
-                <span className="text-[10px] font-bold text-[#5C1D24] bg-[#5C1D24]/10 px-2 py-0.5 rounded-full">
+                <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200">
                   {selectedClassNames.length} Selected
                 </span>
               )}
@@ -391,7 +391,7 @@ const ClassesSections = () => {
 
             {/* Pre-School / Kindergarten Section */}
             <div className="space-y-1.5 mb-4">
-              <div className="text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">Kindergarten / Pre-School</div>
+              <div className="text-[11px] font-bold text-indigo-700 uppercase tracking-wider font-['Outfit']">Kindergarten / Pre-School</div>
               <div className="grid grid-cols-3 gap-2">
                 {['Nursery', 'LKG', 'UKG'].map((clsName) => {
                   const alreadyExists = classes.some(c => c.name.toLowerCase() === clsName.toLowerCase());
@@ -402,17 +402,17 @@ const ClassesSections = () => {
                       type="button"
                       disabled={alreadyExists}
                       onClick={() => toggleClassSelection(clsName)}
-                      className={`px-3 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 border cursor-pointer whitespace-nowrap ${
+                      className={`px-3 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 border cursor-pointer whitespace-nowrap ${
                         alreadyExists
-                          ? 'bg-[#F7F5F0]/60 border-[#E5E0D8] text-[#94A3B8] cursor-not-allowed select-none'
+                          ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed select-none'
                           : isSelected
-                          ? 'bg-[#1B2A4A] text-white border-[#1B2A4A] shadow-md ring-2 ring-[#1B2A4A]/20 scale-[1.02]'
-                          : 'bg-[#F7F5F0] border-[#E5E0D8] text-[#1A1918] hover:border-[#1B2A4A] hover:bg-white shadow-2xs'
+                          ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs shadow-indigo-600/30 scale-[1.02]'
+                          : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-indigo-400 hover:bg-white shadow-xs'
                       }`}
                     >
                       <span className="whitespace-nowrap">{clsName}</span>
                       {alreadyExists ? (
-                        <span className="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded shrink-0">✓ Added</span>
+                        <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded-md shrink-0">✓ Added</span>
                       ) : isSelected ? (
                         <Check className="w-3.5 h-3.5 text-white shrink-0" />
                       ) : null}
@@ -424,7 +424,7 @@ const ClassesSections = () => {
 
             {/* Primary & Secondary Grades Section */}
             <div className="space-y-1.5">
-              <div className="text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">Primary & Secondary Grades</div>
+              <div className="text-[11px] font-bold text-indigo-700 uppercase tracking-wider font-['Outfit']">Primary & Secondary Grades</div>
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
                 {['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10'].map((clsName) => {
                   const alreadyExists = classes.some(c => c.name.toLowerCase() === clsName.toLowerCase());
@@ -435,12 +435,12 @@ const ClassesSections = () => {
                       type="button"
                       disabled={alreadyExists}
                       onClick={() => toggleClassSelection(clsName)}
-                      className={`px-1.5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 border cursor-pointer whitespace-nowrap ${
+                      className={`px-1.5 py-2.5 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1 border cursor-pointer whitespace-nowrap ${
                         alreadyExists
-                          ? 'bg-[#F7F5F0]/60 border-[#E5E0D8] text-[#94A3B8] cursor-not-allowed select-none'
+                          ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed select-none'
                           : isSelected
-                          ? 'bg-[#1B2A4A] text-white border-[#1B2A4A] shadow-md ring-2 ring-[#1B2A4A]/20 scale-[1.02]'
-                          : 'bg-[#F7F5F0] border-[#E5E0D8] text-[#1A1918] hover:border-[#1B2A4A] hover:bg-white shadow-2xs'
+                          ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs shadow-indigo-600/30 scale-[1.02]'
+                          : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-indigo-400 hover:bg-white shadow-xs'
                       }`}
                     >
                       <span className="whitespace-nowrap">{clsName}</span>
@@ -455,12 +455,12 @@ const ClassesSections = () => {
               </div>
             </div>
 
-            <p className="text-[10px] text-[#64748B] mt-3 font-medium font-sans">
+            <p className="text-[11px] text-slate-400 mt-3 font-medium">
               Click multiple class pills to select and batch-create them at once. Configured classes are marked with a green check (✓).
             </p>
           </div>
 
-          <Button type="submit" variant="primary" className="w-full mt-2 shadow-sm" loading={submitting}>
+          <Button type="submit" variant="primary" className="w-full mt-2 shadow-xs" loading={submitting}>
             {submitting 
               ? "Creating Classes..." 
               : selectedClassNames.length > 0 
@@ -474,18 +474,18 @@ const ClassesSections = () => {
       <Modal isOpen={sectionModalOpen} onClose={() => { setSectionModalOpen(false); setError(''); }} title="Add Section Divisions">
         <form onSubmit={handleAddSection} className="space-y-4">
           {error && (
-            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg font-medium">
+            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
               {error}
             </div>
           )}
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider font-['Outfit']">
                 Select Section Divisions to Add *
               </label>
               {selectedSectionLetters.length > 0 && (
-                <span className="text-[10px] font-bold text-[#5C1D24] bg-[#5C1D24]/10 px-2 py-0.5 rounded-full">
+                <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-200">
                   {selectedSectionLetters.length} Selected
                 </span>
               )}
@@ -509,17 +509,17 @@ const ClassesSections = () => {
                         type="button"
                         disabled={alreadyExists}
                         onClick={() => toggleSectionSelection(letter)}
-                        className={`p-3 rounded-lg text-xs font-bold transition-all flex items-center justify-between border cursor-pointer ${
+                        className={`p-3.5 rounded-xl text-xs font-semibold transition-all flex items-center justify-between border cursor-pointer ${
                           alreadyExists
-                            ? 'bg-[#F7F5F0]/60 border-[#E5E0D8] text-[#94A3B8] cursor-not-allowed select-none'
+                            ? 'bg-slate-100 border-slate-200 text-slate-400 cursor-not-allowed select-none'
                             : isSelected
-                            ? 'bg-[#1B2A4A] text-white border-[#1B2A4A] shadow-md ring-2 ring-[#1B2A4A]/20 scale-[1.02]'
-                            : 'bg-[#F7F5F0] border-[#E5E0D8] text-[#1A1918] hover:border-[#1B2A4A] hover:bg-white shadow-2xs'
+                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs shadow-indigo-600/30 scale-[1.02]'
+                            : 'bg-slate-50 border-slate-200 text-slate-700 hover:border-indigo-400 hover:bg-white shadow-xs'
                         }`}
                       >
                         <span>Section {letter}</span>
                         {alreadyExists ? (
-                          <span className="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">✓ Added</span>
+                          <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded-md">✓ Added</span>
                         ) : isSelected ? (
                           <Check className="w-3.5 h-3.5 text-white" />
                         ) : null}
@@ -530,13 +530,12 @@ const ClassesSections = () => {
               );
             })()}
 
-            <p className="text-[10px] text-[#64748B] mt-2 font-medium font-sans">
+            <p className="text-[11px] text-slate-400 mt-2 font-medium">
               Click multiple section pills to batch-add Section A, Section B, or Section C. You can assign class teachers directly on each section card after creation.
             </p>
           </div>
 
-          <Button type="submit" variant="primary" className="w-full mt-2 shadow-sm" loading={submitting}>
-
+          <Button type="submit" variant="primary" className="w-full mt-2 shadow-xs" loading={submitting}>
             {submitting 
               ? "Creating Sections..." 
               : selectedSectionLetters.length > 0 
@@ -553,13 +552,13 @@ const ClassesSections = () => {
         title={`Confirm Delete ${deleteTarget?.type === 'class' ? 'Class Level' : 'Section'}`}
       >
         <div className="space-y-6 text-center py-4">
-          <div className="w-12 h-12 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[#5C1D24] flex items-center justify-center mx-auto mb-2">
+          <div className="w-12 h-12 rounded-full bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center mx-auto mb-2">
             <Trash2 className="w-6 h-6" />
           </div>
           <div className="space-y-2">
-            <h3 className="text-sm font-bold text-[#1A1918]">Are you absolutely sure?</h3>
-            <p className="text-xs text-[#64748B] max-w-sm mx-auto leading-relaxed">
-              This will permanently delete the {deleteTarget?.type === 'class' ? 'Class' : 'Section'} <strong className="text-[#1A1918]">"{deleteTarget?.name}"</strong> and all associated session registers, timetables, and links. This action cannot be undone.
+            <h3 className="text-sm font-bold text-slate-900 font-['Outfit']">Are you absolutely sure?</h3>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
+              This will permanently delete the {deleteTarget?.type === 'class' ? 'Class' : 'Section'} <strong className="text-slate-900">"{deleteTarget?.name}"</strong> and all associated session registers, timetables, and links. This action cannot be undone.
             </p>
           </div>
           <div className="flex gap-3 pt-2">
@@ -572,7 +571,7 @@ const ClassesSections = () => {
             </Button>
             <Button 
               variant="danger" 
-              className="flex-1 text-xs bg-[#5C1D24] text-white hover:bg-[#5C1D24]/90" 
+              className="flex-1 text-xs" 
               onClick={handleConfirmDelete}
               loading={submitting}
             >

@@ -10,8 +10,9 @@ const ProtectedRoute = () => {
 
   if (authLoading || schoolLoading) {
     return (
-      <div className="min-h-screen bg-[#F7F5F0] flex items-center justify-center text-[#1A1918]">
-        Loading workspace...
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center text-slate-800 font-['Inter']">
+        <div className="w-9 h-9 border-3 border-indigo-600/20 border-t-indigo-600 rounded-full animate-spin mb-3"></div>
+        <span className="text-sm font-medium text-slate-500">Loading workspace...</span>
       </div>
     );
   }

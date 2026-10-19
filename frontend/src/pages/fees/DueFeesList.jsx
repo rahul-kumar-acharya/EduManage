@@ -31,31 +31,31 @@ const DueFeesList = () => {
       accessor: 'student',
       render: (row) => (
         <div>
-          <div className="font-bold text-[#1A1918]">{row.student?.user?.first_name} {row.student?.user?.last_name}</div>
-          <div className="text-xs text-[#64748B]">{row.student?.user?.email}</div>
+          <div className="font-semibold text-slate-900">{row.student?.user?.first_name} {row.student?.user?.last_name}</div>
+          <div className="text-xs text-slate-500">{row.student?.user?.email}</div>
         </div>
       )
     },
     {
       header: 'Admission No.',
       accessor: 'admission_number',
-      render: (row) => <span className="font-mono text-xs text-[#1B2A4A] font-bold">{row.student?.admission_number}</span>
+      render: (row) => <span className="font-mono text-xs text-slate-700 font-semibold">{row.student?.admission_number}</span>
     },
     {
       header: 'Assessed Total',
       accessor: 'total_assessed',
-      render: (row) => <span className="font-mono text-xs text-[#1A1918] font-bold">₹{parseFloat(row.total_assessed || 0).toLocaleString('en-IN')}</span>
+      render: (row) => <span className="font-mono text-xs text-slate-900 font-medium">₹{parseFloat(row.total_assessed || 0).toLocaleString('en-IN')}</span>
     },
     {
       header: 'Amount Paid',
       accessor: 'total_paid',
-      render: (row) => <span className="font-mono text-xs text-emerald-600 font-bold">₹{parseFloat(row.total_paid || 0).toLocaleString('en-IN')}</span>
+      render: (row) => <span className="font-mono text-xs text-emerald-600 font-semibold">₹{parseFloat(row.total_paid || 0).toLocaleString('en-IN')}</span>
     },
     {
       header: 'Balance Due',
       accessor: 'balance_due',
       render: (row) => (
-        <span className={`font-mono text-xs font-bold ${row.balance_due > 0 ? 'text-[#5C1D24]' : 'text-[#64748B]'}`}>
+        <span className={`font-mono text-xs font-bold ${row.balance_due > 0 ? 'text-rose-600' : 'text-slate-500'}`}>
           ₹{parseFloat(row.balance_due || 0).toLocaleString('en-IN')}
         </span>
       )
@@ -78,12 +78,12 @@ const DueFeesList = () => {
             variant="outline"
             size="sm"
             onClick={() => alert(`Fee payment reminder notification sent to guardian of ${row.student?.user?.first_name}!`)}
-            className="gap-1.5 py-1 text-xs font-bold"
+            className="gap-1.5 py-1 text-xs font-semibold shadow-xs"
           >
-            <Send className="w-3 h-3" /> Send Reminder
+            <Send className="w-3 h-3 text-slate-600" /> Send Reminder
           </Button>
         ) : (
-          <span className="text-xs text-[#64748B] font-bold flex items-center gap-1">
+          <span className="text-xs text-slate-500 font-semibold flex items-center gap-1">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Paid
           </span>
         )
@@ -92,25 +92,25 @@ const DueFeesList = () => {
   ];
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-6 font-['Inter'] text-slate-900">
       
       {/* Category Pill Indicator */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">
-        <AlertCircle className="w-3.5 h-3.5 text-[#5C1D24]" />
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-rose-50 border border-rose-200/60 text-[10px] font-bold text-rose-700 uppercase tracking-wider">
+        <AlertCircle className="w-3.5 h-3.5 text-rose-600" />
         <span>Outstanding Deficit Ledger</span>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Student Due Balances Audit</h1>
-          <p className="text-xs text-[#64748B] mt-1">Audit outstanding fee balances, pending dues, and issue payment reminders.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Student Due Balances Audit</h1>
+          <p className="text-sm text-slate-500 mt-1">Audit outstanding fee balances, pending dues, and issue payment reminders.</p>
         </div>
-        <Button variant="secondary" size="sm" onClick={fetchDues} loading={loading} className="gap-2 shadow-sm">
-          <RefreshCw className="w-4 h-4 text-[#1B2A4A]" /> Refresh Audit
+        <Button variant="secondary" size="sm" onClick={fetchDues} loading={loading} className="gap-2 shadow-xs">
+          <RefreshCw className="w-4 h-4 text-slate-600" /> Refresh Audit
         </Button>
       </div>
 
-      <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-xs">
         <Table columns={columns} data={dues} emptyMessage="No outstanding fee dues found." />
       </div>
     </div>

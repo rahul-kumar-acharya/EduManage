@@ -184,10 +184,10 @@ const Subjects = () => {
       accessor: 'name',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] text-[#1B2A4A] flex items-center justify-center font-bold">
+          <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center font-bold shadow-xs">
             <BookOpen className="w-4 h-4" />
           </div>
-          <span className="font-bold text-[#1A1918]">{row.name}</span>
+          <span className="font-semibold text-slate-900 font-['Outfit']">{row.name}</span>
         </div>
       )
     },
@@ -196,10 +196,10 @@ const Subjects = () => {
       accessor: 'class_name',
       render: (row) => (
         <div className="flex flex-col">
-          <span className="font-bold text-xs text-[#1B2A4A]">
+          <span className="font-semibold text-xs text-indigo-600 font-['Outfit']">
             {row.class_name || row.class_level_name || 'Class'}
           </span>
-          <span className="text-[10px] font-semibold text-[#64748B]">
+          <span className="text-[11px] font-medium text-slate-500">
             {formatSectionName(row.section_name)}
           </span>
         </div>
@@ -228,21 +228,21 @@ const Subjects = () => {
         }
 
         if (!canEditRow) {
-          return <span className="text-[10px] text-[#64748B] italic font-semibold select-none bg-[#F7F5F0] px-2 py-1 rounded border border-[#E5E0D8]">Read-Only</span>;
+          return <span className="text-[10px] text-slate-400 italic font-semibold select-none bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">Read-Only</span>;
         }
 
         return (
           <div className="flex items-center gap-1.5">
             <button
               onClick={() => openEditModal(row)}
-              className="p-1.5 rounded-lg text-[#64748B] hover:text-[#1B2A4A] hover:bg-[#1B2A4A]/10 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors cursor-pointer"
               title="Edit Subject"
             >
               <Edit className="w-4 h-4" />
             </button>
             <button
               onClick={() => queueDelete(row.id)}
-              className="p-1.5 rounded-lg text-[#64748B] hover:text-[#5C1D24] hover:bg-[#5C1D24]/10 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
               title="Delete Subject"
             >
               <Trash2 className="w-4 h-4" />
@@ -254,40 +254,40 @@ const Subjects = () => {
   ];
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-6 font-['Inter'] text-slate-900">
       
       {/* Category Pill Indicator */}
       <div className="flex items-center gap-2 select-none">
-        <span className="px-2.5 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-[10px] font-bold uppercase tracking-wider">
+        <span className="px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-[10px] font-bold uppercase tracking-wider">
           Academics
         </span>
-        <span className="text-[#64748B] text-xs font-semibold">/</span>
-        <span className="text-xs font-bold text-[#1A1918]">Subjects Management</span>
+        <span className="text-slate-400 text-xs font-semibold">/</span>
+        <span className="text-xs font-bold text-slate-900">Subjects Management</span>
       </div>
 
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Subjects</h1>
-          <p className="text-xs text-[#64748B] mt-1">Configure subjects assigned to class sections.</p>
+          <h1 className="text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">Subjects</h1>
+          <p className="text-xs text-slate-500 mt-1">Configure subjects assigned to class sections.</p>
         </div>
         {canCreateSubject && (
-          <Button variant="primary" size="sm" onClick={openCreateModal} className="gap-2 shadow-sm">
+          <Button variant="primary" size="sm" onClick={openCreateModal} className="gap-2 shadow-xs">
             <Plus className="w-4 h-4" /> Add Subject
           </Button>
         )}
       </div>
 
       {/* Filter Section Dropdown */}
-      <div className="flex items-center justify-between gap-4 bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-xs">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          <label className="text-xs font-bold text-[#64748B] uppercase tracking-wider shrink-0">
+          <label className="text-xs font-bold text-slate-600 uppercase tracking-wider shrink-0 font-['Outfit']">
             Filter Section:
           </label>
           <select
             value={filterSection}
             onChange={(e) => setFilterSection(e.target.value)}
-            className="bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-1.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors w-full sm:w-64"
+            className="bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors w-full sm:w-64 cursor-pointer"
           >
             <option value="">All Sections</option>
             {sortedSections.map((sec) => (
@@ -298,15 +298,15 @@ const Subjects = () => {
           </select>
         </div>
 
-        <div className="text-xs font-bold text-[#64748B] hidden sm:block">
-          Total Subjects: <span className="text-[#1B2A4A] font-extrabold">{getDisplaySubjects().length}</span>
+        <div className="text-xs font-bold text-slate-500 hidden sm:block">
+          Total Subjects: <span className="text-indigo-600 font-extrabold">{getDisplaySubjects().length}</span>
         </div>
       </div>
 
       {/* Table Section */}
-      <div>
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
         {loading ? (
-          <div className="py-12 text-center text-xs text-[#64748B] font-semibold">
+          <div className="py-12 text-center text-xs text-slate-500 font-semibold">
             Synchronizing curriculum and syllabus registries...
           </div>
         ) : (
@@ -331,27 +331,27 @@ const Subjects = () => {
           {/* Target Class & Section Display */}
           {formData.section ? (
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-1.5">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-['Outfit']">
                 Target Class & Section
               </label>
-              <div className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2.5 text-xs font-bold text-[#1B2A4A] flex items-center justify-between shadow-2xs">
+              <div className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-indigo-700 flex items-center justify-between shadow-xs">
                 <span>
                   {sections.find((s) => s.id.toString() === formData.section)?.class_name || 'Class'} — Section {sections.find((s) => s.id.toString() === formData.section)?.name || ''}
                 </span>
-                <span className="text-[10px] text-emerald-700 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold">
+                <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
                   ✓ Auto-Bound
                 </span>
               </div>
             </div>
           ) : (
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
                 Target Class & Section
               </label>
               <select
                 value={formData.section}
                 onChange={(e) => setFormData({ ...formData, section: e.target.value })}
-                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-900 focus:outline-none focus:border-indigo-600 transition-colors"
                 required
               >
                 <option value="">Select Section</option>
@@ -364,7 +364,7 @@ const Subjects = () => {
             </div>
           )}
 
-          <Button type="submit" variant="primary" className="w-full mt-2" loading={submitting}>
+          <Button type="submit" variant="primary" className="w-full mt-2 shadow-xs" loading={submitting}>
             {editId ? "Save Changes" : "Create Subject"}
           </Button>
         </form>
@@ -377,21 +377,21 @@ const Subjects = () => {
         title="Confirm Subject Deletion"
       >
         <div className="space-y-4">
-          <p className="text-xs text-[#64748B] leading-relaxed">
+          <p className="text-xs text-slate-500 leading-relaxed">
             Are you sure you want to delete this subject? Deleting this subject will remove it from this section's class schedule and homework records.
           </p>
-          <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#F7F5F0]">
+          <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
             <button
               type="button"
               onClick={() => setDeleteConfirmOpen(false)}
-              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#F7F5F0] text-[#64748B] hover:bg-[#E5E0D8] transition-colors"
+              className="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="button"
               onClick={handleDeleteConfirm}
-              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#5C1D24] text-white hover:bg-[#5C1D24]/80 transition-colors shadow-sm"
+              className="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition-colors shadow-xs shadow-rose-600/20 cursor-pointer"
             >
               Delete subject
             </button>

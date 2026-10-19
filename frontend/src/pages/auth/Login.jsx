@@ -25,7 +25,6 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
     setError('');
     setIsSubmitting(true);
@@ -90,22 +89,19 @@ const Login = () => {
     }
   };
 
-
   return (
-
-
-    <div className="space-y-10 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-10 font-['Inter'] text-slate-800">
       
       {/* Page Title & Context Header */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-xs font-semibold text-[#5C1D24] uppercase tracking-wider">
-          <KeyRound className="w-4 h-4 text-[#5C1D24]" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-200/80 text-xs font-semibold text-indigo-700 tracking-wide">
+          <KeyRound className="w-4 h-4 text-indigo-600" />
           <span>Security Gateway Access</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-['Newsreader'] font-normal text-[#1A1918]">
+        <h1 className="text-3xl sm:text-4xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
           Sign In to Your Workspace
         </h1>
-        <p className="text-xs sm:text-sm text-[#64748B]">
+        <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
           Enter your authorized credentials to access your administrative dashboard.
         </p>
       </div>
@@ -114,68 +110,67 @@ const Login = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         
         {/* Left Feature Column */}
-        <div className="lg:col-span-5 bg-white p-8 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col justify-between space-y-6">
+        <div className="lg:col-span-5 bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
           <div className="space-y-6">
             <div className="space-y-2">
-              <h3 className="text-2xl font-['Newsreader'] font-bold text-[#1A1918]">
+              <h3 className="text-2xl font-['Outfit'] font-bold text-slate-900">
                 Welcome Back to AcharyaCampus
               </h3>
-              <p className="text-[#64748B] text-sm leading-relaxed">
+              <p className="text-slate-500 text-sm leading-relaxed">
                 Access your institution's central operating system for attendance, gradebooks, fees, and circulars.
               </p>
             </div>
 
             {/* Security & Access Pillars */}
-            <div className="space-y-4">
-              <div className="flex items-start gap-3.5 p-3.5 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
-                <Globe className="w-5 h-5 text-[#1B2A4A] shrink-0 mt-0.5" />
+            <div className="space-y-3.5">
+              <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <Globe className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
-                  <h4 className="font-['Newsreader'] font-bold text-base text-[#1A1918]">Tenant Domain Lock</h4>
-                  <p className="text-xs text-[#64748B] leading-relaxed">Your session is automatically isolated to your school's subdomain environment.</p>
+                  <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">Tenant Domain Lock</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">Your session is automatically isolated to your school's subdomain environment.</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5 p-3.5 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
-                <UserCheck className="w-5 h-5 text-[#1B2A4A] shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <UserCheck className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
-                  <h4 className="font-['Newsreader'] font-bold text-base text-[#1A1918]">Role-Based Dashboards</h4>
-                  <p className="text-xs text-[#64748B] leading-relaxed">Dedicated interfaces for School Admins, Class Teachers, Students, Parents, and Accountants.</p>
+                  <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">Role-Based Dashboards</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">Dedicated interfaces for School Admins, Class Teachers, Students, Parents, and Accountants.</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5 p-3.5 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8]">
-                <ShieldCheck className="w-5 h-5 text-[#1B2A4A] shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <ShieldCheck className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
-                  <h4 className="font-['Newsreader'] font-bold text-base text-[#1A1918]">Bank-Grade Security</h4>
-                  <p className="text-xs text-[#64748B] leading-relaxed">256-bit encrypted credentials with automated JWT token authentication.</p>
+                  <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">Bank-Grade Security</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">256-bit encrypted credentials with automated JWT token authentication.</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Support Note */}
-          <div className="pt-4 border-t border-[#F7F5F0]">
-            <div className="p-3.5 bg-[#F7F5F0] rounded-lg border border-[#E5E0D8] flex items-start gap-2.5">
-              <HelpCircle className="w-4 h-4 text-[#1B2A4A] shrink-0 mt-0.5" />
-              <p className="text-xs text-[#64748B] leading-relaxed">
+          <div className="pt-4 border-t border-slate-100">
+            <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-2.5">
+              <HelpCircle className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+              <p className="text-xs text-slate-500 leading-relaxed">
                 Forgot your password or need assistance? Contact your school administrator or our 24/6 support desk.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Right Form Column (Fully Balanced Layout) */}
-        <div className="lg:col-span-7 bg-white p-8 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col justify-between space-y-6">
+        {/* Right Form Column */}
+        <div className="lg:col-span-7 bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
           
           <div className="space-y-6">
             
-
             {/* Role Quick Selector Segment */}
             <div className="space-y-2">
-              <label className="block text-xs font-semibold text-[#1A1918] uppercase tracking-wider">
+              <label className="block text-xs font-semibold text-slate-700">
                 Select Account Type
               </label>
-              <div className="grid grid-cols-4 gap-2 p-1 bg-[#F7F5F0] rounded-lg border border-[#E5E0D8]">
+              <div className="grid grid-cols-4 gap-1.5 p-1.5 bg-slate-100 rounded-xl border border-slate-200/80">
                 {[
                   { id: 'ADMIN', label: 'School Admin' },
                   { id: 'TEACHER', label: 'Faculty' },
@@ -186,11 +181,10 @@ const Login = () => {
                     key={type.id}
                     type="button"
                     onClick={() => handleRoleChange(type.id)}
-
-                    className={`py-2 px-3 text-xs font-semibold rounded-md transition-all ${
+                    className={`py-2 px-2.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                       selectedRole === type.id
-                        ? 'bg-[#1B2A4A] text-white shadow-sm'
-                        : 'text-[#64748B] hover:text-[#1A1918]'
+                        ? 'bg-indigo-600 text-white shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
                     }`}
                   >
                     {type.label}
@@ -200,12 +194,12 @@ const Login = () => {
             </div>
 
             {error && (
-              <div className="p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg flex items-start gap-2.5 font-medium">
+              <div className="p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-start gap-2.5 font-medium">
                 <ShieldAlert className="w-4 h-4 shrink-0 text-rose-600 mt-0.5" />
                 <div className="leading-relaxed">
                   {error}{' '}
                   {error.includes('Super Admin') && (
-                    <Link to="/super-admin/login" className="text-[#5C1D24] font-bold underline hover:text-[#1B2A4A] ml-1">
+                    <Link to="/super-admin/login" className="text-indigo-600 font-bold underline hover:text-indigo-700 ml-1">
                       Go to Super Admin Portal →
                     </Link>
                   )}
@@ -213,62 +207,60 @@ const Login = () => {
               </div>
             )}
 
-
             {/* Input Form Fields */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-[#1A1918] uppercase tracking-wider mb-2">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Email Address
                 </label>
                 <div className="relative flex items-center">
-                  <Mail className="w-4.5 h-4.5 text-[#1B2A4A] absolute left-3.5" />
+                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
                   <input
                     type="email"
                     required
                     placeholder="user@school.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-11 pr-4 py-3.5 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                    className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-3 focus:ring-indigo-500/15 transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#1A1918] uppercase tracking-wider mb-2">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Password
                 </label>
                 <div className="relative flex items-center">
-                  <Lock className="w-4.5 h-4.5 text-[#1B2A4A] absolute left-3.5" />
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg pl-11 pr-10 py-3.5 text-sm text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+                    className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-10 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-3 focus:ring-indigo-500/15 transition-all"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(prev => !prev)}
-                    className="absolute right-3.5 text-[#64748B] hover:text-[#1B2A4A] focus:outline-none transition-colors"
+                    className="absolute right-3.5 text-slate-400 hover:text-indigo-600 focus:outline-none transition-colors cursor-pointer"
                     tabIndex={-1}
                     title={showPassword ? "Hide Password" : "Show Password"}
                   >
-                    {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
-
               <div className="flex items-center justify-between text-xs pt-1">
-                <label className="flex items-center gap-2 text-[#64748B] cursor-pointer">
+                <label className="flex items-center gap-2 text-slate-500 cursor-pointer">
                   <input 
                     type="checkbox" 
-                    className="rounded border-[#E5E0D8] text-[#1B2A4A] focus:ring-0 cursor-pointer" 
+                    className="rounded border-slate-300 text-indigo-600 focus:ring-0 cursor-pointer" 
                   />
                   <span>Remember me on this device</span>
                 </label>
-                <Link to="/forgot-password" className="text-[#1B2A4A] hover:text-[#5C1D24] font-semibold underline">
+                <Link to="/forgot-password" className="text-indigo-600 hover:text-indigo-700 font-semibold underline">
                   Forgot password?
                 </Link>
               </div>
@@ -276,7 +268,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-[#1B2A4A] hover:bg-[#5C1D24] disabled:bg-[#64748B] text-white font-semibold text-sm py-4 px-6 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 mt-4"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 text-white font-semibold text-sm py-3 px-6 rounded-xl transition-all shadow-sm shadow-indigo-600/25 flex items-center justify-center gap-2 mt-2 active:scale-[0.99] cursor-pointer"
               >
                 {isSubmitting ? 'Authenticating...' : 'Sign In to Portal'} <ArrowRight className="w-4 h-4" />
               </button>
@@ -285,26 +277,26 @@ const Login = () => {
           </div>
 
           {/* Bottom Banner Note */}
-          <div className="pt-4 border-t border-[#F7F5F0] text-center space-y-2">
+          <div className="pt-4 border-t border-slate-100 text-center space-y-2">
             {!subdomain && (
-              <div className="text-xs text-[#64748B] space-y-1">
+              <div className="text-xs text-slate-500 space-y-1">
                 <div>
                   Want to register a new school?{' '}
-                  <Link to="/register-school" className="text-[#1B2A4A] hover:text-[#5C1D24] font-semibold underline">
+                  <Link to="/register-school" className="text-indigo-600 hover:text-indigo-700 font-semibold underline">
                     Register School Portal
                   </Link>
                 </div>
                 <div>
                   Platform Super Admin?{' '}
-                  <Link to="/super-admin/login" className="text-[#5C1D24] hover:text-[#1B2A4A] font-semibold underline">
+                  <Link to="/super-admin/login" className="text-indigo-600 hover:text-indigo-700 font-semibold underline">
                     Super Admin Portal →
                   </Link>
                 </div>
               </div>
             )}
 
-            <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#64748B]">
-              <KeyRound className="w-3.5 h-3.5 text-[#5C1D24]" />
+            <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400">
+              <KeyRound className="w-3.5 h-3.5 text-indigo-600" />
               <span>Protected by Row-Level Security & Encrypted Auth</span>
             </div>
           </div>

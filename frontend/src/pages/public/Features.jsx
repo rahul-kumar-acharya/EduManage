@@ -16,49 +16,49 @@ const Features = () => {
     { 
       icon: GraduationCap, 
       title: 'Academic Structure', 
-      desc: 'Manage Sessions, Class Levels, Sections, and Subjects seamlessly.' 
+      desc: 'Manage Sessions, Class Levels, Sections, and Subjects seamlessly in one unified interface.' 
     },
     { 
       icon: Users, 
       title: 'Student & Teacher Profiles', 
-      desc: 'Centralized directory for admissions, documents, employee profiles, and leaves.' 
+      desc: 'Centralized directory for admissions, documents, employee profiles, and leave allocations.' 
     },
     { 
       icon: CalendarCheck, 
       title: 'Smart Attendance', 
-      desc: 'Daily attendance logs with monthly automated reports and parent notifications.' 
+      desc: 'Daily digital attendance logs with automated monthly calculations and parent notification records.' 
     },
     { 
       icon: FileSpreadsheet, 
       title: 'Exams & Gradebooks', 
-      desc: 'Create exams, enter subject marks, auto-compute grades, and generate report cards.' 
+      desc: 'Configure exam terms, enter subject marks, auto-compute GPAs/grades, and generate PDF report cards.' 
     },
     { 
       icon: Receipt, 
       title: 'Fee Management', 
-      desc: 'Custom fee structures, payment receipts, due reminders, and financial reports.' 
+      desc: 'Custom class fee structures, digital payment receipts, balance tracking, and audit ledgers.' 
     },
     { 
       icon: Bell, 
       title: 'School Notices', 
-      desc: 'Publish circulars, holiday notices, and event announcements across portals.' 
+      desc: 'Publish official circulars, holiday calendars, and event bulletins across dedicated role portals.' 
     },
   ];
 
   return (
-    <div className="space-y-20 font-['Plus_Jakarta_Sans']">
+    <div className="space-y-20 font-['Inter'] text-slate-800">
       <div className="max-w-7xl mx-auto px-6 space-y-12">
         
         {/* Page Header */}
         <div className="text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-xs font-semibold text-[#5C1D24] uppercase tracking-wider">
-            <Zap className="w-4 h-4 text-[#5C1D24]" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-200/80 text-xs font-semibold text-indigo-700 tracking-wide">
+            <Zap className="w-4 h-4 text-indigo-600" />
             <span>Platform Capabilities</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Newsreader'] font-normal text-[#1A1918] tracking-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
             Full Feature Overview
           </h1>
-          <p className="text-[#64748B] text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
             Built from the ground up for modern educational governance, multi-tenant isolation, and daily operational ease.
           </p>
         </div>
@@ -70,15 +70,15 @@ const Features = () => {
             return (
               <div 
                 key={idx} 
-                className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4"
+                className="bg-white p-7 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-lg transition-all space-y-4"
               >
-                <div className="w-10 h-10 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+                <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-2xs">
                   <Icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-xl font-['Newsreader'] font-bold text-[#1A1918]">
+                <h3 className="text-lg font-['Outfit'] font-bold text-slate-900">
                   {item.title}
                 </h3>
-                <p className="text-[#64748B] text-sm leading-relaxed">
+                <p className="text-slate-500 text-sm leading-relaxed">
                   {item.desc}
                 </p>
               </div>

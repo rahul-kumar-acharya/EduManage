@@ -102,29 +102,29 @@ const ExamList = () => {
   };
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-6 font-['Inter'] text-slate-900">
       
       {/* Category Pill Indicator */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">
-        <FileSpreadsheet className="w-3.5 h-3.5 text-[#5C1D24]" />
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-indigo-50 border border-indigo-200/60 text-[10px] font-bold text-indigo-700 uppercase tracking-wider">
+        <FileSpreadsheet className="w-3.5 h-3.5 text-indigo-600" />
         <span>Academic Assessment Control</span>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Examinations & Gradebooks</h1>
-          <p className="text-xs text-[#64748B] mt-1">Schedule examination terms, log subject marks, and issue report cards.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Examinations & Gradebooks</h1>
+          <p className="text-sm text-slate-500 mt-1">Schedule examination terms, log subject marks, and issue report cards.</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           {user?.role === 'TEACHER' && (
             <Link to="/dashboard/exams/marks-entry" className="flex-1 sm:flex-none">
-              <Button variant="secondary" size="sm" className="w-full gap-2 py-2 shadow-sm">
-                <Edit3 className="w-4 h-4 text-[#1B2A4A]" /> Gradebook Entry
+              <Button variant="secondary" size="sm" className="w-full gap-2 py-2 shadow-xs">
+                <Edit3 className="w-4 h-4 text-slate-600" /> Gradebook Entry
               </Button>
             </Link>
           )}
           {isManageAllowed && (
-            <Button variant="primary" size="sm" onClick={openCreateModal} className="flex-1 sm:flex-none gap-2 shadow-sm">
+            <Button variant="primary" size="sm" onClick={openCreateModal} className="flex-1 sm:flex-none gap-2 shadow-xs">
               <Plus className="w-4 h-4" /> Create Exam
             </Button>
           )}
@@ -133,40 +133,40 @@ const ExamList = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
-          <div className="col-span-full py-20 text-center text-xs text-[#64748B] font-semibold animate-pulse">
+          <div className="col-span-full py-20 text-center text-xs text-slate-400 font-medium animate-pulse">
             Retrieving examination catalog rosters...
           </div>
         ) : exams.map((ex) => (
-          <div key={ex.id} className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow">
+          <div key={ex.id} className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <div className="w-9 h-9 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] text-[#1B2A4A] flex items-center justify-center">
+                <div className="w-9 h-9 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center">
                   <FileSpreadsheet className="w-5 h-5" />
                 </div>
-                <Badge variant="purple">Active Exam</Badge>
+                <Badge variant="primary">Active Exam</Badge>
               </div>
 
               <div>
-                <h3 className="text-sm font-bold text-[#1A1918]">{ex.name}</h3>
-                <div className="text-[11px] text-[#64748B] flex items-center gap-1.5 mt-1 font-mono font-semibold">
-                  <Calendar className="w-3.5 h-3.5 text-[#64748B]" />
+                <h3 className="text-sm font-bold font-['Outfit'] text-slate-900">{ex.name}</h3>
+                <div className="text-[11px] text-slate-500 flex items-center gap-1.5 mt-1 font-mono font-medium">
+                  <Calendar className="w-3.5 h-3.5 text-slate-400" />
                   <span>{ex.start_date} → {ex.end_date}</span>
                 </div>
               </div>
             </div>
 
-            <div className="border-t border-[#F7F5F0] pt-3 flex items-center justify-between gap-4">
+            <div className="border-t border-slate-100 pt-3 flex items-center justify-between gap-4">
               <div className="flex items-center gap-2">
                 {user?.role === 'TEACHER' && (
                   <Link to={`/dashboard/exams/marks-entry?exam=${ex.id}`}>
-                    <Button variant="outline" size="sm" className="gap-1 text-[10px] py-1 shadow-sm font-bold">
-                      <Edit3 className="w-3 h-3 text-[#1B2A4A]" /> Enter Marks
+                    <Button variant="outline" size="sm" className="gap-1 text-[10px] py-1 shadow-xs font-semibold">
+                      <Edit3 className="w-3 h-3 text-slate-600" /> Enter Marks
                     </Button>
                   </Link>
                 )}
                 <Link to={`/dashboard/exams/report-card?exam=${ex.id}`}>
-                  <Button variant="secondary" size="sm" className="gap-1 text-[10px] py-1 shadow-sm font-bold">
-                    <Award className="w-3 h-3 text-[#5C1D24]" /> Report Cards
+                  <Button variant="secondary" size="sm" className="gap-1 text-[10px] py-1 shadow-xs font-semibold">
+                    <Award className="w-3 h-3 text-indigo-600" /> Report Cards
                   </Button>
                 </Link>
               </div>
@@ -174,14 +174,14 @@ const ExamList = () => {
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => openEditModal(ex)}
-                    className="p-1.5 rounded text-[#64748B] hover:text-[#1B2A4A] hover:bg-[#1B2A4A]/10 transition-colors"
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-slate-100 transition-colors"
                     title="Edit Exam"
                   >
                     <Edit3 className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => queueDelete(ex.id)}
-                    className="p-1.5 rounded text-[#64748B] hover:text-[#5C1D24] hover:bg-[#5C1D24]/10 transition-colors shrink-0"
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors shrink-0"
                     title="Delete Exam"
                   >
                     <Trash2 className="w-4 h-4" />
@@ -193,7 +193,7 @@ const ExamList = () => {
         ))}
 
         {exams.length === 0 && !loading && (
-          <div className="col-span-full bg-white p-12 text-center text-[#64748B] rounded-xl border border-[#E5E0D8] shadow-sm font-medium italic">
+          <div className="col-span-full bg-white p-12 text-center text-slate-400 rounded-xl border border-slate-200 shadow-xs font-medium italic">
             No examination schedules created yet.
           </div>
         )}
@@ -201,7 +201,7 @@ const ExamList = () => {
 
       {/* Edit / Add Exam Modal */}
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editId ? "Edit Examination Term" : "Create New Examination Term"}>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 font-['Inter']">
           <Input
             label="Exam Term Name"
             placeholder="e.g. Midterm Examination 2026"
@@ -225,7 +225,7 @@ const ExamList = () => {
               required
             />
           </div>
-          <Button type="submit" variant="primary" className="w-full mt-2" loading={submitting}>
+          <Button type="submit" variant="primary" className="w-full mt-2 shadow-xs" loading={submitting}>
             {editId ? "Save Changes" : "Create Exam Term"}
           </Button>
         </form>
@@ -237,22 +237,22 @@ const ExamList = () => {
         onClose={() => setDeleteConfirmOpen(false)} 
         title="Confirm Examination Deletion"
       >
-        <div className="space-y-4">
-          <p className="text-xs text-[#64748B] leading-relaxed">
+        <div className="space-y-4 font-['Inter']">
+          <p className="text-xs text-slate-500 leading-relaxed">
             Are you sure you want to delete this examination term? Deleting this schedule will permanently erase all student gradebook records and report cards generated for this term.
           </p>
-          <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#F7F5F0]">
+          <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
             <button
               type="button"
               onClick={() => setDeleteConfirmOpen(false)}
-              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#F7F5F0] text-[#64748B] hover:bg-[#E5E0D8] transition-colors"
+              className="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
             >
               Cancel
             </button>
             <button
               type="button"
               onClick={handleDeleteConfirm}
-              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#5C1D24] text-white hover:bg-[#5C1D24]/80 transition-colors shadow-sm"
+              className="px-4 py-2 rounded-lg text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition-colors shadow-xs"
             >
               Delete exam term
             </button>

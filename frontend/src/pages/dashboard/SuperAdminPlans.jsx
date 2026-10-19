@@ -50,12 +50,12 @@ const SuperAdminPlans = () => {
       accessor: 'name',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#1B2A4A] text-white flex items-center justify-center font-bold text-xs shrink-0 border border-[#1B2A4A]">
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs shadow-indigo-600/20 font-['Outfit']">
             {row.name.charAt(0)}
           </div>
           <div>
-            <div className="font-bold text-[#1A1918]">{row.name}</div>
-            <div className="text-[10px] text-[#5C1D24] font-mono font-semibold">{row.subdomain}.campus.acharyaworks.in</div>
+            <div className="font-semibold text-slate-900 font-['Outfit']">{row.name}</div>
+            <div className="text-[11px] text-indigo-600 font-mono font-medium">{row.subdomain}.campus.acharyaworks.in</div>
           </div>
         </div>
       )
@@ -65,8 +65,8 @@ const SuperAdminPlans = () => {
       accessor: 'plan',
       render: (row) => (
         <div>
-          <span className="text-xs font-bold text-[#1A1918] block">{row.plan}</span>
-          <span className="text-[10px] text-[#64748B] block font-mono">{row.studentQuota}</span>
+          <span className="text-xs font-semibold text-slate-900 block font-['Outfit']">{row.plan}</span>
+          <span className="text-[11px] text-slate-500 block font-mono">{row.studentQuota}</span>
         </div>
       )
     },
@@ -75,8 +75,8 @@ const SuperAdminPlans = () => {
       accessor: 'amount',
       render: (row) => (
         <div>
-          <span className="text-xs font-bold text-[#1A1918] block">{row.amount} / month</span>
-          <span className="text-[10px] text-[#64748B] block">Auto-Renewing</span>
+          <span className="text-xs font-semibold text-slate-900 block">{row.amount} / month</span>
+          <span className="text-[10px] text-slate-500 block">Auto-Renewing</span>
         </div>
       )
     },
@@ -84,8 +84,8 @@ const SuperAdminPlans = () => {
       header: 'Next Invoice Date',
       accessor: 'nextBilling',
       render: (row) => (
-        <div className="flex items-center gap-1.5 text-xs text-[#64748B] font-mono">
-          <Calendar className="w-3.5 h-3.5 text-[#1B2A4A]" /> {row.nextBilling}
+        <div className="flex items-center gap-1.5 text-xs text-slate-600 font-mono">
+          <Calendar className="w-3.5 h-3.5 text-indigo-600" /> {row.nextBilling}
         </div>
       )
     },
@@ -93,10 +93,10 @@ const SuperAdminPlans = () => {
       header: 'Subscription Status',
       accessor: 'status',
       render: (row) => (
-        <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
           row.status === 'Active Paid'
-            ? 'bg-emerald-500/10 text-emerald-700 border border-emerald-500/20'
-            : 'bg-rose-500/10 text-rose-700 border border-rose-500/20'
+            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+            : 'bg-rose-50 text-rose-700 border border-rose-200'
         }`}>
           {row.status}
         </span>
@@ -105,20 +105,20 @@ const SuperAdminPlans = () => {
   ];
 
   return (
-    <div className="space-y-8 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-8 font-['Inter'] text-slate-900">
       
       {/* Header Banner */}
-      <div className="bg-white p-6 sm:p-8 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div className="space-y-2">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="space-y-1.5">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Newsreader'] font-bold text-[#1A1918]">
+            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
               Tenant Subscription Operations
             </h1>
-            <span className="px-3 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-xs font-semibold uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold uppercase tracking-wider">
               Revenue & Plan Controls
             </span>
           </div>
-          <p className="text-[#64748B] text-xs sm:text-sm">
+          <p className="text-slate-500 text-xs sm:text-sm">
             Monitor active school subscriptions, recurring revenues, renewal dates, and plan tier limits.
           </p>
         </div>
@@ -126,56 +126,56 @@ const SuperAdminPlans = () => {
         <button
           onClick={fetchSchools}
           disabled={loading}
-          className="bg-white hover:bg-[#F7F5F0] text-[#1A1918] border border-[#E5E0D8] px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+          className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer disabled:opacity-50"
         >
-          <RefreshCw className={`w-4 h-4 text-[#1B2A4A] ${loading ? 'animate-spin' : ''}`} /> Refresh Subscriptions
+          <RefreshCw className={`w-4 h-4 text-indigo-600 ${loading ? 'animate-spin' : ''}`} /> Refresh Subscriptions
         </button>
       </div>
 
       {/* Revenue Operations Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">Monthly Recurring (MRR)</span>
-            <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">₹{totalMRR.toLocaleString('en-IN')}</strong>
-            <span className="text-[11px] text-emerald-700 font-bold block flex items-center gap-1">
+            <span className="text-[11px] uppercase font-bold tracking-wider text-slate-500 block">Monthly Recurring (MRR)</span>
+            <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">₹{totalMRR.toLocaleString('en-IN')}</strong>
+            <span className="text-[11px] text-emerald-700 font-semibold block flex items-center gap-1">
               <TrendingUp className="w-3 h-3 text-emerald-600" /> Active Recurring Cashflow
             </span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+          <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs">
             <DollarSign className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">Annual Recurring (ARR)</span>
-            <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">₹{(totalMRR * 12).toLocaleString('en-IN')}</strong>
-            <span className="text-[11px] text-[#64748B] block">Projected Annual Run-rate</span>
+            <span className="text-[11px] uppercase font-bold tracking-wider text-slate-500 block">Annual Recurring (ARR)</span>
+            <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">₹{(totalMRR * 12).toLocaleString('en-IN')}</strong>
+            <span className="text-xs text-slate-500 block">Projected Annual Run-rate</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+          <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs">
             <CreditCard className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">Active Paid Subscribers</span>
-            <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">{subscriptions.length} Schools</strong>
-            <span className="text-[11px] text-emerald-700 font-bold block">100% Payment Uptime</span>
+            <span className="text-[11px] uppercase font-bold tracking-wider text-slate-500 block">Active Paid Subscribers</span>
+            <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">{subscriptions.length} Schools</strong>
+            <span className="text-xs text-emerald-700 font-semibold block">100% Payment Uptime</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+          <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs">
             <Users className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">Default Trial Period</span>
-            <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">14 Days</strong>
-            <span className="text-[11px] text-[#64748B] block">On New Registrations</span>
+            <span className="text-[11px] uppercase font-bold tracking-wider text-slate-500 block">Default Trial Period</span>
+            <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">14 Days</strong>
+            <span className="text-xs text-slate-500 block">On New Registrations</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+          <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs">
             <Settings2 className="w-5 h-5" />
           </div>
         </div>
@@ -183,8 +183,8 @@ const SuperAdminPlans = () => {
 
       {/* Active Subscriptions Table */}
       <div className="space-y-4">
-        <h2 className="text-lg font-['Newsreader'] font-bold text-[#1A1918]">Active School Subscriptions & Invoices ({subscriptions.length})</h2>
-        <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm overflow-hidden">
+        <h2 className="text-lg font-['Outfit'] font-bold text-slate-900">Active School Subscriptions & Invoices ({subscriptions.length})</h2>
+        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
           <Table columns={columns} data={subscriptions} emptyMessage="No active school subscriptions." />
         </div>
       </div>

@@ -206,10 +206,10 @@ const Sessions = () => {
       accessor: 'name',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+          <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs">
             <Calendar className="w-4 h-4" />
           </div>
-          <span className="font-bold text-[#1A1918]">{row.name}</span>
+          <span className="font-semibold text-slate-900 font-['Outfit']">{row.name}</span>
           {row.is_current && <Badge variant="success">Active Session</Badge>}
         </div>
       )
@@ -217,12 +217,12 @@ const Sessions = () => {
     { 
       header: 'Start Date', 
       accessor: 'start_date',
-      render: (row) => <span className="font-mono text-xs">{row.start_date}</span>
+      render: (row) => <span className="font-mono text-xs text-slate-600">{row.start_date}</span>
     },
     { 
       header: 'End Date', 
       accessor: 'end_date',
-      render: (row) => <span className="font-mono text-xs">{row.end_date}</span>
+      render: (row) => <span className="font-mono text-xs text-slate-600">{row.end_date}</span>
     },
     {
       header: 'Actions',
@@ -230,13 +230,13 @@ const Sessions = () => {
       render: (row) => (
         <div className="flex items-center gap-2">
           {!row.is_current && (
-            <Button variant="secondary" size="sm" onClick={() => handleSetCurrent(row.id)} className="gap-1.5 py-1">
-              <Star className="w-3.5 h-3.5 text-[#5C1D24]" /> Make Active
+            <Button variant="secondary" size="sm" onClick={() => handleSetCurrent(row.id)} className="gap-1.5 py-1 text-xs">
+              <Star className="w-3.5 h-3.5 text-indigo-600" /> Make Active
             </Button>
           )}
           <button
             onClick={() => initiateDelete(row.id, row.name)}
-            className="p-1.5 rounded-lg text-[#64748B] hover:text-[#5C1D24] hover:bg-[#5C1D24]/10 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
             title="Delete Session"
           >
             <Trash2 className="w-4 h-4" />
@@ -247,25 +247,25 @@ const Sessions = () => {
   ];
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-6 font-['Inter'] text-slate-900">
       
       {/* Category Pill Indicator */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">
-        <Calendar className="w-3.5 h-3.5 text-[#5C1D24]" />
+      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-200/80 text-[11px] font-semibold text-indigo-700 uppercase tracking-wider">
+        <Calendar className="w-3.5 h-3.5 text-indigo-600" />
         <span>Academic Administration Calendar</span>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Academic Sessions</h1>
-          <p className="text-xs text-[#64748B] mt-1">Define school years (e.g. 2026-2027) and toggle the current active session.</p>
+          <h1 className="text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">Academic Sessions</h1>
+          <p className="text-xs text-slate-500 mt-1">Define school years (e.g. 2026-2027) and toggle the current active session.</p>
         </div>
-        <Button variant="primary" size="sm" onClick={() => { setValidationError(''); setModalOpen(true); }} className="gap-2 shadow-sm">
+        <Button variant="primary" size="sm" onClick={() => { setValidationError(''); setModalOpen(true); }} className="gap-2 shadow-xs">
           <Plus className="w-4 h-4" /> Add Session
         </Button>
       </div>
 
-      <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm">
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
         <Table columns={columns} data={sessions} emptyMessage="No academic sessions configured yet." />
       </div>
 
@@ -312,14 +312,14 @@ const Sessions = () => {
             />
           </div>
 
-          <div className="bg-[#F7F5F0] p-3 rounded-lg border border-[#E5E0D8] text-[11px] text-[#64748B] space-y-1">
-            <div className="font-bold text-[#1A1918] uppercase tracking-wider">Validation Rules Applied:</div>
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 text-[11px] text-slate-600 space-y-1">
+            <div className="font-bold text-slate-800 uppercase tracking-wider font-['Outfit']">Validation Rules Applied:</div>
             <div>• Session name year range must be <strong>exactly 1 year</strong> (e.g., 2026 - 2027).</div>
             <div>• Multi-year range like <strong>2026 - 2028</strong> is prohibited.</div>
             <div>• Start date must be in the current ongoing year (<strong>{currentYear}</strong>).</div>
           </div>
 
-          <Button type="submit" variant="primary" className="w-full mt-2 shadow-sm" loading={submitting}>
+          <Button type="submit" variant="primary" className="w-full mt-2 shadow-xs" loading={submitting}>
             Create Session
           </Button>
         </form>
@@ -332,13 +332,13 @@ const Sessions = () => {
         title="Confirm Delete Academic Session"
       >
         <div className="space-y-6 text-center py-4">
-          <div className="w-12 h-12 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[#5C1D24] flex items-center justify-center mx-auto mb-2">
+          <div className="w-12 h-12 rounded-full bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center mx-auto mb-2">
             <Trash2 className="w-6 h-6" />
           </div>
           <div className="space-y-2">
-            <h3 className="text-sm font-bold text-[#1A1918]">Are you absolutely sure?</h3>
-            <p className="text-xs text-[#64748B] max-w-sm mx-auto leading-relaxed">
-              This will permanently delete the academic session <strong className="text-[#1A1918]">"{deleteTarget?.name}"</strong> and all its associated classes, student registers, timetables, fee collections, and report cards. This action cannot be undone.
+            <h3 className="text-sm font-bold text-slate-900 font-['Outfit']">Are you absolutely sure?</h3>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
+              This will permanently delete the academic session <strong className="text-slate-900">"{deleteTarget?.name}"</strong> and all its associated classes, student registers, timetables, fee collections, and report cards. This action cannot be undone.
             </p>
           </div>
           <div className="flex gap-3 pt-2">
@@ -351,7 +351,7 @@ const Sessions = () => {
             </Button>
             <Button 
               variant="danger" 
-              className="flex-1 text-xs bg-[#5C1D24] text-white hover:bg-[#5C1D24]/90" 
+              className="flex-1 text-xs" 
               onClick={handleConfirmDelete}
               loading={submitting}
             >

@@ -215,36 +215,36 @@ const HomeworkList = () => {
   };
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-6 font-['Inter'] text-slate-900">
       
       {/* Category Pill Indicator */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">
-        <BookOpen className="w-3.5 h-3.5 text-[#5C1D24]" />
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-indigo-50 border border-indigo-200/60 text-[10px] font-bold text-indigo-700 uppercase tracking-wider">
+        <BookOpen className="w-3.5 h-3.5 text-indigo-600" />
         <span>Academic Homework Dashboard</span>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Homework Assignments</h1>
-          <p className="text-xs text-[#64748B] mt-1">Post class assignments, project instructions, and set submission deadlines.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Homework Assignments</h1>
+          <p className="text-sm text-slate-500 mt-1">Post class assignments, project instructions, and set submission deadlines.</p>
         </div>
         {isManageAllowed && (
-          <Button variant="primary" size="sm" onClick={openCreateModal} className="gap-2 shadow-sm">
+          <Button variant="primary" size="sm" onClick={openCreateModal} className="gap-2 shadow-xs">
             <Plus className="w-4 h-4" /> Add Homework
           </Button>
         )}
       </div>
 
       {/* Filters Bar */}
-      <div className="bg-white p-4 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          <label className="text-xs font-bold text-[#1A1918] uppercase tracking-wider whitespace-nowrap">
+          <label className="text-xs font-bold text-slate-700 uppercase tracking-wider whitespace-nowrap font-['Outfit']">
             Filter Class Section:
           </label>
           <select
             value={filterSection}
             onChange={(e) => setFilterSection(e.target.value)}
-            className="w-full sm:w-72 bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2 text-xs font-bold text-[#1B2A4A] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+            className="w-full sm:w-72 bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
           >
             <option value="">All Class Sections</option>
             {sections.map((sec) => (
@@ -254,21 +254,21 @@ const HomeworkList = () => {
             ))}
           </select>
         </div>
-        <div className="text-[11px] text-[#64748B] font-semibold">
-          Showing <strong className="text-[#1B2A4A]">{getDisplayHomeworks().length}</strong> homework assignment(s)
+        <div className="text-[11px] text-slate-500 font-medium">
+          Showing <strong className="text-indigo-600 font-bold">{getDisplayHomeworks().length}</strong> homework assignment(s)
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
-          <div className="col-span-full py-20 text-center text-xs text-[#64748B] font-semibold animate-pulse">
+          <div className="col-span-full py-20 text-center text-xs text-slate-400 font-medium animate-pulse">
             Retrieving homework catalogs and subject lists...
           </div>
         ) : (
           getDisplayHomeworks().map((hw) => {
             const dueStatus = getDueDateStatus(hw.due_date);
             return (
-              <div key={hw.id} className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow">
+              <div key={hw.id} className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <div className="flex items-center gap-1.5">
@@ -277,21 +277,21 @@ const HomeworkList = () => {
                         {hw.section_name || (hw.section_details ? `${hw.section_details.class_name} - ${hw.section_details.name}` : 'Section')}
                       </Badge>
                     </div>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${dueStatus.color}`}>
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${dueStatus.color}`}>
                       {dueStatus.label}
                     </span>
                   </div>
-                  <h3 className="text-sm font-bold text-[#1A1918]">{hw.title}</h3>
-                  <p className="text-xs text-[#64748B] leading-relaxed line-clamp-3 font-medium">{hw.description}</p>
+                  <h3 className="text-base font-bold font-['Outfit'] text-slate-900">{hw.title}</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed line-clamp-3 font-normal">{hw.description}</p>
                   
                   {/* Assigned By Teacher Attribution Badge */}
-                  <div className="text-[10px] font-semibold text-[#1B2A4A] bg-[#F7F5F0] px-2.5 py-1 rounded-md inline-block">
-                    ✍️ Assigned by: <span className="font-bold">{hw.assigned_by_name || 'Faculty / Admin'}</span>
+                  <div className="text-[10px] font-medium text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md inline-block">
+                    ✍️ Assigned by: <span className="font-semibold text-slate-900">{hw.assigned_by_name || 'Faculty / Admin'}</span>
                   </div>
                 </div>
 
-                <div className="border-t border-[#F7F5F0] pt-3 flex items-center justify-between text-xs text-[#64748B]">
-                  <div className="flex items-center gap-1.5 text-amber-600 font-bold">
+                <div className="border-t border-slate-100 pt-3 flex items-center justify-between text-xs text-slate-500">
+                  <div className="flex items-center gap-1.5 text-amber-700 font-medium">
                     <Calendar className="w-3.5 h-3.5 text-amber-600" /> Due: {hw.due_date}
                   </div>
 
@@ -299,14 +299,14 @@ const HomeworkList = () => {
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => openEditModal(hw)}
-                        className="p-1.5 rounded text-[#64748B] hover:text-[#1B2A4A] hover:bg-[#1B2A4A]/10 transition-colors"
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-slate-100 transition-colors"
                         title="Edit Homework"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => queueDelete(hw.id)}
-                        className="p-1.5 rounded text-[#64748B] hover:text-[#5C1D24] hover:bg-[#5C1D24]/10 transition-colors"
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
                         title="Delete Homework"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -320,16 +320,15 @@ const HomeworkList = () => {
         )}
 
         {getDisplayHomeworks().length === 0 && !loading && (
-          <div className="col-span-full bg-white p-12 text-center text-[#64748B] rounded-xl border border-[#E5E0D8] shadow-sm font-medium italic">
+          <div className="col-span-full bg-white p-12 text-center text-slate-400 rounded-xl border border-slate-200 shadow-xs font-medium italic">
             No homework assignments posted for this section yet.
           </div>
         )}
       </div>
 
-
       {/* Edit / Add Homework Modal */}
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editId ? "Edit Homework Assignment" : "Post Homework Assignment"}>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 font-['Inter']">
           <Input
             label="Title"
             placeholder="e.g. Algebra Chapter 4 Exercises"
@@ -339,13 +338,13 @@ const HomeworkList = () => {
           />
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+              <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
                 Class Section
               </label>
               <select
                 value={formData.section}
                 onChange={(e) => handleSectionChange(e.target.value)}
-                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
                 required
               >
                 <option value="">Select Section</option>
@@ -357,13 +356,13 @@ const HomeworkList = () => {
               </select>
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+              <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
                 Subject
               </label>
               <select
                 value={formData.subject}
                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs font-semibold text-[#1A1918] focus:outline-none focus:border-[#1B2A4A] transition-colors"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-colors"
                 required
               >
                 <option value="">Select Subject</option>
@@ -383,19 +382,19 @@ const HomeworkList = () => {
             required
           />
           <div>
-            <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+            <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
               Assignment Description
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A]"
+              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600"
               rows="4"
               placeholder="Provide problem lists, references, or reading tasks..."
               required
             />
           </div>
-          <Button type="submit" variant="primary" className="w-full mt-2" loading={submitting}>
+          <Button type="submit" variant="primary" className="w-full mt-2 shadow-xs" loading={submitting}>
             {editId ? "Save Assignment" : "Post Homework Assignment"}
           </Button>
         </form>
@@ -407,22 +406,22 @@ const HomeworkList = () => {
         onClose={() => setDeleteConfirmOpen(false)} 
         title="Confirm Homework Deletion"
       >
-        <div className="space-y-4">
-          <p className="text-xs text-[#64748B] leading-relaxed">
+        <div className="space-y-4 font-['Inter']">
+          <p className="text-xs text-slate-500 leading-relaxed">
             Are you sure you want to delete this homework assignment? Once deleted, the task will be removed from all student agendas and parent tracker feeds.
           </p>
-          <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#F7F5F0]">
+          <div className="flex items-center justify-end gap-3 pt-2 border-t border-slate-100">
             <button
               type="button"
               onClick={() => setDeleteConfirmOpen(false)}
-              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#F7F5F0] text-[#64748B] hover:bg-[#E5E0D8] transition-colors"
+              className="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
             >
               Cancel
             </button>
             <button
               type="button"
               onClick={handleDeleteConfirm}
-              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#5C1D24] text-white hover:bg-[#5C1D24]/80 transition-colors shadow-sm"
+              className="px-4 py-2 rounded-lg text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 transition-colors shadow-xs"
             >
               Delete homework
             </button>

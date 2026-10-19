@@ -220,35 +220,35 @@ const ProfileSettings = () => {
 
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918] max-w-4xl">
+    <div className="space-y-6 font-['Inter'] text-slate-900 max-w-4xl">
       
       {/* Category Pill Indicator */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">
-        <User className="w-3.5 h-3.5 text-[#5C1D24]" />
+      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-200/80 text-[11px] font-semibold text-indigo-700 uppercase tracking-wider">
+        <User className="w-3.5 h-3.5 text-indigo-600" />
         <span>Personal Profile Manager</span>
       </div>
 
-      <div className="border-b border-[#E5E0D8] pb-4">
-        <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Profile & Security Settings</h1>
-        <p className="text-xs text-[#64748B] mt-1">Configure your personal contact details, workspace fields, and authentication passwords.</p>
+      <div className="border-b border-slate-200 pb-4">
+        <h1 className="text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">Profile & Security Settings</h1>
+        <p className="text-xs text-slate-500 mt-1">Configure your personal contact details, workspace fields, and authentication passwords.</p>
       </div>
 
       {message && (
-        <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-lg flex items-center gap-2">
+        <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-xl flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" /> {message}
         </div>
       )}
 
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 text-red-800 text-xs font-bold rounded-lg flex items-center gap-2">
-          <ShieldAlert className="w-4 h-4 text-red-600 shrink-0" /> {error}
+        <div className="p-4 bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold rounded-xl flex items-center gap-2">
+          <ShieldAlert className="w-4 h-4 text-rose-600 shrink-0" /> {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         {/* Left column: Overview Info (Read only) */}
-        <div className="bg-[#F7F5F0] p-6 rounded-xl border border-[#E5E0D8] flex flex-col justify-between space-y-6">
+        <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200/80 flex flex-col justify-between space-y-6">
           <div className="space-y-5 flex flex-col items-center md:items-start text-center md:text-left">
             
             {/* Avatar block with choice button */}
@@ -258,10 +258,10 @@ const ProfileSettings = () => {
                   <img
                     src={user.profile_picture}
                     alt="Profile"
-                    className="w-20 h-20 rounded-full object-cover border border-[#E5E0D8] shadow-sm"
+                    className="w-20 h-20 rounded-2xl object-cover border border-slate-200 shadow-xs"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-[#1B2A4A] text-white flex items-center justify-center text-3xl font-bold font-['Newsreader'] shadow-sm">
+                  <div className="w-20 h-20 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-3xl font-bold font-['Outfit'] shadow-xs shadow-indigo-600/20">
                     {user?.first_name?.[0]?.toUpperCase() || 'U'}
                   </div>
                 )}
@@ -269,7 +269,7 @@ const ProfileSettings = () => {
               <div className="flex flex-col gap-1 w-full text-center">
                 <label 
                   htmlFor="profile-pic-input" 
-                  className="bg-white hover:bg-[#F7F5F0] text-[#1A1918] border border-[#E5E0D8] px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-sm text-center inline-block select-none"
+                  className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer shadow-xs text-center inline-block select-none"
                 >
                   Choose Picture
                 </label>
@@ -277,7 +277,7 @@ const ProfileSettings = () => {
                   <button
                     type="button"
                     onClick={handleRemovePicture}
-                    className="text-[#5C1D24] hover:underline text-[10px] font-bold mt-1"
+                    className="text-rose-600 hover:underline text-[11px] font-semibold mt-1 cursor-pointer"
                   >
                     Remove Picture
                   </button>
@@ -293,13 +293,12 @@ const ProfileSettings = () => {
             </div>
 
             <div className="space-y-1 w-full pt-2">
-              <h3 className="text-base font-bold text-[#1A1918]">{user?.first_name} {user?.last_name}</h3>
-              <p className="text-xs text-[#64748B] truncate w-full max-w-50">{user?.email}</p>
-
+              <h3 className="text-base font-bold text-slate-900 font-['Outfit']">{user?.first_name} {user?.last_name}</h3>
+              <p className="text-xs text-slate-500 truncate w-full max-w-50">{user?.email}</p>
             </div>
             
             <div className="flex flex-wrap gap-2 pt-2 justify-center md:justify-start">
-              <span className="px-2.5 py-0.5 rounded bg-[#1B2A4A]/10 text-[#1B2A4A] border border-[#1B2A4A]/20 text-[10px] font-bold uppercase tracking-wider">
+              <span className="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-[10px] font-bold uppercase tracking-wider">
                 {user?.role === 'SUPER_ADMIN' ? 'Super Admin' :
                  user?.role === 'SCHOOL_ADMIN' ? 'School Admin' :
                  user?.role === 'TEACHER' ? 'Class Teacher' :
@@ -308,24 +307,24 @@ const ProfileSettings = () => {
                  user?.role === 'PARENT' ? 'Parent' : user?.role}
               </span>
               {user?.school?.name && (
-                <span className="px-2.5 py-0.5 rounded bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-[10px] font-bold uppercase tracking-wider">
+                <span className="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 border border-slate-300 text-[10px] font-bold uppercase tracking-wider">
                   {user.school.name}
                 </span>
               )}
             </div>
           </div>
           
-          <div className="text-[11px] text-[#64748B] font-semibold leading-relaxed pt-4 border-t border-[#E5E0D8]">
+          <div className="text-[11px] text-slate-500 font-medium leading-relaxed pt-4 border-t border-slate-200">
             For changing your account role authorizations, please contact your workspace School Administrator.
           </div>
         </div>
 
         {/* Right Columns: Edit inputs */}
-        <div className="md:col-span-2 bg-white p-6 rounded-xl border border-[#E5E0D8] space-y-6 shadow-sm">
+        <div className="md:col-span-2 bg-white p-6 sm:p-7 rounded-2xl border border-slate-200/80 space-y-6 shadow-xs">
           
           {/* Section 1: Profile Details */}
           <div className="space-y-4">
-            <h4 className="text-xs font-bold text-[#5C1D24] uppercase tracking-wider border-b border-[#F7F5F0] pb-2">
+            <h4 className="text-xs font-bold text-indigo-700 uppercase tracking-wider border-b border-slate-100 pb-2 font-['Outfit']">
               Personal Information
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -350,11 +349,11 @@ const ProfileSettings = () => {
                 disabled
                 required
               />
-              <p className="text-[10px] text-[#64748B] mt-1 font-medium font-sans">Official Email is locked for security. Contact school admin to change your email.</p>
+              <p className="text-[11px] text-slate-400 mt-1 font-medium">Official Email is locked for security. Contact school admin to change your email.</p>
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Contact Phone
               </label>
               <input
@@ -369,20 +368,20 @@ const ProfileSettings = () => {
                   }
                   setFormData({ ...formData, phone: raw.slice(0, 10) });
                 }}
-                className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs text-[#1A1918] font-semibold focus:outline-none focus:border-[#1B2A4A] transition-colors"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 font-medium focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
               />
-              <p className="text-[10px] text-[#64748B] mt-1 font-medium font-sans">10-digit mobile number starting with 6, 7, 8, or 9.</p>
+              <p className="text-[11px] text-slate-400 mt-1 font-medium">10-digit mobile number starting with 6, 7, 8, or 9.</p>
             </div>
 
           </div>
 
           {/* Section 2: Password Details */}
-          <div className="space-y-4 pt-4 border-t border-[#F7F5F0]">
-            <div className="flex items-center gap-2 text-xs font-bold text-[#5C1D24] uppercase tracking-wider border-b border-[#F7F5F0] pb-2">
-              <Key className="w-4 h-4 text-[#5C1D24]" />
+          <div className="space-y-4 pt-4 border-t border-slate-100">
+            <div className="flex items-center gap-2 text-xs font-bold text-indigo-700 uppercase tracking-wider border-b border-slate-100 pb-2 font-['Outfit']">
+              <Key className="w-4 h-4 text-indigo-600" />
               <span>Change Security Password</span>
             </div>
-            <p className="text-[11px] text-[#64748B] font-semibold">
+            <p className="text-xs text-slate-500">
               Fill these fields only if you wish to reset your account password. Otherwise, leave them blank to keep your current password.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -407,7 +406,7 @@ const ProfileSettings = () => {
             <Button
               type="submit"
               variant="primary"
-              className="gap-2 shadow-sm px-6 py-2.5"
+              className="gap-2 shadow-xs px-6 py-2.5"
               loading={submitting}
             >
               <Save className="w-4 h-4" /> Save Profile Settings
@@ -421,13 +420,13 @@ const ProfileSettings = () => {
       {/* Picture Crop Adjustment Modal */}
       <Modal isOpen={cropModalOpen} onClose={() => setCropModalOpen(false)} title="Adjust & Crop Profile Picture">
         <div className="space-y-5">
-          <p className="text-xs text-[#64748B]">
+          <p className="text-xs text-slate-500">
             Drag the image inside the circular boundary frame to reposition, and use the slider below to zoom.
           </p>
 
           {/* Visual Crop Container */}
           <div 
-            className="w-75 h-75 bg-slate-950 overflow-hidden relative rounded-xl mx-auto cursor-move select-none border border-[#E5E0D8] shadow-inner"
+            className="w-75 h-75 bg-slate-950 overflow-hidden relative rounded-2xl mx-auto cursor-move select-none border border-slate-200 shadow-inner"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -463,7 +462,7 @@ const ProfileSettings = () => {
           {/* Scale Control */}
           <div className="space-y-2 max-w-75 mx-auto">
 
-            <div className="flex items-center justify-between text-xs text-[#64748B] font-semibold">
+            <div className="flex items-center justify-between text-xs text-slate-500 font-semibold">
               <span>Zoom Scale</span>
               <span>{Math.round(zoom * 100)}%</span>
             </div>
@@ -474,26 +473,26 @@ const ProfileSettings = () => {
               step="0.05"
               value={zoom}
               onChange={(e) => setZoom(parseFloat(e.target.value))}
-              className="w-full h-1 bg-[#F7F5F0] rounded-lg appearance-none cursor-pointer accent-[#1B2A4A] border border-[#E5E0D8]"
+              className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
             />
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#F7F5F0]">
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
             <button
               type="button"
               onClick={() => {
                 setCropModalOpen(false);
                 setRawImage(null);
               }}
-              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#F7F5F0] text-[#64748B] hover:bg-[#E5E0D8] transition-colors"
+              className="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="button"
               onClick={handleApplyCrop}
-              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#1B2A4A] text-white hover:bg-[#5C1D24] transition-colors shadow-sm flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-colors shadow-xs shadow-indigo-600/20 flex items-center gap-1.5 cursor-pointer"
             >
               <Crop className="w-3.5 h-3.5" /> Apply Crop
             </button>

@@ -110,33 +110,33 @@ const StudentDashboard = () => {
   const isPaid = balanceDue <= 0;
 
   return (
-    <div className="space-y-8 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-8 font-['Inter'] text-slate-800">
       
       {/* Welcome Banner */}
-      <div className="bg-white p-6 sm:p-8 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Newsreader'] font-bold text-[#1A1918]">
+            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900">
               Hi, {user?.first_name || 'Student'} 👋
             </h1>
-            <span className="px-3 py-1 rounded-md bg-[#1B2A4A]/10 text-[#1B2A4A] border border-[#1B2A4A]/20 text-xs font-semibold uppercase tracking-wider animate-pulse">
+            <span className="px-3 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold tracking-wide">
               {sectionName}
             </span>
           </div>
-          <p className="text-[#64748B] text-xs sm:text-sm">
+          <p className="text-slate-500 text-xs sm:text-sm">
             Keep track of your homework assignments, exam schedules, and attendance reports.
           </p>
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <Link
             to="/dashboard/timetable"
-            className="flex-1 sm:flex-none bg-white hover:bg-[#F7F5F0] text-[#1A1918] border border-[#E5E0D8] px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm text-center"
+            className="flex-1 sm:flex-none bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-2xs text-center"
           >
-            <Clock className="w-4 h-4 text-[#1B2A4A]" /> View Timetable
+            <Clock className="w-4 h-4 text-indigo-600" /> View Timetable
           </Link>
           <Link
             to="/dashboard/exams"
-            className="flex-1 sm:flex-none bg-[#1B2A4A] hover:bg-[#5C1D24] text-white px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm text-center"
+            className="flex-1 sm:flex-none bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-sm shadow-indigo-600/25 flex items-center justify-center gap-2 text-center active:scale-[0.99]"
           >
             <Award className="w-4 h-4" /> My Report Cards
           </Link>
@@ -144,7 +144,7 @@ const StudentDashboard = () => {
       </div>
 
       {loading ? (
-        <div className="py-20 text-center text-xs text-[#64748B] font-semibold animate-pulse">
+        <div className="py-20 text-center text-xs text-slate-400 font-semibold animate-pulse">
           Retrieving student profile details and subject marks...
         </div>
       ) : (
@@ -154,18 +154,18 @@ const StudentDashboard = () => {
             {[
               { title: 'My Attendance', value: `${attendanceRate}%`, desc: `${presentDays} / ${myAttendance.length} days present`, icon: CalendarCheck },
               { title: 'Pending Tasks', value: `${myHomeworks.length} Homework`, desc: 'Active class assignments', icon: BookOpen },
-              { title: 'Overall Performance', value: avgScore !== null ? `${avgScore}% (Grade ${gradeStr})` : 'No Marks Yet', desc: 'Calculated term scores', icon: GraduationCap },
+              { title: 'Overall Performance', value: avgScore !== null ? `${avgScore}% (${gradeStr})` : 'No Marks Yet', desc: 'Calculated term scores', icon: GraduationCap },
               { title: 'Billing Status', value: isPaid ? 'Clear' : `Unpaid Dues`, desc: isPaid ? 'No outstanding balances' : `Outstanding balance: ₹${balanceDue}`, icon: DollarSign },
             ].map((m, idx) => {
               const Icon = m.icon;
               return (
-                <div key={idx} className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+                <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-md transition-all flex items-center justify-between">
                   <div className="space-y-1">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">{m.title}</span>
-                    <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">{m.value}</strong>
-                    <span className="text-[11px] text-[#64748B] block">{m.desc}</span>
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">{m.title}</span>
+                    <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">{m.value}</strong>
+                    <span className="text-[11px] text-slate-500 block">{m.desc}</span>
                   </div>
-                  <div className="w-10 h-10 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-2xs">
                     <Icon className="w-5 h-5" />
                   </div>
                 </div>
@@ -178,28 +178,28 @@ const StudentDashboard = () => {
             
             {/* Left Side: Lectures & Assignments */}
             <div className="lg:col-span-8 space-y-6">
-              <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4">
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-                    <BookOpen className="w-4.5 h-4.5 text-[#5C1D24]" /> Active Homework Assignments
+                  <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                    <BookOpen className="w-4.5 h-4.5 text-indigo-600" /> Active Homework Assignments
                   </h3>
                 </div>
 
                 <div className="space-y-3">
                   {myHomeworks.length === 0 ? (
-                    <div className="py-8 text-center text-xs text-[#64748B] font-semibold">
+                    <div className="py-8 text-center text-xs text-slate-400 font-medium">
                       Excellent! No pending assignments found.
                     </div>
                   ) : (
                     myHomeworks.map((hw, i) => (
-                      <div key={i} className="p-4 bg-[#F7F5F0] border border-[#E5E0D8] rounded-xl flex items-start justify-between gap-4">
+                      <div key={i} className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-start justify-between gap-4">
                         <div className="space-y-1">
-                          <span className="text-[10px] uppercase font-mono tracking-wider text-[#1B2A4A] block">
+                          <span className="text-[10px] uppercase font-mono tracking-wider text-indigo-600 font-semibold block">
                             {hw.subject_name || hw.subject?.name || 'General'}
                           </span>
-                          <p className="text-sm font-bold text-[#1A1918] leading-snug">{hw.title}</p>
-                          <p className="text-xs text-[#64748B] leading-relaxed">{hw.description}</p>
-                          <span className="text-[10px] text-[#64748B] block font-mono">
+                          <p className="text-sm font-bold text-slate-900 leading-snug">{hw.title}</p>
+                          <p className="text-xs text-slate-500 leading-relaxed">{hw.description}</p>
+                          <span className="text-[10px] text-slate-400 block font-mono">
                             Due Date: {new Date(hw.due_date).toLocaleDateString()}
                           </span>
                         </div>
@@ -212,28 +212,28 @@ const StudentDashboard = () => {
 
             {/* Right Side: Schedule & Notices */}
             <div className="lg:col-span-4 space-y-6">
-              <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4">
-                <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-[#5C1D24]" /> Today's Lecture Schedule
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
+                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-indigo-600" /> Today's Lecture Schedule
                 </h3>
                 
                 <div className="space-y-3">
                   {todayLectures.length === 0 ? (
-                    <div className="py-4 text-center text-xs text-[#64748B] font-semibold">
+                    <div className="py-4 text-center text-xs text-slate-400 font-medium">
                       No lectures scheduled for today.
                     </div>
                   ) : (
                     todayLectures.map((sch, i) => (
-                      <div key={i} className="p-3 bg-[#F7F5F0] border border-[#E5E0D8] rounded-xl flex justify-between items-center gap-2">
+                      <div key={i} className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center gap-2">
                         <div className="space-y-0.5">
-                          <span className="text-[10px] text-[#64748B] font-mono block">
+                          <span className="text-[10px] text-slate-500 font-mono block">
                             {sch.start_time} - {sch.end_time}
                           </span>
-                          <span className="text-xs font-bold text-[#1A1918] block">
+                          <span className="text-xs font-bold text-slate-900 block">
                             {sch.subject_name || sch.subject?.name}
                           </span>
                         </div>
-                        <span className="px-2 py-0.5 text-[9px] font-bold rounded uppercase bg-white text-[#64748B] border border-[#E5E0D8]">
+                        <span className="px-2 py-0.5 text-[9px] font-semibold rounded-md uppercase bg-white text-slate-600 border border-slate-200">
                           Classroom
                         </span>
                       </div>
@@ -242,24 +242,24 @@ const StudentDashboard = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4">
-                <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-                  <Bell className="w-4 h-4 text-[#1B2A4A]" /> School Notice Feed
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
+                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                  <Bell className="w-4 h-4 text-indigo-600" /> School Notice Feed
                 </h3>
                 
                 <div className="space-y-3">
                   {notices.length === 0 ? (
-                    <div className="py-4 text-center text-xs text-[#64748B] font-semibold">
+                    <div className="py-4 text-center text-xs text-slate-400 font-medium">
                       No notices posted.
                     </div>
                   ) : (
                     notices.slice(0, 3).map((notice, idx) => (
-                      <div key={idx} className="p-3.5 bg-[#F7F5F0] border border-[#E5E0D8] rounded-xl space-y-2">
-                        <span className="text-[9px] text-[#5C1D24] uppercase font-bold tracking-wider">
+                      <div key={idx} className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                        <span className="text-[10px] text-indigo-600 uppercase font-bold tracking-wider">
                           {new Date(notice.created_at).toLocaleDateString()}
                         </span>
-                        <h4 className="text-xs font-bold text-[#1A1918] leading-snug">{notice.title}</h4>
-                        <p className="text-[11px] text-[#64748B] leading-relaxed">{notice.content}</p>
+                        <h4 className="text-xs font-bold text-slate-900 leading-snug">{notice.title}</h4>
+                        <p className="text-[11px] text-slate-500 leading-relaxed">{notice.content}</p>
                       </div>
                     ))
                   )}

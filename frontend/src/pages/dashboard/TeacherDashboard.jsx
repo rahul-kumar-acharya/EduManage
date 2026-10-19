@@ -101,33 +101,33 @@ const TeacherDashboard = () => {
   const todayLectures = myPeriods.filter(p => p.day_of_week === todayDayName);
 
   return (
-    <div className="space-y-8 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-8 font-['Inter'] text-slate-800">
       
       {/* Welcome Banner */}
-      <div className="bg-white p-6 sm:p-8 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Newsreader'] font-bold text-[#1A1918]">
+            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900">
               Welcome back, {user?.first_name || 'Teacher'} 👋
             </h1>
-            <span className="px-3 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-xs font-semibold uppercase tracking-wider">
+            <span className="px-3 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold tracking-wide">
               Teacher Workspace
             </span>
           </div>
-          <p className="text-[#64748B] text-xs sm:text-sm">
+          <p className="text-slate-500 text-xs sm:text-sm">
             Manage your daily class operations, mark student rosters, and log subject grades.
           </p>
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <Link
             to="/dashboard/attendance"
-            className="flex-1 sm:flex-none bg-white hover:bg-[#F7F5F0] text-[#1A1918] border border-[#E5E0D8] px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm text-center"
+            className="flex-1 sm:flex-none bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-2xs text-center"
           >
-            <CalendarCheck className="w-4 h-4 text-[#1B2A4A]" /> Take Attendance
+            <CalendarCheck className="w-4 h-4 text-indigo-600" /> Take Attendance
           </Link>
           <Link
             to="/dashboard/homework"
-            className="flex-1 sm:flex-none bg-[#1B2A4A] hover:bg-[#5C1D24] text-white px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm text-center"
+            className="flex-1 sm:flex-none bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-sm shadow-indigo-600/25 flex items-center justify-center gap-2 text-center active:scale-[0.99]"
           >
             <Plus className="w-4 h-4" /> Assign Homework
           </Link>
@@ -135,7 +135,7 @@ const TeacherDashboard = () => {
       </div>
 
       {loading ? (
-        <div className="py-20 text-center text-xs text-[#64748B] font-semibold">
+        <div className="py-20 text-center text-xs text-slate-400 font-semibold">
           Synchronizing class rosters and lecture schedules...
         </div>
       ) : (
@@ -150,13 +150,13 @@ const TeacherDashboard = () => {
             ].map((m, idx) => {
               const Icon = m.icon;
               return (
-                <div key={idx} className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+                <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-md transition-all flex items-center justify-between">
                   <div className="space-y-1">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">{m.title}</span>
-                    <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">{m.value}</strong>
-                    <span className="text-[11px] text-[#64748B] block">{m.desc}</span>
+                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">{m.title}</span>
+                    <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">{m.value}</strong>
+                    <span className="text-[11px] text-slate-500 block">{m.desc}</span>
                   </div>
-                  <div className="w-10 h-10 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-2xs">
                     <Icon className="w-5 h-5" />
                   </div>
                 </div>
@@ -169,73 +169,73 @@ const TeacherDashboard = () => {
             
             {/* Left Hand: Core quick features */}
             <div className="lg:col-span-8 space-y-6">
-              <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4">
-                <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-                  <ClipboardList className="w-4.5 h-4.5 text-[#5C1D24]" /> Primary Tasks Dashboard
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
+                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                  <ClipboardList className="w-4.5 h-4.5 text-indigo-600" /> Primary Tasks Dashboard
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <Link 
                     to="/dashboard/attendance"
-                    className="p-5 bg-[#F7F5F0] hover:bg-[#E5E0D8]/40 border border-[#E5E0D8] rounded-xl flex flex-col justify-between space-y-3 transition-colors group"
+                    className="p-5 bg-slate-50 hover:bg-slate-100/80 border border-slate-200/80 rounded-2xl flex flex-col justify-between space-y-3 transition-colors group"
                   >
-                    <div className="w-9 h-9 rounded-lg bg-white border border-[#E5E0D8] text-[#1B2A4A] flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-xl bg-white border border-slate-200 text-indigo-600 flex items-center justify-center shrink-0 shadow-2xs">
                       <CalendarCheck className="w-4.5 h-4.5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-[#1A1918] group-hover:text-[#1B2A4A] transition-colors">Mark Attendance</h4>
-                      <p className="text-[11px] text-[#64748B] mt-1 leading-relaxed">Log daily attendance rosters for all sections.</p>
+                      <h4 className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors font-['Outfit']">Mark Attendance</h4>
+                      <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">Log daily attendance rosters for all sections.</p>
                     </div>
                   </Link>
 
                   <Link 
                     to="/dashboard/homework"
-                    className="p-5 bg-[#F7F5F0] hover:bg-[#E5E0D8]/40 border border-[#E5E0D8] rounded-xl flex flex-col justify-between space-y-3 transition-colors group"
+                    className="p-5 bg-slate-50 hover:bg-slate-100/80 border border-slate-200/80 rounded-2xl flex flex-col justify-between space-y-3 transition-colors group"
                   >
-                    <div className="w-9 h-9 rounded-lg bg-white border border-[#E5E0D8] text-[#1B2A4A] flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-xl bg-white border border-slate-200 text-indigo-600 flex items-center justify-center shrink-0 shadow-2xs">
                       <BookOpen className="w-4.5 h-4.5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-[#1A1918] group-hover:text-[#1B2A4A] transition-colors">Post Assignments</h4>
-                      <p className="text-[11px] text-[#64748B] mt-1 leading-relaxed">Assign due tasks, grading structures, and references.</p>
+                      <h4 className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors font-['Outfit']">Post Assignments</h4>
+                      <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">Assign due tasks, grading structures, and references.</p>
                     </div>
                   </Link>
 
                   <Link 
                     to="/dashboard/exams"
-                    className="p-5 bg-[#F7F5F0] hover:bg-[#E5E0D8]/40 border border-[#E5E0D8] rounded-xl flex flex-col justify-between space-y-3 transition-colors group"
+                    className="p-5 bg-slate-50 hover:bg-slate-100/80 border border-slate-200/80 rounded-2xl flex flex-col justify-between space-y-3 transition-colors group"
                   >
-                    <div className="w-9 h-9 rounded-lg bg-white border border-[#E5E0D8] text-[#1B2A4A] flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-xl bg-white border border-slate-200 text-indigo-600 flex items-center justify-center shrink-0 shadow-2xs">
                       <FileSpreadsheet className="w-4.5 h-4.5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-[#1A1918] group-hover:text-[#1B2A4A] transition-colors">Enter Test Marks</h4>
-                      <p className="text-[11px] text-[#64748B] mt-1 leading-relaxed">Record academic marks to generate digital cards.</p>
+                      <h4 className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors font-['Outfit']">Enter Test Marks</h4>
+                      <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">Record academic marks to generate digital cards.</p>
                     </div>
                   </Link>
                 </div>
               </div>
 
               {/* Active Assigned Sections list */}
-              <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4">
-                <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-                  <Users className="w-4 h-4 text-[#1B2A4A]" /> Assigned Class Divisions
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
+                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                  <Users className="w-4 h-4 text-indigo-600" /> Assigned Class Divisions
                 </h3>
                 
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs font-semibold">
                     <thead>
-                      <tr className="text-[#64748B] border-b border-[#E5E0D8]">
-                        <th className="pb-3 font-bold uppercase tracking-wider">Class & Section</th>
-                        <th className="pb-3 font-bold uppercase tracking-wider">Role</th>
-                        <th className="pb-3 font-bold uppercase tracking-wider">Class Strength</th>
-                        <th className="pb-3 font-bold uppercase tracking-wider">Section ID</th>
+                      <tr className="text-slate-500 border-b border-slate-200">
+                        <th className="pb-3 font-semibold uppercase tracking-wider text-[11px]">Class & Section</th>
+                        <th className="pb-3 font-semibold uppercase tracking-wider text-[11px]">Role</th>
+                        <th className="pb-3 font-semibold uppercase tracking-wider text-[11px]">Class Strength</th>
+                        <th className="pb-3 font-semibold uppercase tracking-wider text-[11px]">Section ID</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[#F7F5F0] text-[#64748B]">
+                    <tbody className="divide-y divide-slate-100 text-slate-600">
                       {mySections.length === 0 ? (
                         <tr>
-                          <td colSpan="4" className="py-8 text-center text-xs text-[#64748B] font-semibold">
+                          <td colSpan="4" className="py-8 text-center text-xs text-slate-400 font-medium">
                             You are not currently assigned as a Class Teacher to any section.
                           </td>
                         </tr>
@@ -246,15 +246,15 @@ const TeacherDashboard = () => {
                             return sSecId && sSecId.toString() === row.id.toString();
                           }).length;
                           return (
-                            <tr key={idx} className="hover:bg-[#F7F5F0]/50">
-                              <td className="py-3.5 font-bold text-[#1A1918]">{row.class_name} - {row.name}</td>
+                            <tr key={idx} className="hover:bg-slate-50/60 transition-colors">
+                              <td className="py-3.5 font-bold text-slate-900">{row.class_name} - {row.name}</td>
                               <td className="py-3.5">
-                                <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px]">
+                                <span className="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-semibold">
                                   Class Teacher
                                 </span>
                               </td>
                               <td className="py-3.5 font-mono">{sectionStudentsCount} Students</td>
-                              <td className="py-3.5 text-xs text-[#64748B] font-mono">SEC-00{row.id}</td>
+                              <td className="py-3.5 text-xs text-slate-400 font-mono">SEC-00{row.id}</td>
                             </tr>
                           );
                         })
@@ -267,28 +267,28 @@ const TeacherDashboard = () => {
 
             {/* Right Hand: Schedule & Notifications */}
             <div className="lg:col-span-4 space-y-6">
-              <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4">
-                <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-[#5C1D24]" /> Today's Lecture Schedule
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
+                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-indigo-600" /> Today's Lecture Schedule
                 </h3>
                 
                 <div className="space-y-3">
                   {todayLectures.length === 0 ? (
-                    <div className="py-4 text-center text-xs text-[#64748B] font-semibold">
+                    <div className="py-4 text-center text-xs text-slate-400 font-medium">
                       No lectures scheduled for today.
                     </div>
                   ) : (
                     todayLectures.map((sch, i) => (
-                      <div key={i} className="p-3 bg-[#F7F5F0] border border-[#E5E0D8] rounded-xl flex justify-between items-center gap-2">
+                      <div key={i} className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center gap-2">
                         <div className="space-y-0.5">
-                          <span className="text-[10px] text-[#64748B] font-mono block">
+                          <span className="text-[10px] text-slate-500 font-mono block">
                             {sch.start_time} - {sch.end_time}
                           </span>
-                          <span className="text-xs font-bold text-[#1A1918] block">
+                          <span className="text-xs font-bold text-slate-900 block">
                             {sch.subject_name || sch.subject?.name} - {sch.section_name || sch.section?.name}
                           </span>
                         </div>
-                        <span className="px-2 py-0.5 text-[9px] font-bold rounded uppercase bg-white text-[#64748B] border border-[#E5E0D8]">
+                        <span className="px-2 py-0.5 text-[9px] font-semibold rounded-md uppercase bg-white text-slate-600 border border-slate-200">
                           Scheduled
                         </span>
                       </div>
@@ -297,24 +297,24 @@ const TeacherDashboard = () => {
                 </div>
               </div>
 
-              <div className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm space-y-4">
-                <h3 className="text-base font-['Newsreader'] font-bold text-[#1A1918] flex items-center gap-2">
-                  <Bell className="w-4 h-4 text-[#1B2A4A]" /> School Notice Feed
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
+                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                  <Bell className="w-4 h-4 text-indigo-600" /> School Notice Feed
                 </h3>
                 
                 <div className="space-y-3">
                   {notices.length === 0 ? (
-                    <div className="py-4 text-center text-xs text-[#64748B] font-semibold">
+                    <div className="py-4 text-center text-xs text-slate-400 font-medium">
                       No school notices posted yet.
                     </div>
                   ) : (
                     notices.slice(0, 3).map((notice, idx) => (
-                      <div key={idx} className="p-3.5 bg-[#F7F5F0] border border-[#E5E0D8] rounded-xl space-y-2">
-                        <span className="text-[9px] text-[#5C1D24] uppercase font-bold tracking-wider">
+                      <div key={idx} className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+                        <span className="text-[10px] text-indigo-600 uppercase font-bold tracking-wider">
                           {new Date(notice.created_at).toLocaleDateString()}
                         </span>
-                        <h4 className="text-xs font-bold text-[#1A1918] leading-snug">{notice.title}</h4>
-                        <p className="text-[11px] text-[#64748B] leading-relaxed">{notice.content}</p>
+                        <h4 className="text-xs font-bold text-slate-900 leading-snug">{notice.title}</h4>
+                        <p className="text-[11px] text-slate-500 leading-relaxed">{notice.content}</p>
                       </div>
                     ))
                   )}

@@ -134,12 +134,12 @@ const SuperAdminDashboard = () => {
       accessor: 'name',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-[#1B2A4A] text-white flex items-center justify-center font-bold text-xs shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs shadow-indigo-600/20 font-['Outfit']">
             {row.name.charAt(0)}
           </div>
           <div>
-            <div className="font-bold text-[#1A1918]">{row.name}</div>
-            <div className="text-[10px] text-[#64748B]">{row.email}</div>
+            <div className="font-semibold text-slate-900 font-['Outfit']">{row.name}</div>
+            <div className="text-[11px] text-slate-500">{row.email}</div>
           </div>
         </div>
       )
@@ -148,7 +148,7 @@ const SuperAdminDashboard = () => {
       header: 'Location',
       accessor: 'city',
       render: (row) => (
-        <div className="text-xs text-[#64748B] font-medium">
+        <div className="text-xs text-slate-600 font-medium">
           {row.city && row.state ? `${row.city}, ${row.state}` : 'Not Specified'}
         </div>
       )
@@ -161,9 +161,9 @@ const SuperAdminDashboard = () => {
           href={`http://${row.subdomain}.localhost:5173`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 font-mono text-xs text-blue-600 hover:underline font-bold"
+          className="inline-flex items-center gap-1 font-mono text-xs text-indigo-600 hover:text-indigo-700 hover:underline font-semibold"
         >
-          {row.subdomain}.campus.acharyaworks.in <ExternalLink className="w-3 h-3 text-blue-600" />
+          {row.subdomain}.campus.acharyaworks.in <ExternalLink className="w-3 h-3 text-indigo-500" />
         </a>
       )
     },
@@ -171,10 +171,10 @@ const SuperAdminDashboard = () => {
       header: 'Status',
       accessor: 'is_active',
       render: (row) => (
-        <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
           row.is_active 
-            ? 'bg-emerald-500/10 text-emerald-700 border border-emerald-500/20' 
-            : 'bg-rose-500/10 text-rose-700 border border-rose-500/20'
+            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
+            : 'bg-rose-50 text-rose-700 border border-rose-200'
         }`}>
           {row.is_active ? 'Active' : 'Suspended'}
         </span>
@@ -205,7 +205,7 @@ const SuperAdminDashboard = () => {
   ];
 
   return (
-    <div className="space-y-8 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-8 font-['Inter'] text-slate-900">
       
       {/* Toast Notification */}
       {notification && (
@@ -225,33 +225,33 @@ const SuperAdminDashboard = () => {
       )}
 
       {/* SuperAdmin Banner */}
-      <div className="bg-white p-6 sm:p-8 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div className="space-y-2">
+      <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="space-y-1.5">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Newsreader'] font-bold text-[#1A1918]">
+            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
               SuperAdmin Control Board
             </h1>
-            <span className="px-3 py-1 rounded-md bg-[#5C1D24]/10 text-[#5C1D24] border border-[#5C1D24]/20 text-xs font-semibold uppercase tracking-wider">
+            <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold uppercase tracking-wider">
               Global SaaS Manager
             </span>
           </div>
-          <p className="text-[#64748B] text-xs sm:text-sm">
+          <p className="text-slate-500 text-xs sm:text-sm">
             Oversee tenant subdomains, provision new school clients, and control tenant active status.
           </p>
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <button 
             onClick={() => setShowModal(true)}
-            className="flex-1 sm:flex-none bg-[#1B2A4A] hover:bg-[#5C1D24] text-white px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+            className="flex-1 sm:flex-none bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-xs shadow-indigo-600/20 flex items-center justify-center gap-2 cursor-pointer"
           >
             <Plus className="w-4 h-4" /> Onboard New School
           </button>
           <button 
             onClick={fetchSchools} 
             disabled={loading}
-            className="bg-white hover:bg-[#F7F5F0] text-[#1A1918] border border-[#E5E0D8] px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-50 cursor-pointer"
+            className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-xs disabled:opacity-50 cursor-pointer"
           >
-            <RefreshCw className={`w-4 h-4 text-[#1B2A4A] ${loading ? 'animate-spin' : ''}`} /> Refresh Data
+            <RefreshCw className={`w-4 h-4 text-indigo-600 ${loading ? 'animate-spin' : ''}`} /> Refresh Data
           </button>
         </div>
       </div>
@@ -266,13 +266,13 @@ const SuperAdminDashboard = () => {
         ].map((m, idx) => {
           const Icon = m.icon;
           return (
-            <div key={idx} className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex items-center justify-between">
+            <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
               <div className="space-y-1">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-[#64748B] block">{m.title}</span>
-                <strong className="text-2xl font-['Newsreader'] font-bold text-[#1A1918] block mt-1">{m.value}</strong>
-                <span className="text-[11px] text-[#64748B] block">{m.desc}</span>
+                <span className="text-[11px] uppercase font-bold tracking-wider text-slate-500 block">{m.title}</span>
+                <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">{m.value}</strong>
+                <span className="text-xs text-slate-500 block">{m.desc}</span>
               </div>
-              <div className="w-10 h-10 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] flex items-center justify-center text-[#1B2A4A]">
+              <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs">
                 <Icon className="w-5 h-5" />
               </div>
             </div>
@@ -282,34 +282,34 @@ const SuperAdminDashboard = () => {
 
       {/* Tenant table lists */}
       <div className="space-y-4">
-        <h2 className="text-lg font-['Newsreader'] font-bold text-[#1A1918]">Registered Institutional Tenants ({schools.length})</h2>
-        <div className="bg-white rounded-xl border border-[#E5E0D8] shadow-sm overflow-hidden">
+        <h2 className="text-lg font-['Outfit'] font-bold text-slate-900">Registered Institutional Tenants ({schools.length})</h2>
+        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
           <Table columns={columns} data={schools} emptyMessage="No subdomains registered in database." />
         </div>
       </div>
 
       {/* Onboard New School Modal Overlay */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs">
-          <div className="bg-white w-full max-w-2xl rounded-2xl border border-[#E5E0D8] shadow-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs">
+          <div className="bg-white w-full max-w-2xl rounded-2xl border border-slate-200 shadow-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto">
             
-            <div className="flex items-center justify-between border-b border-[#F7F5F0] pb-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#1B2A4A] text-white flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-xs shadow-indigo-600/20">
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-['Newsreader'] font-bold text-[#1A1918]">Onboard New School Client</h3>
-                  <p className="text-xs text-[#64748B]">Provisions a new tenant subdomain and dispatches admin credentials.</p>
+                  <h3 className="text-xl font-['Outfit'] font-bold text-slate-900">Onboard New School Client</h3>
+                  <p className="text-xs text-slate-500">Provisions a new tenant subdomain and dispatches admin credentials.</p>
                 </div>
               </div>
-              <button onClick={() => setShowModal(false)} className="text-[#64748B] hover:text-[#1A1918] cursor-pointer">
+              <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-700 cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {modalError && (
-              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg font-medium">
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
                 {modalError}
               </div>
             )}
@@ -317,19 +317,19 @@ const SuperAdminDashboard = () => {
             <form onSubmit={handleOnboardSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#1A1918] mb-1">School Name *</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">School Name *</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. Apex International School"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2.5 text-xs text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#1A1918] mb-1">Subdomain Alias *</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Subdomain Alias *</label>
                   <div className="flex items-center">
                     <input
                       type="text"
@@ -337,93 +337,93 @@ const SuperAdminDashboard = () => {
                       placeholder="apexschool"
                       value={formData.subdomain}
                       onChange={(e) => setFormData({ ...formData, subdomain: e.target.value.toLowerCase().replace(/[^a-z0-9]/g, '') })}
-                      className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-l-lg px-3.5 py-2.5 text-xs text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-l-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
                     />
-                    <span className="bg-[#E5E0D8] text-[#64748B] text-[11px] font-mono px-3 py-2.5 rounded-r-lg border border-l-0 border-[#E5E0D8]">.campus</span>
+                    <span className="bg-slate-100 text-slate-500 text-[11px] font-mono px-3 py-2.5 rounded-r-xl border border-l-0 border-slate-200">.campus</span>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#1A1918] mb-1">School Official Email *</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">School Official Email *</label>
                   <input
                     type="email"
                     required
                     placeholder="info@apexschool.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2.5 text-xs text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#1A1918] mb-1">City & State</label>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">City & State</label>
                   <div className="grid grid-cols-2 gap-2">
                     <input
                       type="text"
                       placeholder="City"
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-2.5 text-xs text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
                     />
                     <input
                       type="text"
                       placeholder="State"
                       value={formData.state}
                       onChange={(e) => setFormData({ ...formData, state: e.target.value })}
-                      className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3 py-2.5 text-xs text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-[#F7F5F0] space-y-3">
-                <h4 className="text-xs font-bold text-[#1B2A4A] uppercase tracking-wider">School Admin Credentials (Emailed Automatically)</h4>
+              <div className="pt-3 border-t border-slate-100 space-y-3">
+                <h4 className="text-xs font-bold text-indigo-700 uppercase tracking-wider font-['Outfit']">School Admin Credentials (Emailed Automatically)</h4>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-[#1A1918] mb-1">Admin Full Name *</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">Admin Full Name *</label>
                     <input
                       type="text"
                       required
                       placeholder="e.g. Principal Rajesh Sharma"
                       value={formData.admin_name}
                       onChange={(e) => setFormData({ ...formData, admin_name: e.target.value })}
-                      className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2.5 text-xs text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-[#1A1918] mb-1">Admin Personal Email *</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">Admin Personal Email *</label>
                     <input
                       type="email"
                       required
                       placeholder="admin@apexschool.com"
                       value={formData.admin_email}
                       onChange={(e) => setFormData({ ...formData, admin_email: e.target.value })}
-                      className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2.5 text-xs text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-[#1A1918] mb-1">Admin Phone</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">Admin Phone</label>
                     <input
                       type="text"
                       placeholder="+91 98765 43210"
                       value={formData.admin_phone}
                       onChange={(e) => setFormData({ ...formData, admin_phone: e.target.value })}
-                      className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2.5 text-xs text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-[#1A1918] mb-1">Initial Password *</label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">Initial Password *</label>
                     <input
                       type="password"
                       required
                       placeholder="••••••••••••"
                       value={formData.admin_password}
                       onChange={(e) => setFormData({ ...formData, admin_password: e.target.value })}
-                      className="w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-3.5 py-2.5 text-xs text-[#1A1918] focus:outline-none focus:border-[#1B2A4A]"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-600 focus:bg-white transition-colors"
                     />
                   </div>
                 </div>
@@ -433,14 +433,14 @@ const SuperAdminDashboard = () => {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2.5 rounded-lg text-xs font-semibold text-[#64748B] hover:text-[#1A1918] cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isRegistering}
-                  className="bg-[#1B2A4A] hover:bg-[#5C1D24] text-white px-5 py-2.5 rounded-lg text-xs font-semibold transition-colors shadow-sm cursor-pointer disabled:opacity-50"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-xs shadow-indigo-600/20 cursor-pointer disabled:opacity-50"
                 >
                   {isRegistering ? 'Provisioning School...' : 'Provision School & Send Credentials'}
                 </button>

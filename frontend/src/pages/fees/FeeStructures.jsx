@@ -62,26 +62,26 @@ const FeeStructures = () => {
   };
 
   return (
-    <div className="space-y-6 font-['Plus_Jakarta_Sans'] text-[#1A1918]">
+    <div className="space-y-6 font-['Inter'] text-slate-900">
       
       {/* Category Pill Indicator */}
-      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#5C1D24]/10 border border-[#5C1D24]/20 text-[10px] font-bold text-[#5C1D24] uppercase tracking-wider">
-        <Receipt className="w-3.5 h-3.5 text-[#5C1D24]" />
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-indigo-50 border border-indigo-200/60 text-[10px] font-bold text-indigo-700 uppercase tracking-wider">
+        <Receipt className="w-3.5 h-3.5 text-indigo-600" />
         <span>Financial Structure Setup</span>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#E5E0D8] pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Newsreader'] font-bold text-[#1A1918]">Fee Structures & Billing Setup</h1>
-          <p className="text-xs text-[#64748B] mt-1">Configure tuition fees, exam fees, activity charges, and set payment due dates.</p>
+          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Fee Structures & Billing Setup</h1>
+          <p className="text-sm text-slate-500 mt-1">Configure tuition fees, exam fees, activity charges, and set payment due dates.</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <Link to="/dashboard/fees/collection" className="flex-1 sm:flex-none">
-            <Button variant="secondary" size="sm" className="w-full gap-2 py-2 shadow-sm">
-              <CreditCard className="w-4 h-4 text-[#1B2A4A]" /> Collect Fee
+            <Button variant="secondary" size="sm" className="w-full gap-2 py-2 shadow-xs">
+              <CreditCard className="w-4 h-4 text-slate-600" /> Collect Fee
             </Button>
           </Link>
-          <Button variant="primary" size="sm" onClick={() => setModalOpen(true)} className="flex-1 sm:flex-none gap-2 shadow-sm">
+          <Button variant="primary" size="sm" onClick={() => setModalOpen(true)} className="flex-1 sm:flex-none gap-2 shadow-xs">
             <Plus className="w-4 h-4" /> Add Fee Structure
           </Button>
         </div>
@@ -89,28 +89,28 @@ const FeeStructures = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {structures.map((st) => (
-          <div key={st.id} className="bg-white p-6 rounded-xl border border-[#E5E0D8] shadow-sm flex flex-col justify-between space-y-4">
+          <div key={st.id} className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <div className="w-9 h-9 rounded-lg bg-[#F7F5F0] border border-[#E5E0D8] text-[#1B2A4A] flex items-center justify-center">
+                <div className="w-9 h-9 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center">
                   <Receipt className="w-4.5 h-4.5" />
                 </div>
                 <Badge variant="warning">Active Fee</Badge>
               </div>
 
               <div>
-                <h3 className="text-sm font-bold text-[#1A1918]">{st.name}</h3>
+                <h3 className="text-sm font-bold font-['Outfit'] text-slate-900">{st.name}</h3>
                 <div className="text-xl font-bold font-mono text-emerald-600 mt-1">₹{parseFloat(st.amount || 0).toLocaleString('en-IN')}</div>
               </div>
             </div>
 
-            <div className="border-t border-[#F7F5F0] pt-3 flex items-center justify-between text-xs text-[#64748B] font-semibold">
+            <div className="border-t border-slate-100 pt-3 flex items-center justify-between text-xs text-slate-500 font-medium">
               <span className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-[#64748B]" /> Due: {st.due_date}
+                <Calendar className="w-3.5 h-3.5 text-slate-400" /> Due: {st.due_date}
               </span>
               <button
                 onClick={() => handleDelete(st.id)}
-                className="p-1.5 rounded text-[#64748B] hover:text-[#5C1D24] hover:bg-[#5C1D24]/10 transition-colors shrink-0"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors shrink-0"
                 title="Delete Structure"
               >
                 <Trash2 className="w-4 h-4" />
@@ -120,7 +120,7 @@ const FeeStructures = () => {
         ))}
 
         {structures.length === 0 && !loading && (
-          <div className="col-span-full bg-white p-12 text-center text-[#64748B] rounded-xl border border-[#E5E0D8] shadow-sm font-medium italic">
+          <div className="col-span-full bg-white p-12 text-center text-slate-400 rounded-xl border border-slate-200 shadow-xs font-medium italic">
             No fee structures configured yet. Click "Add Fee Structure" to start.
           </div>
         )}
@@ -128,7 +128,7 @@ const FeeStructures = () => {
 
       {/* Add Fee Structure Modal */}
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="Configure Fee Structure">
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 font-['Inter']">
           <Input
             label="Fee Category Name"
             placeholder="e.g. Term 1 Tuition Fee"
@@ -155,7 +155,7 @@ const FeeStructures = () => {
               required
             />
           </div>
-          <Button type="submit" variant="primary" className="w-full mt-2" loading={submitting}>
+          <Button type="submit" variant="primary" className="w-full mt-2 shadow-xs" loading={submitting}>
             Create Fee Structure
           </Button>
         </form>

@@ -18,29 +18,29 @@ const Input = ({
   return (
     <div className="w-full">
       {label && (
-        <label htmlFor={inputId} className="block text-[10px] font-bold text-[#1A1918] uppercase tracking-wider mb-2">
+        <label htmlFor={inputId} className="block text-xs font-semibold text-slate-700 mb-1.5">
           {label}
         </label>
       )}
       <div className="relative flex items-center">
         {Icon && (
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#64748B]">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
             <Icon className="w-4 h-4" />
           </div>
         )}
         <input
           id={inputId}
           type={effectiveType}
-          className={`w-full bg-[#F7F5F0] border border-[#E5E0D8] rounded-lg px-4 py-2.5 text-xs text-[#1A1918] placeholder-[#64748B] focus:outline-none focus:border-[#1B2A4A] transition-colors ${
+          className={`w-full bg-white border border-slate-200 rounded-lg px-3.5 py-2 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-3 focus:ring-indigo-500/15 shadow-2xs transition-all ${
             Icon ? 'pl-9' : ''
-          } ${isPasswordType ? 'pr-10' : ''} ${error ? 'border-red-500 focus:border-red-500' : ''} ${className}`}
+          } ${isPasswordType ? 'pr-10' : ''} ${error ? 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/15' : ''} ${className}`}
           {...props}
         />
         {isPasswordType && (
           <button
             type="button"
             onClick={() => setShowPassword(prev => !prev)}
-            className="absolute right-3 text-[#64748B] hover:text-[#1B2A4A] focus:outline-none transition-colors"
+            className="absolute right-3 text-slate-400 hover:text-indigo-600 focus:outline-none transition-colors"
             tabIndex={-1}
             title={showPassword ? "Hide Password" : "Show Password"}
           >
@@ -48,10 +48,9 @@ const Input = ({
           </button>
         )}
       </div>
-      {error && <p className="mt-1.5 text-xs text-red-600 font-medium">{error}</p>}
+      {error && <p className="mt-1.5 text-xs text-rose-600 font-medium">{error}</p>}
     </div>
   );
 };
 
 export default Input;
-
