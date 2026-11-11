@@ -7,6 +7,7 @@ const Pricing = () => {
 
   const plans = [
     {
+      id: 'starter',
       name: 'Starter Plan',
       monthlyPrice: '₹0',
       yearlyPrice: '₹0',
@@ -24,6 +25,7 @@ const Pricing = () => {
       highlighted: false,
     },
     {
+      id: 'growth',
       name: 'Growth Plan',
       monthlyPrice: '₹2,999',
       yearlyPrice: '₹28,788',
@@ -42,6 +44,7 @@ const Pricing = () => {
       highlighted: true,
     },
     {
+      id: 'enterprise',
       name: 'Enterprise Plan',
       monthlyPrice: '₹8,999',
       yearlyPrice: '₹86,388',
@@ -71,7 +74,7 @@ const Pricing = () => {
             <CreditCard className="w-4 h-4 text-indigo-600" />
             <span>Subscription Plans</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
             Simple, Transparent SaaS Pricing
           </h1>
           <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
@@ -123,12 +126,12 @@ const Pricing = () => {
 
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-2xl font-['Outfit'] font-bold text-slate-900">{p.name}</h3>
+                  <h3 className="text-xl font-semibold text-slate-900">{p.name}</h3>
                   <p className="text-slate-500 text-xs mt-1 leading-relaxed">{p.desc}</p>
                 </div>
 
                 <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-extrabold text-slate-900 font-mono">
+                  <span className="text-3xl sm:text-4xl font-semibold text-slate-900 font-mono">
                     {isYearly ? p.yearlyPrice : p.monthlyPrice}
                   </span>
                   <span className="text-slate-500 text-xs font-medium">
@@ -147,7 +150,7 @@ const Pricing = () => {
               </div>
 
               <div className="pt-8">
-                <Link to="/register-school">
+                <Link to={`/register-school?plan=${p.id}`}>
                   <button
                     className={`w-full py-3.5 px-6 rounded-xl font-semibold text-xs sm:text-sm transition-all shadow-sm active:scale-[0.99] cursor-pointer ${
                       p.highlighted

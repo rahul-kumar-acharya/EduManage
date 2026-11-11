@@ -45,7 +45,7 @@ const Contact = () => {
             <Mail className="w-4 h-4 text-indigo-600" />
             <span>Support & Inquiries</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
             Get in Touch
           </h1>
           <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
@@ -60,7 +60,7 @@ const Contact = () => {
           <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
             <div className="space-y-6">
               <div className="space-y-2">
-                <h3 className="text-2xl font-['Outfit'] font-bold text-slate-900">
+                <h3 className="text-xl font-semibold text-slate-900 tracking-tight">
                   Contact Information
                 </h3>
                 <p className="text-slate-500 text-sm leading-relaxed">
@@ -107,7 +107,7 @@ const Contact = () => {
                 <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 mx-auto flex items-center justify-center">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <h3 className="text-2xl font-['Outfit'] font-bold text-slate-900">
+                <h3 className="text-xl font-semibold text-slate-900 tracking-tight">
                   Message Sent Successfully!
                 </h3>
                 <p className="text-sm text-slate-500 max-w-xs mx-auto">

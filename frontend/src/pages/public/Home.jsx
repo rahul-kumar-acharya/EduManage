@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { schoolService } from '../../services/schoolService';
 import { useAuth } from '../../contexts/AuthContext';
 import { 
-  Sparkles, 
   ArrowRight, 
   Globe, 
   ShieldCheck, 
@@ -74,7 +73,7 @@ const Home = () => {
             </div>
 
             {/* Bold Modern Heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Outfit'] font-bold text-slate-900 leading-[1.12] tracking-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 leading-[1.18] tracking-tight">
               Manage Your Entire School System on <br />
               <span className="bg-clip-text text-transparent bg-linear-to-r from-indigo-600 to-violet-600">
                 Your Dedicated Subdomain
@@ -148,7 +147,7 @@ const Home = () => {
                   <Calendar className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-slate-900 font-['Outfit']">Timetable Engine</div>
+                  <div className="text-xs font-semibold text-slate-900">Timetable Engine</div>
                   <div className="text-[10px] text-emerald-600 font-semibold">Conflict-Free Routines</div>
                 </div>
               </div>
@@ -159,7 +158,7 @@ const Home = () => {
                   <Layers className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-xs font-bold text-slate-900 font-['Outfit']">Multi-Tenant Isolated</div>
+                  <div className="text-xs font-semibold text-slate-900">Multi-Tenant Isolated</div>
                   <div className="text-[10px] text-indigo-600 font-medium">Dedicated Subdomains</div>
                 </div>
               </div>
@@ -176,7 +175,7 @@ const Home = () => {
             { value: 'Instant', label: 'Tenant Provisioning' },
           ].map((stat, i) => (
             <div key={i} className="bg-white p-6 rounded-2xl text-center border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-md transition-all">
-              <div className="text-3xl sm:text-4xl font-['Outfit'] font-bold text-slate-900">
+              <div className="text-2xl sm:text-3xl font-semibold text-slate-900">
                 {stat.value}
               </div>
               <div className="text-xs font-medium text-slate-500 mt-1">{stat.label}</div>
@@ -188,7 +187,7 @@ const Home = () => {
       {/* 2. Key Features Grid */}
       <section className="max-w-7xl mx-auto px-6 space-y-12">
         <div className="text-center space-y-3">
-          <h2 className="text-3xl sm:text-4xl font-['Outfit'] font-bold text-slate-900">Everything Your Institution Needs</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">Everything Your Institution Needs</h2>
           <p className="text-slate-500 text-sm max-w-xl mx-auto">
             Architected specifically for high reliability, strict data privacy, and timeless modern performance.
           </p>
@@ -221,7 +220,7 @@ const Home = () => {
                 <div className="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-2xs">
                   <Icon className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-['Outfit'] font-bold text-slate-900">{feat.title}</h3>
+                <h3 className="text-base sm:text-lg font-semibold text-slate-900">{feat.title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{feat.desc}</p>
               </div>
             );
@@ -232,7 +231,7 @@ const Home = () => {
       {/* 3. Interactive Workspace Preview */}
       <section className="max-w-7xl mx-auto px-6 space-y-8">
         <div className="text-center space-y-3">
-          <h2 className="text-3xl sm:text-4xl font-['Outfit'] font-bold text-slate-900">Designed for Every Stakeholder</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">Designed for Every Stakeholder</h2>
           <p className="text-slate-500 text-sm max-w-xl mx-auto">
             Clean interfaces crafted specifically for daily operational tasks without cognitive fatigue.
           </p>
@@ -264,23 +263,23 @@ const Home = () => {
           {activeTab === 'admin' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <h4 className="font-['Outfit'] font-bold text-xl text-slate-900">Executive Overview</h4>
+                <h4 className="font-semibold text-base sm:text-lg text-slate-900">Executive Overview</h4>
                 <span className="text-xs font-semibold px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full border border-indigo-100">Live Data</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="p-5 bg-slate-50 rounded-xl border border-slate-200/80">
                   <p className="text-xs text-slate-500">Monthly Fee Collection</p>
-                  <p className="text-2xl font-bold text-slate-900 font-mono mt-1">
+                  <p className="text-xl font-semibold text-slate-900 font-mono mt-1">
                     {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(stats.total_revenue)}
                   </p>
                 </div>
                 <div className="p-5 bg-slate-50 rounded-xl border border-slate-200/80">
                   <p className="text-xs text-slate-500">Staff Attendance</p>
-                  <p className="text-2xl font-bold text-slate-900 font-mono mt-1">{stats.overall_attendance_rate}%</p>
+                  <p className="text-xl font-semibold text-slate-900 font-mono mt-1">{stats.overall_attendance_rate}%</p>
                 </div>
                 <div className="p-5 bg-slate-50 rounded-xl border border-slate-200/80">
                   <p className="text-xs text-slate-500">Active Classes</p>
-                  <p className="text-2xl font-bold text-slate-900 font-mono mt-1">{stats.total_sections} Sections</p>
+                  <p className="text-xl font-semibold text-slate-900 font-mono mt-1">{stats.total_sections} Sections</p>
                 </div>
               </div>
             </div>
@@ -289,7 +288,7 @@ const Home = () => {
           {activeTab === 'teacher' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <h4 className="font-['Outfit'] font-bold text-xl text-slate-900">Class 10-A Gradebook & Attendance</h4>
+                <h4 className="font-semibold text-base sm:text-lg text-slate-900">Class 10-A Gradebook & Attendance</h4>
                 <span className="text-xs font-medium px-3 py-1 bg-slate-100 text-slate-700 rounded-full">Period 3 • Mathematics</span>
               </div>
               <div className="divide-y divide-slate-100">
@@ -305,7 +304,7 @@ const Home = () => {
                       }`}>
                         {row.status}
                       </span>
-                      <span className="font-mono font-bold text-xs bg-slate-100 px-2.5 py-1 rounded-md text-slate-800">{row.grade}</span>
+                      <span className="font-mono font-semibold text-xs bg-slate-100 px-2.5 py-1 rounded-md text-slate-800">{row.grade}</span>
                     </div>
                   </div>
                 ))}
@@ -316,7 +315,7 @@ const Home = () => {
           {activeTab === 'parent' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <h4 className="font-['Outfit'] font-bold text-xl text-slate-900">Student Profile & Notice Feed</h4>
+                <h4 className="font-semibold text-base sm:text-lg text-slate-900">Student Profile & Notice Feed</h4>
                 <span className="text-xs text-slate-400">Last updated 10 mins ago</span>
               </div>
               <div className="space-y-3">
@@ -349,17 +348,17 @@ const Home = () => {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
           <div className="p-4 space-y-2">
             <ShieldCheck className="w-6 h-6 text-indigo-600 mx-auto" />
-            <h4 className="font-['Outfit'] font-bold text-slate-900 text-lg">Bank-Grade Security</h4>
+            <h4 className="font-semibold text-slate-900 text-base">Bank-Grade Security</h4>
             <p className="text-xs text-slate-500">AES-256 encrypted data stores with strict tenant isolation.</p>
           </div>
           <div className="p-4 space-y-2 pt-6 sm:pt-4">
             <Award className="w-6 h-6 text-indigo-600 mx-auto" />
-            <h4 className="font-['Outfit'] font-bold text-slate-900 text-lg">FERPA & GDPR Compliant</h4>
+            <h4 className="font-semibold text-slate-900 text-base">FERPA & GDPR Compliant</h4>
             <p className="text-xs text-slate-500">Full compliance with global educational data protection standards.</p>
           </div>
           <div className="p-4 space-y-2 pt-6 sm:pt-4">
             <Lock className="w-6 h-6 text-indigo-600 mx-auto" />
-            <h4 className="font-['Outfit'] font-bold text-slate-900 text-lg">Automated Backups</h4>
+            <h4 className="font-semibold text-slate-900 text-base">Automated Backups</h4>
             <p className="text-xs text-slate-500">Daily automated database snapshots with instant restore capability.</p>
           </div>
         </div>
@@ -368,7 +367,7 @@ const Home = () => {
       {/* 5. FAQs Accordion */}
       <section className="max-w-4xl mx-auto px-6 space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="text-3xl sm:text-4xl font-['Outfit'] font-bold text-slate-900">Frequently Asked Questions</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">Frequently Asked Questions</h2>
           <p className="text-slate-500 text-sm">Everything you need to know about getting started.</p>
         </div>
 
@@ -389,14 +388,17 @@ const Home = () => {
           ].map((faq, i) => (
             <div key={i} className="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
               <button
+                type="button"
                 onClick={() => toggleFaq(i)}
-                className="w-full text-left p-5 flex items-center justify-between font-['Outfit'] font-semibold text-slate-900 text-base sm:text-lg"
+                aria-expanded={openFaq === i}
+                aria-controls={`faq-answer-${i}`}
+                className="w-full text-left p-5 flex items-center justify-between font-medium text-slate-900 text-sm sm:text-base cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
               >
                 <span>{faq.q}</span>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
               </button>
               {openFaq === i && (
-                <div className="px-5 pb-5 text-sm text-slate-500 leading-relaxed border-t border-slate-100 pt-3">
+                <div id={`faq-answer-${i}`} role="region" className="px-5 pb-5 text-sm text-slate-500 leading-relaxed border-t border-slate-100 pt-3">
                   {faq.a}
                 </div>
               )}
@@ -411,7 +413,7 @@ const Home = () => {
           <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 text-white mx-auto flex items-center justify-center">
             <Building2 className="w-6 h-6 text-indigo-300" />
           </div>
-          <h2 className="text-3xl sm:text-4xl font-['Outfit'] font-bold text-white">Ready to Modernize Your Institution?</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-white tracking-tight">Ready to Modernize Your Institution?</h2>
           <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto">
             Start your 14-day free trial today. No credit card required. Provision your school workspace in under 2 minutes.
           </p>

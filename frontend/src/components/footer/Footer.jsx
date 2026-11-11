@@ -13,10 +13,10 @@ const Footer = () => {
               <GraduationCap className="w-5 h-5" />
             </div>
             <div>
-              <span className="font-['Outfit'] font-bold text-xl text-slate-900 block leading-none">
+              <span className="font-semibold text-lg text-slate-900 block leading-none">
                 AcharyaCampus
               </span>
-              <span className="block text-[10px] uppercase font-bold tracking-wider text-indigo-600 mt-1">
+              <span className="block text-[10px] uppercase font-semibold tracking-wider text-indigo-600 mt-1">
                 School OS Platform
               </span>
             </div>
@@ -28,7 +28,7 @@ const Footer = () => {
 
         {/* Quick Links */}
         <div className="space-y-3">
-          <h4 className="font-['Outfit'] font-bold text-slate-900 text-sm">Quick Links</h4>
+          <h4 className="font-semibold text-slate-900 text-sm">Quick Links</h4>
           <ul className="space-y-2 text-xs font-medium">
             <li><Link to="/" className="hover:text-indigo-600 transition-colors">Home</Link></li>
             <li><Link to="/about" className="hover:text-indigo-600 transition-colors">About Us</Link></li>
@@ -40,7 +40,7 @@ const Footer = () => {
 
         {/* Platform Services */}
         <div className="space-y-3">
-          <h4 className="font-['Outfit'] font-bold text-slate-900 text-sm">Portals & Legal</h4>
+          <h4 className="font-semibold text-slate-900 text-sm">Portals & Legal</h4>
           <ul className="space-y-2 text-xs font-medium">
             <li><Link to="/register-school" className="hover:text-indigo-600 transition-colors">Register Institution</Link></li>
             <li><Link to="/login" className="hover:text-indigo-600 transition-colors">Portal Sign In</Link></li>
@@ -52,7 +52,7 @@ const Footer = () => {
 
         {/* Contact Info */}
         <div className="space-y-3">
-          <h4 className="font-['Outfit'] font-bold text-slate-900 text-sm">Contact Us</h4>
+          <h4 className="font-semibold text-slate-900 text-sm">Contact Us</h4>
           <div className="space-y-2.5 text-xs">
             <div className="flex items-center gap-2.5">
               <Mail className="w-4 h-4 text-indigo-600 shrink-0" />

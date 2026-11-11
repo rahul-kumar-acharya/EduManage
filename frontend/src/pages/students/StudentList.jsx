@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { studentService } from '../../services/studentService';
 import { academicService } from '../../services/academicService';
@@ -6,8 +6,7 @@ import Table from '../../components/ui/Table';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Modal from '../../components/ui/Modal';
-import Badge from '../../components/ui/Badge';
-import { Users, Plus, Trash2, Edit2, Search, Mail, ShieldCheck, Upload, Download, FileSpreadsheet, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Plus, Trash2, Edit2, Search, ShieldCheck, Upload, Download, FileSpreadsheet, CheckCircle2, AlertCircle } from 'lucide-react';
 
 const StudentList = () => {
   const { user } = useAuth();
@@ -62,7 +61,7 @@ const StudentList = () => {
     }
   };
 
-  const fetchStudents = async () => {
+  const fetchStudents = useCallback(async () => {
     setLoading(true);
     try {
       const params = {};
@@ -75,7 +74,7 @@ const StudentList = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedSection, searchQuery]);
 
   useEffect(() => {
     fetchSections();
@@ -83,7 +82,7 @@ const StudentList = () => {
 
   useEffect(() => {
     fetchStudents();
-  }, [selectedSection, searchQuery]);
+  }, [fetchStudents]);
 
   // Calculate next available roll number for a section
   const getNextRollNumber = (secId) => {
@@ -433,10 +432,10 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
       accessor: 'user',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs shadow-xs font-['Outfit']">
+          <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center font-semibold text-xs shadow-xs">
             {row.user?.first_name?.[0]?.toUpperCase() || 'S'}
           </div>
-          <div className="font-semibold text-slate-900 font-['Outfit']">
+          <div className="font-semibold text-slate-900">
             {row.user?.first_name} {row.user?.last_name}
           </div>
         </div>
@@ -465,7 +464,7 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
       accessor: 'guardian_name',
       render: (row) => (
         <div>
-          <div className="font-semibold text-xs text-slate-900 font-['Outfit']">{row.guardian_name || 'N/A'}</div>
+          <div className="font-semibold text-xs text-slate-900">{row.guardian_name || 'N/A'}</div>
           <div className="text-[11px] text-slate-500 font-medium flex flex-col gap-0.5 mt-0.5">
             {row.guardian_phone && <span className="font-mono">📞 {row.guardian_phone}</span>}
             {row.guardian_email && <span className="font-mono text-indigo-600">✉️ {row.guardian_email}</span>}
@@ -521,7 +520,7 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">Students Directory</h1>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Students Directory</h1>
           <p className="text-xs text-slate-500 mt-1">Manage student enrollments, sections, and guardian contacts.</p>
         </div>
         {(canManageStudents || user?.role === 'SUPER_ADMIN') && (
@@ -551,7 +550,7 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
 
         {user?.role !== 'TEACHER' && (
           <div className="flex items-center gap-3 w-full sm:w-auto">
-            <label className="text-xs font-bold text-slate-600 uppercase tracking-wider shrink-0 font-['Outfit']">
+            <label className="text-xs font-semibold text-slate-600 uppercase tracking-wider shrink-0">
               Filter Section:
             </label>
             <select
@@ -570,15 +569,13 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
         )}
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-        {loading ? (
-          <div className="py-20 text-center text-xs text-slate-500 font-semibold animate-pulse">
-            Retrieving enrolled student accounts...
-          </div>
-        ) : (
-          <Table columns={columns} data={students} emptyMessage="No enrolled students found." />
-        )}
-      </div>
+      <Table 
+        columns={columns} 
+        data={students} 
+        isLoading={loading} 
+        pageSize={25}
+        emptyMessage="No enrolled students found in this section." 
+      />
 
       {/* Enroll / Edit Student Modal */}
       <Modal 
@@ -616,7 +613,7 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
           {/* Row 2: Assigned Class Section & Roll Number */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 mb-1">
                 Assigned Class & Section
               </label>
               {user?.role === 'TEACHER' ? (
@@ -723,11 +720,11 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
           {/* Top Controls: Section & Sample CSV */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
                 1. Target Class Section
               </label>
               {user?.role === 'TEACHER' ? (
-                <div className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-indigo-700 truncate">
+                <div className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-indigo-700 truncate">
                   {user.class_teacher_sections?.[0]
                     ? `${user.class_teacher_sections[0].class_level_name} — ${cleanSecDisplay(user.class_teacher_sections[0].section_name)}`
                     : 'Assigned Section'}
@@ -749,7 +746,7 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
                 2. CSV Template
               </label>
               <button
@@ -766,8 +763,8 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
           {bulkRows.length === 0 ? (
             <div className="border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center hover:border-indigo-400 transition-colors bg-white">
               <FileSpreadsheet className="w-8 h-8 mx-auto text-indigo-600 mb-2" />
-              <p className="text-xs font-bold text-slate-900 font-['Outfit']">Upload your Student List CSV</p>
-              <p className="text-[11px] text-slate-400 mt-0.5">Required headers: <code className="font-mono font-bold text-indigo-600">first_name, last_name</code></p>
+              <p className="text-xs font-semibold text-slate-900">Upload your Student List CSV</p>
+              <p className="text-[11px] text-slate-400 mt-0.5">Required headers: <code className="font-mono font-semibold text-indigo-600">first_name, last_name</code></p>
 
               <label className="mt-3 inline-block px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-semibold cursor-pointer hover:bg-indigo-700 transition-all shadow-xs shadow-indigo-600/20">
                 Select CSV File
@@ -783,7 +780,7 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
             /* Parsed Rows Preview Grid */
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-900 font-['Outfit']">
+                <span className="text-xs font-semibold text-slate-900">
                   Parsed {bulkRows.length} Students for Batch Enrollment:
                 </span>
                 <button
@@ -797,7 +794,7 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
 
               <div className="max-h-48 overflow-y-auto border border-slate-200 rounded-xl">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold sticky top-0 border-b border-slate-200 font-['Outfit']">
+                  <thead className="bg-slate-50 text-slate-600 uppercase text-[10px] font-semibold sticky top-0 border-b border-slate-200">
                     <tr>
                       <th className="px-3 py-2">#</th>
                       <th className="px-3 py-2">Student Name</th>
@@ -809,7 +806,7 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
                     {bulkRows.map((r, idx) => (
                       <tr key={idx} className="hover:bg-slate-50/60">
                         <td className="px-3 py-1.5 font-mono text-[10px] text-slate-400">{idx + 1}</td>
-                        <td className="px-3 py-1.5 font-semibold text-slate-900 font-['Outfit']">{r.first_name} {r.last_name}</td>
+                        <td className="px-3 py-1.5 font-semibold text-slate-900">{r.first_name} {r.last_name}</td>
                         <td className="px-3 py-1.5 text-slate-500">{r.guardian_name || 'N/A'}</td>
                         <td className="px-3 py-1.5 font-mono text-[10px] text-indigo-600">{r.guardian_phone || r.guardian_email || 'N/A'}</td>
                       </tr>

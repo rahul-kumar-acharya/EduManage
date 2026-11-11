@@ -84,8 +84,8 @@ const SubscriptionPanel = () => {
 
       {/* Header */}
       <div className="border-b border-slate-200 pb-4">
-        <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">SaaS Subscriptions & Billing</h1>
-        <p className="text-sm text-slate-500 mt-1">Manage school subscription plans, license limits, and payment methods.</p>
+        <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">SaaS Subscriptions & Billing</h1>
+        <p className="text-xs text-slate-500 mt-1">Manage school subscription plans, license limits, and payment methods.</p>
       </div>
 
       {/* Current Active Plan Overview */}
@@ -93,7 +93,7 @@ const SubscriptionPanel = () => {
         <div className="bg-slate-900 p-6 rounded-xl border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-md text-white">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="px-3 py-1 bg-indigo-600 text-white rounded-md text-[10px] font-bold uppercase tracking-wider font-['Outfit']">
+              <div className="px-3 py-1 bg-indigo-600 text-white rounded-md text-[10px] font-semibold uppercase tracking-wider">
                 {currentSub.plan?.name || 'Starter Plan'}
               </div>
               <Badge variant="success" className="bg-emerald-500/20 border-emerald-500/30 text-emerald-400">
@@ -101,7 +101,7 @@ const SubscriptionPanel = () => {
               </Badge>
             </div>
             <div className="space-y-1">
-              <h3 className="text-lg font-bold font-['Outfit']">Current Subscription Workspace</h3>
+              <h3 className="text-base font-semibold">Current Subscription Workspace</h3>
               <p className="text-xs text-slate-400 flex items-center gap-2 font-medium">
                 <Calendar className="w-4 h-4 text-slate-400" /> Start: {currentSub.start_date} • Due Expiry: {currentSub.end_date}
               </p>
@@ -125,7 +125,7 @@ const SubscriptionPanel = () => {
 
       {/* Package Plans Grid */}
       <div className="space-y-4">
-        <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+        <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
           <Sparkles className="w-4.5 h-4.5 text-indigo-600" /> Available SaaS Package Upgrades
         </h3>
         
@@ -141,12 +141,12 @@ const SubscriptionPanel = () => {
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-base font-bold font-['Outfit'] text-slate-900">{p.name}</h4>
+                    <h4 className="text-sm font-semibold text-slate-900">{p.name}</h4>
                     {isCurrent && <Badge variant="primary">Active Plan</Badge>}
                   </div>
                   
                   <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-bold font-mono text-slate-900">₹{parseFloat(p.price || 0).toLocaleString('en-IN')}</span>
+                    <span className="text-2xl font-semibold font-mono text-slate-900">₹{parseFloat(p.price || 0).toLocaleString('en-IN')}</span>
                     <span className="text-slate-500 text-xs font-medium">/ {p.billing_cycle === 'YEARLY' ? 'year' : 'month'}</span>
                   </div>
 

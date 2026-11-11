@@ -1,3 +1,4 @@
+/* eslint-disable react/only-export-components */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getSubdomain } from '../utils/subdomain';
 import { schoolService } from '../services/schoolService';

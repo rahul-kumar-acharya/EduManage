@@ -112,8 +112,8 @@ const ExamList = () => {
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Examinations & Gradebooks</h1>
-          <p className="text-sm text-slate-500 mt-1">Schedule examination terms, log subject marks, and issue report cards.</p>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Examinations & Gradebooks</h1>
+          <p className="text-xs text-slate-500 mt-1">Schedule examination terms, log subject marks, and issue report cards.</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           {user?.role === 'TEACHER' && (
@@ -147,7 +147,7 @@ const ExamList = () => {
               </div>
 
               <div>
-                <h3 className="text-sm font-bold font-['Outfit'] text-slate-900">{ex.name}</h3>
+                <h3 className="text-sm font-semibold text-slate-900">{ex.name}</h3>
                 <div className="text-[11px] text-slate-500 flex items-center gap-1.5 mt-1 font-mono font-medium">
                   <Calendar className="w-3.5 h-3.5 text-slate-400" />
                   <span>{ex.start_date} → {ex.end_date}</span>

@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { academicService } from '../../services/academicService';
 import { studentService } from '../../services/studentService';
 import { attendanceService } from '../../services/attendanceService';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
-import Badge from '../../components/ui/Badge';
-import { CalendarCheck, Save, CheckCircle2, Calendar, Users, UserCheck, UserX, Clock, Sparkles, FileSpreadsheet, Download, Eye, Lock } from 'lucide-react';
+import { CalendarCheck, Save, CheckCircle2, Calendar, UserCheck, UserX, FileSpreadsheet, Download, Lock } from 'lucide-react';
 
 const AttendanceSheet = () => {
   const { user } = useAuth();
@@ -17,7 +16,7 @@ const AttendanceSheet = () => {
   const [currentSession, setCurrentSession] = useState(null);
 
   const todayStr = new Date().toISOString().split('T')[0];
-  const [selectedDate, setSelectedDate] = useState(todayStr);
+  const selectedDate = todayStr;
 
   // Monthly Report states
   const now = new Date();
@@ -140,9 +139,9 @@ const AttendanceSheet = () => {
         setSelectedMonth(availableMonths[0].num.toString());
       }
     }
-  }, [selectedYear, currentSession]);
+  }, [availableMonths, selectedMonth]);
 
-  const loadSheet = async () => {
+  const loadSheet = useCallback(async () => {
     if (!selectedSection || !selectedDate) return;
     setLoading(true);
     setMessage('');
@@ -166,9 +165,9 @@ const AttendanceSheet = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedSection, selectedDate]);
 
-  const loadMonthlyReport = async () => {
+  const loadMonthlyReport = useCallback(async () => {
     if (!selectedSection || !selectedYear || !selectedMonth) return;
     setLoadingMonthly(true);
     try {
@@ -187,7 +186,7 @@ const AttendanceSheet = () => {
     } finally {
       setLoadingMonthly(false);
     }
-  };
+  }, [selectedSection, selectedYear, selectedMonth]);
 
   useEffect(() => {
     if (activeTab === 'daily') {
@@ -195,7 +194,7 @@ const AttendanceSheet = () => {
     } else {
       loadMonthlyReport();
     }
-  }, [selectedSection, selectedDate, selectedYear, selectedMonth, activeTab]);
+  }, [activeTab, loadSheet, loadMonthlyReport]);
 
   const handleStatusChange = (studentId, status) => {
     if (!canMarkCurrentSection) return;
@@ -313,8 +312,8 @@ const AttendanceSheet = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Attendance Register</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Attendance Register</h1>
+          <p className="text-xs text-slate-500 mt-1">
             Record daily presence and view monthly class attendance reports for session {currentSession?.name || '2026-2027'}.
           </p>
         </div>
@@ -353,7 +352,7 @@ const AttendanceSheet = () => {
       {/* Selectors Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
         <div>
-          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-['Outfit']">
+          <label className="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
             Select Class Section
           </label>
           <select
@@ -384,7 +383,7 @@ const AttendanceSheet = () => {
         ) : (
           <div className="sm:col-span-2 grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-['Outfit']">
+              <label className="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
                 Select Month ({availableMonths.length} Months)
               </label>
               <select
@@ -398,7 +397,7 @@ const AttendanceSheet = () => {
               </select>
             </div>
             <div>
-              <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-['Outfit']">
+              <label className="block text-[11px] font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
                 Select Year (Session {currentSession?.name || ''})
               </label>
               <select
@@ -431,16 +430,16 @@ const AttendanceSheet = () => {
             <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
               <div className="grid grid-cols-3 gap-3 flex-1">
                 <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-center">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase block font-['Outfit']">Total Enrolled</span>
-                  <span className="text-lg font-bold text-slate-900 font-['Outfit']">{totalCount}</span>
+                  <span className="text-[10px] font-semibold text-slate-500 uppercase block">Total Enrolled</span>
+                  <span className="text-lg font-semibold text-slate-900">{totalCount}</span>
                 </div>
                 <div className="bg-emerald-50/80 p-2.5 rounded-lg border border-emerald-200 text-center">
-                  <span className="text-[10px] font-bold text-emerald-700 uppercase block font-['Outfit']">Present</span>
-                  <span className="text-lg font-bold text-emerald-700 font-['Outfit']">{presentCount} <span className="text-[10px] font-semibold">({presentPercent}%)</span></span>
+                  <span className="text-[10px] font-semibold text-emerald-700 uppercase block">Present</span>
+                  <span className="text-lg font-semibold text-emerald-700">{presentCount} <span className="text-[10px] font-medium">({presentPercent}%)</span></span>
                 </div>
                 <div className="bg-rose-50/80 p-2.5 rounded-lg border border-rose-200 text-center">
-                  <span className="text-[10px] font-bold text-rose-600 uppercase block font-['Outfit']">Absent</span>
-                  <span className="text-lg font-bold text-rose-600 font-['Outfit']">{absentCount}</span>
+                  <span className="text-[10px] font-semibold text-rose-600 uppercase block">Absent</span>
+                  <span className="text-lg font-semibold text-rose-600">{absentCount}</span>
                 </div>
               </div>
 
@@ -477,7 +476,7 @@ const AttendanceSheet = () => {
           {/* Daily Table */}
           <div className="w-full overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xs">
             <table className="w-full text-left text-xs font-medium text-slate-800">
-              <thead className="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 select-none font-['Outfit']">
+              <thead className="bg-slate-50 text-[10px] font-semibold text-slate-600 uppercase tracking-wider border-b border-slate-200 select-none">
                 <tr>
                   <th className="px-5 py-3.5">Roll No.</th>
                   <th className="px-5 py-3.5">Student Name</th>
@@ -566,7 +565,7 @@ const AttendanceSheet = () => {
       {activeTab === 'monthly' && (
         <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-4 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-slate-900 font-['Outfit']">
+            <h3 className="text-sm font-semibold text-slate-900">
               Monthly Presence Matrix — {ALL_MONTHS.find(m => m.num.toString() === selectedMonth)?.name || ''} {selectedYear}
             </h3>
             <div className="flex items-center gap-3 text-[10px] font-semibold">
@@ -577,10 +576,10 @@ const AttendanceSheet = () => {
 
           <div className="w-full overflow-x-auto border border-slate-200 rounded-lg">
             <table className="w-full text-left text-xs font-medium">
-              <thead className="bg-slate-50 text-[9px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 sticky top-0 font-['Outfit']">
+              <thead className="bg-slate-50 text-[9px] font-semibold text-slate-600 uppercase tracking-wider border-b border-slate-200 sticky top-0 z-30">
                 <tr>
-                  <th className="px-3 py-2 shrink-0">Student</th>
-                  <th className="px-2 py-2 text-center">Roll</th>
+                  <th className="px-3 py-2.5 shrink-0 sticky left-0 bg-slate-50 z-40 border-r border-slate-200 shadow-2xs">Student</th>
+                  <th className="px-2 py-2.5 text-center border-r border-slate-200">Roll</th>
                   {daysArray.map((d) => (
                     <th key={d} className="px-1.5 py-2 text-center border-l border-slate-200 min-w-6.5">
                       {d}
@@ -618,10 +617,10 @@ const AttendanceSheet = () => {
 
                     return (
                       <tr key={st.id} className="hover:bg-slate-50/70 transition-colors">
-                        <td className="px-3 py-2 font-semibold text-slate-900 whitespace-nowrap">
+                        <td className="px-3 py-2 font-semibold text-slate-900 whitespace-nowrap sticky left-0 bg-white z-10 border-r border-slate-200 shadow-2xs">
                           {st.user?.first_name} {st.user?.last_name}
                         </td>
-                        <td className="px-2 py-2 text-center font-mono text-xs font-medium text-slate-500">
+                        <td className="px-2 py-2 text-center font-mono text-xs font-medium text-slate-500 border-r border-slate-200">
                           {st.roll_number || '-'}
                         </td>
                         {dayCells}

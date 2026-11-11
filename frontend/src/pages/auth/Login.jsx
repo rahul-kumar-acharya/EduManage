@@ -12,9 +12,10 @@ const Login = () => {
   const [selectedRole, setSelectedRole] = useState('ADMIN');
 
   const [error, setError] = useState('');
+  const sessionNotice = new URLSearchParams(window.location.search).get('session_expired') === 'true';
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login, logout } = useAuth();
-  const { school, subdomain } = useSchool();
+  const { login } = useAuth();
+  const { subdomain } = useSchool();
   const navigate = useNavigate();
 
   const handleRoleChange = (roleId) => {
@@ -98,7 +99,7 @@ const Login = () => {
           <KeyRound className="w-4 h-4 text-indigo-600" />
           <span>Security Gateway Access</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+        <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight">
           Sign In to Your Workspace
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">
@@ -113,7 +114,7 @@ const Login = () => {
         <div className="lg:col-span-5 bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
           <div className="space-y-6">
             <div className="space-y-2">
-              <h3 className="text-2xl font-['Outfit'] font-bold text-slate-900">
+              <h3 className="text-lg font-semibold text-slate-900 tracking-tight">
                 Welcome Back to AcharyaCampus
               </h3>
               <p className="text-slate-500 text-sm leading-relaxed">
@@ -126,7 +127,7 @@ const Login = () => {
               <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                 <Globe className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
-                  <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">Tenant Domain Lock</h4>
+                  <h4 className="font-semibold text-sm text-slate-900">Tenant Domain Lock</h4>
                   <p className="text-xs text-slate-500 leading-relaxed">Your session is automatically isolated to your school's subdomain environment.</p>
                 </div>
               </div>
@@ -134,7 +135,7 @@ const Login = () => {
               <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                 <UserCheck className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
-                  <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">Role-Based Dashboards</h4>
+                  <h4 className="font-semibold text-sm text-slate-900">Role-Based Dashboards</h4>
                   <p className="text-xs text-slate-500 leading-relaxed">Dedicated interfaces for School Admins, Class Teachers, Students, Parents, and Accountants.</p>
                 </div>
               </div>
@@ -142,7 +143,7 @@ const Login = () => {
               <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                 <ShieldCheck className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
-                  <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">Bank-Grade Security</h4>
+                  <h4 className="font-semibold text-sm text-slate-900">Bank-Grade Security</h4>
                   <p className="text-xs text-slate-500 leading-relaxed">256-bit encrypted credentials with automated JWT token authentication.</p>
                 </div>
               </div>
@@ -192,6 +193,15 @@ const Login = () => {
                 ))}
               </div>
             </div>
+
+            {sessionNotice && !error && (
+              <div className="p-4 bg-amber-50 border border-amber-200 text-amber-800 text-xs rounded-xl flex items-start gap-2.5 font-medium">
+                <HelpCircle className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
+                <div className="leading-relaxed">
+                  Your session has expired. Please sign in again to access your authorized workspace.
+                </div>
+              </div>
+            )}
 
             {error && (
               <div className="p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl flex items-start gap-2.5 font-medium">

@@ -12,7 +12,7 @@ const PrivacyPolicy = () => {
             <ShieldCheck className="w-4 h-4 text-indigo-600" />
             <span>Data Privacy & Compliance</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">
             Privacy Policy
           </h1>
           <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
@@ -27,8 +27,8 @@ const PrivacyPolicy = () => {
         <div className="bg-white p-8 sm:p-12 rounded-2xl border border-slate-200 shadow-2xs space-y-8">
           
           <section className="space-y-3">
-            <h2 className="text-xl sm:text-2xl font-['Outfit'] font-bold text-slate-900 flex items-center gap-2.5">
-              <Lock className="w-5 h-5 text-indigo-600" /> 1. Multi-Tenant Data Isolation
+            <h2 className="text-base sm:text-lg font-semibold text-slate-900 flex items-center gap-2.5">
+              <Lock className="w-4 h-4 text-indigo-600" /> 1. Multi-Tenant Data Isolation
             </h2>
             <p className="text-sm text-slate-600 leading-relaxed">
               AcharyaCampus operates on a strict multi-tenant architecture. Every registered educational institution is assigned an isolated database tenant scope bound to its specific subdomain. Data belonging to your school is strictly segregated and cannot be queried or viewed by users from other institutions.
@@ -36,8 +36,8 @@ const PrivacyPolicy = () => {
           </section>
 
           <section className="space-y-3 pt-6 border-t border-slate-100">
-            <h2 className="text-xl sm:text-2xl font-['Outfit'] font-bold text-slate-900 flex items-center gap-2.5">
-              <Eye className="w-5 h-5 text-indigo-600" /> 2. Information We Collect
+            <h2 className="text-base sm:text-lg font-semibold text-slate-900 flex items-center gap-2.5">
+              <Eye className="w-4 h-4 text-indigo-600" /> 2. Information We Collect
             </h2>
             <p className="text-sm text-slate-600 leading-relaxed">
               We collect information necessary to deliver educational administration services, including:
@@ -51,8 +51,8 @@ const PrivacyPolicy = () => {
           </section>
 
           <section className="space-y-3 pt-6 border-t border-slate-100">
-            <h2 className="text-xl sm:text-2xl font-['Outfit'] font-bold text-slate-900 flex items-center gap-2.5">
-              <Database className="w-5 h-5 text-indigo-600" /> 3. Data Storage & Encryption
+            <h2 className="text-base sm:text-lg font-semibold text-slate-900 flex items-center gap-2.5">
+              <Database className="w-4 h-4 text-indigo-600" /> 3. Data Storage & Encryption
             </h2>
             <p className="text-sm text-slate-600 leading-relaxed">
               All student records and administrative credentials are encrypted at rest using AES-256 standards and in transit using TLS 1.3 encryption. Database backups are snapshot automated daily and stored in secure, redundant cloud vaults.
@@ -60,8 +60,8 @@ const PrivacyPolicy = () => {
           </section>
 
           <section className="space-y-3 pt-6 border-t border-slate-100">
-            <h2 className="text-xl sm:text-2xl font-['Outfit'] font-bold text-slate-900 flex items-center gap-2.5">
-              <Server className="w-5 h-5 text-indigo-600" /> 4. Data Ownership & Export
+            <h2 className="text-base sm:text-lg font-semibold text-slate-900 flex items-center gap-2.5">
+              <Server className="w-4 h-4 text-indigo-600" /> 4. Data Ownership & Export
             </h2>
             <p className="text-sm text-slate-600 leading-relaxed">
               Your institution retains full ownership of all uploaded academic and financial data. School administrators may request full JSON/CSV data exports or complete account deletion at any time by contacting support.

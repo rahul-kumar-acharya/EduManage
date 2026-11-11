@@ -90,8 +90,8 @@ const ReportsDashboard = () => {
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Reports & Analytics</h1>
-          <p className="text-sm text-slate-500 mt-1">Review school operations health, registration rates, collections, and average student attendance.</p>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Reports & Analytics</h1>
+          <p className="text-xs text-slate-500 mt-1">Review school operations health, registration rates, collections, and average student attendance.</p>
         </div>
         <button 
           onClick={fetchReport} 
@@ -139,8 +139,8 @@ const ReportsDashboard = () => {
           return (
             <div key={idx} className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between hover:shadow-md transition-shadow">
               <div className="space-y-1">
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block font-['Outfit']">{m.title}</span>
-                <strong className="text-2xl font-['Outfit'] font-bold text-slate-900">{m.value}</strong>
+                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">{m.title}</span>
+                <strong className="text-2xl font-semibold font-mono text-slate-900">{m.value}</strong>
                 <span className="text-[11px] text-slate-500 block font-medium">{m.desc}</span>
               </div>
               <div className={`w-11 h-11 rounded-xl flex items-center justify-center border ${m.colorClass}`}>
@@ -157,7 +157,7 @@ const ReportsDashboard = () => {
         {/* Fee Collection Area Chart */}
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h3 className="text-base font-bold font-['Outfit'] text-slate-900 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
               <TrendingUp className="w-4.5 h-4.5 text-indigo-600" /> Monthly Revenue Trend
             </h3>
             <Badge variant="success">Past 6 Months</Badge>
@@ -228,7 +228,7 @@ const ReportsDashboard = () => {
         {/* Admissions Growth Bar Chart */}
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h3 className="text-base font-bold font-['Outfit'] text-slate-900 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
               <Users className="w-4.5 h-4.5 text-indigo-600" /> Admissions Registration Growth
             </h3>
             <Badge variant="info">Monthly Count</Badge>
@@ -307,7 +307,7 @@ const ReportsDashboard = () => {
         
         {/* Attendance by Section */}
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
-          <h3 className="text-base font-bold font-['Outfit'] text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+          <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
             <CalendarCheck className="w-4 h-4 text-amber-600" /> Attendance Breakdown by Section
           </h3>
 
@@ -337,7 +337,7 @@ const ReportsDashboard = () => {
 
         {/* Academic averages by Subject */}
         <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
-          <h3 className="text-base font-bold font-['Outfit'] text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+          <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
             <Award className="w-4 h-4 text-indigo-600" /> Academic Subject Performance Averages
           </h3>
 

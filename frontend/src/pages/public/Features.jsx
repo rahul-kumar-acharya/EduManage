@@ -6,9 +6,7 @@ import {
   FileSpreadsheet, 
   Receipt, 
   Bell, 
-  Zap,
-  Shield, 
-  Smartphone 
+  Zap 
 } from 'lucide-react';
 
 const Features = () => {
@@ -55,7 +53,7 @@ const Features = () => {
             <Zap className="w-4 h-4 text-indigo-600" />
             <span>Platform Capabilities</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
             Full Feature Overview
           </h1>
           <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
@@ -75,7 +73,7 @@ const Features = () => {
                 <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-2xs">
                   <Icon className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-['Outfit'] font-bold text-slate-900">
+                <h3 className="text-base font-semibold text-slate-900">
                   {item.title}
                 </h3>
                 <p className="text-slate-500 text-sm leading-relaxed">

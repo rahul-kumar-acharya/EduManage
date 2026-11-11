@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, Shield, Mail, Lock, Server, Save, CheckCircle2, AlertTriangle, KeyRound } from 'lucide-react';
+import { Save, CheckCircle2 } from 'lucide-react';
 
 const SuperAdminSettings = () => {
   const [isSaved, setIsSaved] = useState(false);
@@ -27,7 +27,7 @@ const SuperAdminSettings = () => {
       <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-1.5">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+            <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
               Platform System Settings
             </h1>
             <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold uppercase tracking-wider">
@@ -51,7 +51,7 @@ const SuperAdminSettings = () => {
         {/* Section 1: General Platform & Support Settings */}
         <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
           <div className="border-b border-slate-100 pb-3">
-            <h3 className="text-lg font-['Outfit'] font-bold text-slate-900">SaaS Branding & Support Configuration</h3>
+            <h3 className="text-base font-semibold text-slate-900">SaaS Branding & Support Configuration</h3>
             <p className="text-xs text-slate-500">Parameters dispatched in automated admin emails & public branding.</p>
           </div>
 
@@ -91,7 +91,7 @@ const SuperAdminSettings = () => {
         {/* Section 2: Security & Registration Toggles */}
         <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
           <div className="border-b border-slate-100 pb-3">
-            <h3 className="text-lg font-['Outfit'] font-bold text-slate-900">Registration Gates & Maintenance Controls</h3>
+            <h3 className="text-base font-semibold text-slate-900">Registration Gates & Maintenance Controls</h3>
             <p className="text-xs text-slate-500">Control self-service school onboarding and maintenance gates.</p>
           </div>
 
@@ -104,7 +104,7 @@ const SuperAdminSettings = () => {
                 className="w-4 h-4 text-indigo-600 rounded focus:ring-0 cursor-pointer accent-indigo-600"
               />
               <div>
-                <span className="text-xs font-bold text-slate-900 block font-['Outfit']">Allow Self-Service School Registration</span>
+                <span className="text-xs font-semibold text-slate-900 block">Allow Self-Service School Registration</span>
                 <span className="text-xs text-slate-500 block">When enabled, visitors can register their school on `/register-school`.</span>
               </div>
             </label>
@@ -117,7 +117,7 @@ const SuperAdminSettings = () => {
                 className="w-4 h-4 text-rose-600 rounded focus:ring-0 cursor-pointer accent-rose-600"
               />
               <div>
-                <span className="text-xs font-bold text-rose-700 block font-['Outfit']">Enable Maintenance Mode</span>
+                <span className="text-xs font-semibold text-rose-700 block">Enable Maintenance Mode</span>
                 <span className="text-xs text-slate-500 block">Restricts tenant access while upgrading system database schemas.</span>
               </div>
             </label>
@@ -128,7 +128,7 @@ const SuperAdminSettings = () => {
         <div className="flex justify-end">
           <button
             type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl text-xs font-bold transition-all shadow-xs shadow-indigo-600/20 flex items-center gap-2 cursor-pointer"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl text-xs font-semibold transition-all shadow-xs shadow-indigo-600/20 flex items-center gap-2 cursor-pointer"
           >
             <Save className="w-4 h-4" /> Save System Configuration
           </button>

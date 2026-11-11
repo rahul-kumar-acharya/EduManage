@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { examService } from '../../services/examService';
 import { academicService } from '../../services/academicService';
 import { studentService } from '../../services/studentService';
 import Button from '../../components/ui/Button';
-import Input from '../../components/ui/Input';
 import Badge from '../../components/ui/Badge';
-import { Edit3, Save, CheckCircle2, Award } from 'lucide-react';
+import { Save, CheckCircle2, Award } from 'lucide-react';
 
 const computeGrade = (percentage) => {
   if (percentage >= 90) return { letter: 'A+', variant: 'success' };
@@ -51,7 +50,7 @@ const MarksEntry = () => {
         setSections(secList);
         setSubjects(subList);
 
-        if (!selectedExam && exList.length > 0) setSelectedExam(exList[0].id.toString());
+        setSelectedExam((prev) => prev || (exList.length > 0 ? exList[0].id.toString() : ''));
         if (secList.length > 0) setSelectedSection(secList[0].id.toString());
         if (subList.length > 0) setSelectedSubject(subList[0].id.toString());
       } catch (err) {
@@ -61,7 +60,7 @@ const MarksEntry = () => {
     fetchDropdowns();
   }, []);
 
-  const loadGradebook = async () => {
+  const loadGradebook = useCallback(async () => {
     if (!selectedExam || !selectedSection || !selectedSubject) return;
     setLoading(true);
     setMessage('');
@@ -91,11 +90,11 @@ const MarksEntry = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedExam, selectedSection, selectedSubject]);
 
   useEffect(() => {
     loadGradebook();
-  }, [selectedExam, selectedSection, selectedSubject]);
+  }, [loadGradebook]);
 
   const handleScoreChange = (studentId, field, value) => {
     setScoresMap((prev) => ({
@@ -144,8 +143,8 @@ const MarksEntry = () => {
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Subject Gradebook Entry</h1>
-          <p className="text-sm text-slate-500 mt-1">Log exam scores for enrolled students with automatic grade scale mapping.</p>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Subject Gradebook Entry</h1>
+          <p className="text-xs text-slate-500 mt-1">Log exam scores for enrolled students with automatic grade scale mapping.</p>
         </div>
         {students.length > 0 && (
           <Button variant="primary" size="sm" onClick={handleSave} loading={saving} className="gap-2 shadow-xs">
@@ -157,7 +156,7 @@ const MarksEntry = () => {
       {/* Selectors */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
         <div>
-          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5">
             Examination Term
           </label>
           <select
@@ -174,7 +173,7 @@ const MarksEntry = () => {
         </div>
 
         <div>
-          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5">
             Class Section
           </label>
           <select
@@ -191,7 +190,7 @@ const MarksEntry = () => {
         </div>
 
         <div>
-          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5">
             Subject
           </label>
           <select
@@ -218,7 +217,7 @@ const MarksEntry = () => {
       {/* Gradebook Table */}
       <div className="w-full overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xs font-medium">
         <table className="w-full text-left text-xs text-slate-900">
-          <thead className="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 select-none font-['Outfit']">
+          <thead className="bg-slate-50 text-[10px] font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 select-none">
             <tr>
               <th className="px-6 py-4">Student</th>
               <th className="px-6 py-4">Admission No.</th>

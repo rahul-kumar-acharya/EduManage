@@ -43,3 +43,33 @@ export const isSuperAdminDomain = () => {
   const subdomain = getSubdomain();
   return subdomain === 'admin';
 };
+
+/**
+ * Generates an accurate, environment-aware full URL for a given tenant subdomain.
+ * Correctly targets .localhost in development and campus.acharyarahul.in in production.
+ */
+export const getTenantUrl = (tenantSubdomain, path = '') => {
+  if (!tenantSubdomain) return '/';
+  const hostname = window.location.hostname.toLowerCase();
+  const protocol = window.location.protocol;
+  const port = window.location.port ? `:${window.location.port}` : '';
+  const cleanPath = path ? (path.startsWith('/') ? path : `/${path}`) : '';
+
+  // Localhost development environment
+  if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.endsWith('.localhost')) {
+    return `${protocol}//${tenantSubdomain}.localhost${port}${cleanPath}`;
+  }
+
+  // Production environment on campus.acharyarahul.in
+  const parts = hostname.split('.');
+  if (parts.length >= 4 && parts.slice(-3).join('.') === 'campus.acharyarahul.in') {
+    return `${protocol}//${tenantSubdomain}.campus.acharyarahul.in${port}${cleanPath}`;
+  }
+
+  if (parts.length >= 2) {
+    const rootDomain = parts.slice(-2).join('.');
+    return `${protocol}//${tenantSubdomain}.${rootDomain}${port}${cleanPath}`;
+  }
+
+  return `${protocol}//${tenantSubdomain}.${hostname}${port}${cleanPath}`;
+};

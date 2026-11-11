@@ -107,8 +107,8 @@ const NoticeBoard = () => {
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Notice Board & Announcements</h1>
-          <p className="text-sm text-slate-500 mt-1">Publish circulars, holiday announcements, and event updates for students & staff.</p>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Notice Board & Announcements</h1>
+          <p className="text-xs text-slate-500 mt-1">Publish circulars, holiday announcements, and event updates for students & staff.</p>
         </div>
         {isManageAllowed && (
           <Button variant="primary" size="sm" onClick={openCreateModal} className="gap-2 shadow-xs">
@@ -130,7 +130,7 @@ const NoticeBoard = () => {
                   <Bell className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold font-['Outfit'] text-slate-900">{n.title}</h3>
+                  <h3 className="text-sm font-semibold text-slate-900">{n.title}</h3>
                   <div className="text-[11px] text-slate-500 flex items-center gap-2 mt-0.5 font-medium">
                     <span className="flex items-center gap-1 font-mono">
                       <Calendar className="w-3.5 h-3.5 text-slate-400" /> {new Date(n.created_at).toLocaleDateString()}
@@ -189,7 +189,7 @@ const NoticeBoard = () => {
             required
           />
           <div>
-            <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
               Notice Content
             </label>
             <textarea

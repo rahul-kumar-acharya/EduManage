@@ -33,6 +33,16 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      localStorage.removeItem('local_avatar');
+
+      // If user is inside a protected workspace and token expires, route cleanly to login
+      if (
+        typeof window !== 'undefined' &&
+        !window.location.pathname.includes('/login') &&
+        !window.location.pathname.includes('/register')
+      ) {
+        window.location.href = '/login?session_expired=true';
+      }
     }
     return Promise.reject(error);
   }

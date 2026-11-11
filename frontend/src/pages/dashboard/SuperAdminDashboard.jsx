@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
+import { getTenantUrl } from '../../utils/subdomain';
 import Table from '../../components/ui/Table';
 import { 
   Building2, 
-  Shield, 
   Plus, 
   ExternalLink, 
   RefreshCw,
@@ -13,12 +13,7 @@ import {
   Power,
   X,
   CheckCircle2,
-  AlertCircle,
-  Mail,
-  Lock,
-  Globe,
-  MapPin,
-  Phone
+  AlertCircle
 } from 'lucide-react';
 
 const SuperAdminDashboard = () => {
@@ -87,7 +82,7 @@ const SuperAdminDashboard = () => {
     setIsRegistering(true);
 
     try {
-      const res = await api.post('/schools/register/', formData);
+      await api.post('/schools/register/', formData);
       setNotification({
         type: 'success',
         message: `School '${formData.name}' onboarded successfully! Welcome credentials emailed to ${formData.admin_email}.`
@@ -134,11 +129,11 @@ const SuperAdminDashboard = () => {
       accessor: 'name',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs shadow-indigo-600/20 font-['Outfit']">
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-semibold text-xs shrink-0 shadow-xs shadow-indigo-600/20">
             {row.name.charAt(0)}
           </div>
           <div>
-            <div className="font-semibold text-slate-900 font-['Outfit']">{row.name}</div>
+            <div className="font-semibold text-slate-900">{row.name}</div>
             <div className="text-[11px] text-slate-500">{row.email}</div>
           </div>
         </div>
@@ -158,7 +153,7 @@ const SuperAdminDashboard = () => {
       accessor: 'subdomain',
       render: (row) => (
         <a
-          href={`http://${row.subdomain}.localhost:5173`}
+          href={getTenantUrl(row.subdomain)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 font-mono text-xs text-indigo-600 hover:text-indigo-700 hover:underline font-semibold"
@@ -228,7 +223,7 @@ const SuperAdminDashboard = () => {
       <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-1.5">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+            <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
               SuperAdmin Control Board
             </h1>
             <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold uppercase tracking-wider">
@@ -268,8 +263,8 @@ const SuperAdminDashboard = () => {
           return (
             <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
               <div className="space-y-1">
-                <span className="text-[11px] uppercase font-bold tracking-wider text-slate-500 block">{m.title}</span>
-                <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">{m.value}</strong>
+                <span className="text-[11px] uppercase font-semibold tracking-wider text-slate-500 block">{m.title}</span>
+                <strong className="text-2xl font-semibold font-mono text-slate-900 block mt-1">{m.value}</strong>
                 <span className="text-xs text-slate-500 block">{m.desc}</span>
               </div>
               <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs">
@@ -282,10 +277,14 @@ const SuperAdminDashboard = () => {
 
       {/* Tenant table lists */}
       <div className="space-y-4">
-        <h2 className="text-lg font-['Outfit'] font-bold text-slate-900">Registered Institutional Tenants ({schools.length})</h2>
-        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-          <Table columns={columns} data={schools} emptyMessage="No subdomains registered in database." />
-        </div>
+        <h2 className="text-base font-semibold text-slate-900">Registered Institutional Tenants ({schools.length})</h2>
+        <Table 
+          columns={columns} 
+          data={schools} 
+          isLoading={loading}
+          pageSize={25}
+          emptyMessage="No subdomains registered in database." 
+        />
       </div>
 
       {/* Onboard New School Modal Overlay */}
@@ -299,7 +298,7 @@ const SuperAdminDashboard = () => {
                   <Building2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-['Outfit'] font-bold text-slate-900">Onboard New School Client</h3>
+                  <h3 className="text-base font-semibold text-slate-900">Onboard New School Client</h3>
                   <p className="text-xs text-slate-500">Provisions a new tenant subdomain and dispatches admin credentials.</p>
                 </div>
               </div>
@@ -377,7 +376,7 @@ const SuperAdminDashboard = () => {
               </div>
 
               <div className="pt-3 border-t border-slate-100 space-y-3">
-                <h4 className="text-xs font-bold text-indigo-700 uppercase tracking-wider font-['Outfit']">School Admin Credentials (Emailed Automatically)</h4>
+                <h4 className="text-xs font-semibold text-indigo-700 uppercase tracking-wider">School Admin Credentials (Emailed Automatically)</h4>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>

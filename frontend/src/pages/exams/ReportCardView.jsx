@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { examService } from '../../services/examService';
 import { studentService } from '../../services/studentService';
@@ -32,7 +32,7 @@ const ReportCardView = () => {
         setExams(exList);
         setStudents(stList);
 
-        if (!selectedExam && exList.length > 0) setSelectedExam(exList[0].id.toString());
+        setSelectedExam(prev => prev || (exList.length > 0 ? exList[0].id.toString() : ''));
         if (stList.length > 0) setSelectedStudent(stList[0].id.toString());
       } catch (err) {
         console.error("Failed to fetch report card options:", err);
@@ -41,7 +41,7 @@ const ReportCardView = () => {
     fetchOptions();
   }, []);
 
-  const loadReportCard = async () => {
+  const loadReportCard = useCallback(async () => {
     if (!selectedExam || !selectedStudent) return;
     setLoading(true);
     try {
@@ -53,11 +53,11 @@ const ReportCardView = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedExam, selectedStudent]);
 
   useEffect(() => {
     loadReportCard();
-  }, [selectedExam, selectedStudent]);
+  }, [loadReportCard]);
 
   return (
     <div className="space-y-6 font-['Inter'] text-slate-900">
@@ -70,8 +70,8 @@ const ReportCardView = () => {
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4 print:hidden">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Digital Report Cards</h1>
-          <p className="text-sm text-slate-500 mt-1">Generate and print official student report cards with subject score breakdowns.</p>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Digital Report Cards</h1>
+          <p className="text-xs text-slate-500 mt-1">Generate and print official student report cards with subject score breakdowns.</p>
         </div>
         {reportData && (
           <Button variant="primary" size="sm" onClick={() => window.print()} className="gap-2 shadow-xs">
@@ -83,7 +83,7 @@ const ReportCardView = () => {
       {/* Selectors */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-xs print:hidden">
         <div>
-          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5">
             Select Examination Term
           </label>
           <select
@@ -100,7 +100,7 @@ const ReportCardView = () => {
         </div>
 
         <div>
-          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5">
             Select Enrolled Student
           </label>
           <select
@@ -125,10 +125,10 @@ const ReportCardView = () => {
             <div className="w-12 h-12 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mx-auto mb-3 print:hidden">
               <GraduationCap className="w-6 h-6" />
             </div>
-            <h2 className="text-2xl font-bold font-['Outfit'] text-slate-900 print:text-black uppercase tracking-wide">
+            <h2 className="text-xl font-semibold text-slate-900 print:text-black uppercase tracking-wide">
               {reportData.school_name}
             </h2>
-            <div className="text-[11px] text-indigo-600 font-bold uppercase tracking-wider mt-1 print:text-black font-['Outfit']">
+            <div className="text-[11px] text-indigo-600 font-semibold uppercase tracking-wider mt-1 print:text-black">
               Official Academic Performance Report
             </div>
             <div className="text-xs text-slate-500 mt-1 font-medium print:text-black">
@@ -139,15 +139,15 @@ const ReportCardView = () => {
           {/* Student Profile Info */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs print:bg-gray-100 print:border-black print:text-black font-medium">
             <div>
-              <span className="text-slate-500 block uppercase font-bold text-[9px] tracking-wider mb-0.5 font-['Outfit']">Student Name</span>
+              <span className="text-slate-500 block uppercase font-semibold text-[9px] tracking-wider mb-0.5">Student Name</span>
               <strong className="text-sm font-semibold text-slate-900 print:text-black">{reportData.student?.user?.first_name} {reportData.student?.user?.last_name}</strong>
             </div>
             <div>
-              <span className="text-slate-500 block uppercase font-bold text-[9px] tracking-wider mb-0.5 font-['Outfit']">Admission No.</span>
+              <span className="text-slate-500 block uppercase font-semibold text-[9px] tracking-wider mb-0.5">Admission No.</span>
               <strong className="font-mono text-slate-800 font-semibold print:text-black">{reportData.student?.admission_number}</strong>
             </div>
             <div>
-              <span className="text-slate-500 block uppercase font-bold text-[9px] tracking-wider mb-0.5 font-['Outfit']">Class & Section</span>
+              <span className="text-slate-500 block uppercase font-semibold text-[9px] tracking-wider mb-0.5">Class & Section</span>
               <strong className="text-slate-900 font-semibold">
                 {reportData.student?.section_details
                   ? `${reportData.student.section_details.class_name} - ${reportData.student.section_details.name}`
@@ -155,7 +155,7 @@ const ReportCardView = () => {
               </strong>
             </div>
             <div>
-              <span className="text-slate-500 block uppercase font-bold text-[9px] tracking-wider mb-0.5 font-['Outfit']">Roll Number</span>
+              <span className="text-slate-500 block uppercase font-semibold text-[9px] tracking-wider mb-0.5">Roll Number</span>
               <strong className="text-slate-900 font-semibold">#{reportData.student?.roll_number || 'N/A'}</strong>
             </div>
           </div>
@@ -163,7 +163,7 @@ const ReportCardView = () => {
           {/* Subject Breakdown Table */}
           <div className="overflow-x-auto rounded-lg border border-slate-200 print:border-black">
             <table className="w-full text-left text-xs font-medium">
-              <thead className="bg-slate-50 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 print:bg-gray-200 print:text-black print:border-black font-['Outfit']">
+              <thead className="bg-slate-50 text-[10px] font-semibold text-slate-600 uppercase tracking-wider border-b border-slate-200 print:bg-gray-200 print:text-black print:border-black">
                 <tr>
                   <th className="px-4 py-3">Subject</th>
                   <th className="px-4 py-3">Marks Obtained</th>
@@ -199,20 +199,20 @@ const ReportCardView = () => {
           {/* Aggregate Results Footer */}
           <div className="flex flex-col sm:flex-row items-center justify-between p-6 bg-slate-50 rounded-xl border border-slate-200 print:bg-gray-100 print:border-black gap-4">
             <div className="space-y-1 text-center sm:text-left">
-              <div className="text-[10px] text-slate-500 uppercase font-bold tracking-wider print:text-black font-['Outfit']">Aggregate Score</div>
-              <div className="text-xl font-bold text-slate-900 print:text-black font-['Outfit']">
+              <div className="text-[10px] text-slate-500 uppercase font-semibold tracking-wider print:text-black">Aggregate Score</div>
+              <div className="text-xl font-semibold text-slate-900 print:text-black">
                 {reportData.total_obtained} / {reportData.total_max}
                 <span className="text-xs font-semibold text-slate-500 ml-2">({reportData.overall_percentage}%)</span>
               </div>
             </div>
             <div className="flex items-center gap-3 mt-4 sm:mt-0">
               <div className="text-right">
-                <div className="text-[9px] text-slate-500 uppercase font-bold tracking-wider font-['Outfit']">Overall Status</div>
+                <div className="text-[9px] text-slate-500 uppercase font-semibold tracking-wider">Overall Status</div>
                 <div className="text-xs font-semibold text-slate-800">
                   {reportData.overall_grade === 'F' ? 'Needs Improvement' : 'Passed Successfully'}
                 </div>
               </div>
-              <div className="px-4 py-2 bg-indigo-600 rounded-lg text-white font-bold text-lg shadow-xs font-['Outfit']">
+              <div className="px-4 py-2 bg-indigo-600 rounded-lg text-white font-semibold text-lg shadow-xs">
                 {reportData.overall_grade}
               </div>
             </div>

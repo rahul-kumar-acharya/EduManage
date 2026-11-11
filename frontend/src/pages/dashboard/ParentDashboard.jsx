@@ -12,10 +12,8 @@ import {
   CalendarCheck, 
   BookOpen, 
   Award, 
-  Bell,
-  ArrowUpRight
+  Bell
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const ParentDashboard = () => {
   const { user } = useAuth();
@@ -103,7 +101,7 @@ const ParentDashboard = () => {
       <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900">
+            <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
               Hello, {user?.first_name || 'Parent'} 👋
             </h1>
             <span className="px-3 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold tracking-wide">
@@ -124,7 +122,7 @@ const ParentDashboard = () => {
         <>
           {/* Linked Child Profile Switcher */}
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-            <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
               <Users className="w-4.5 h-4.5 text-indigo-600" /> Linked Student Ward
             </h3>
             
@@ -135,7 +133,7 @@ const ParentDashboard = () => {
                     {myWard.user?.first_name?.charAt(0)}{myWard.user?.last_name?.charAt(0)}
                   </div>
                   <div className="space-y-0.5">
-                    <h4 className="text-sm font-bold text-slate-900">{myWard.user?.first_name} {myWard.user?.last_name}</h4>
+                    <h4 className="text-sm font-semibold text-slate-900">{myWard.user?.first_name} {myWard.user?.last_name}</h4>
                     <p className="text-xs text-slate-500 font-medium">{sectionName} • Roll No. {myWard.roll_number || 'N/A'}</p>
                   </div>
                 </div>
@@ -167,8 +165,8 @@ const ParentDashboard = () => {
                     <CalendarCheck className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 uppercase font-bold block">Attendance Log</span>
-                    <span className="text-xl font-['Outfit'] font-bold text-slate-900 block mt-1">{attendanceRate}% Rate</span>
+                    <span className="text-[10px] text-slate-500 uppercase font-semibold block">Attendance Log</span>
+                    <span className="text-xl font-semibold font-mono text-slate-900 block mt-1">{attendanceRate}% Rate</span>
                     <p className="text-[11px] text-slate-500 leading-relaxed mt-1">
                       {presentDays} Present / {wardAttendance.length - presentDays} Absent records.
                     </p>
@@ -180,8 +178,8 @@ const ParentDashboard = () => {
                     <BookOpen className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 uppercase font-bold block">Homework Due</span>
-                    <span className="text-xl font-['Outfit'] font-bold text-slate-900 block mt-1">
+                    <span className="text-[10px] text-slate-500 uppercase font-semibold block">Homework Due</span>
+                    <span className="text-xl font-semibold font-mono text-slate-900 block mt-1">
                       {wardHomeworks.length} Pending
                     </span>
                     <p className="text-[11px] text-slate-500 leading-relaxed mt-1">Assigned school tasks.</p>
@@ -193,8 +191,8 @@ const ParentDashboard = () => {
                     <Award className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-[10px] text-slate-500 uppercase font-bold block">Exam Performance</span>
-                    <span className="text-xl font-['Outfit'] font-bold text-slate-900 block mt-1">
+                    <span className="text-[10px] text-slate-500 uppercase font-semibold block">Exam Performance</span>
+                    <span className="text-xl font-semibold font-mono text-slate-900 block mt-1">
                       {gradeStr}
                     </span>
                     <p className="text-[11px] text-slate-500 leading-relaxed mt-1">
@@ -207,7 +205,7 @@ const ParentDashboard = () => {
               {/* Core Ward Homeworks list */}
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-indigo-600" /> Ward Pending Assignments
                   </h3>
                 </div>
@@ -224,7 +222,7 @@ const ParentDashboard = () => {
                           <span className="text-[10px] text-indigo-600 uppercase font-mono font-semibold">
                             {hw.subject_name || hw.subject?.name || 'General'}
                           </span>
-                          <h5 className="text-slate-900 font-bold block">{hw.title}</h5>
+                          <h5 className="text-slate-900 font-semibold block">{hw.title}</h5>
                           <p className="text-xs text-slate-500 leading-relaxed font-normal">{hw.description}</p>
                         </div>
                         <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200/80">
@@ -240,13 +238,13 @@ const ParentDashboard = () => {
             {/* Right Side Billing Alerts */}
             <div className="lg:col-span-4 space-y-6">
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                   <Receipt className="w-4 h-4 text-emerald-600" /> Outstanding Invoice Balances
                 </h3>
 
                 <div className="p-5 bg-slate-50 border border-slate-200 rounded-xl space-y-4 text-center">
-                  <div className="text-xs text-slate-500 font-bold">Academic Dues Outstanding</div>
-                  <strong className="text-3xl font-['Outfit'] font-bold text-emerald-600 block mt-1">
+                  <div className="text-xs text-slate-500 font-semibold">Academic Dues Outstanding</div>
+                  <strong className="text-2xl font-semibold font-mono text-emerald-600 block mt-1">
                     {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(balanceDue)}
                   </strong>
                   <p className="text-xs text-slate-500 leading-relaxed">
@@ -256,7 +254,7 @@ const ParentDashboard = () => {
               </div>
 
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                   <Bell className="w-4 h-4 text-indigo-600" /> Direct Admin Alerts
                 </h3>
                 
@@ -271,7 +269,7 @@ const ParentDashboard = () => {
                         <span className="text-[10px] text-indigo-600 uppercase font-bold tracking-wider font-mono">
                           {new Date(notice.created_at).toLocaleDateString()}
                         </span>
-                        <h4 className="text-xs font-bold text-slate-900 leading-snug">{notice.title}</h4>
+                        <h4 className="text-xs font-semibold text-slate-900 leading-snug">{notice.title}</h4>
                         <p className="text-xs text-slate-500 leading-relaxed">{notice.content}</p>
                       </div>
                     ))

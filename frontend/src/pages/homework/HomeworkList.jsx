@@ -225,8 +225,8 @@ const HomeworkList = () => {
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Homework Assignments</h1>
-          <p className="text-sm text-slate-500 mt-1">Post class assignments, project instructions, and set submission deadlines.</p>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Homework Assignments</h1>
+          <p className="text-xs text-slate-500 mt-1">Post class assignments, project instructions, and set submission deadlines.</p>
         </div>
         {isManageAllowed && (
           <Button variant="primary" size="sm" onClick={openCreateModal} className="gap-2 shadow-xs">
@@ -238,7 +238,7 @@ const HomeworkList = () => {
       {/* Filters Bar */}
       <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          <label className="text-xs font-bold text-slate-700 uppercase tracking-wider whitespace-nowrap font-['Outfit']">
+          <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider whitespace-nowrap">
             Filter Class Section:
           </label>
           <select
@@ -281,7 +281,7 @@ const HomeworkList = () => {
                       {dueStatus.label}
                     </span>
                   </div>
-                  <h3 className="text-base font-bold font-['Outfit'] text-slate-900">{hw.title}</h3>
+                  <h3 className="text-sm font-semibold text-slate-900">{hw.title}</h3>
                   <p className="text-xs text-slate-600 leading-relaxed line-clamp-3 font-normal">{hw.description}</p>
                   
                   {/* Assigned By Teacher Attribution Badge */}
@@ -338,7 +338,7 @@ const HomeworkList = () => {
           />
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Class Section
               </label>
               <select
@@ -356,7 +356,7 @@ const HomeworkList = () => {
               </select>
             </div>
             <div>
-              <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Subject
               </label>
               <select
@@ -382,7 +382,7 @@ const HomeworkList = () => {
             required
           />
           <div>
-            <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
               Assignment Description
             </label>
             <textarea

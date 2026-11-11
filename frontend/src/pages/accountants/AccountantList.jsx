@@ -207,11 +207,11 @@ const AccountantList = () => {
       accessor: 'user',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shadow-xs shadow-indigo-600/20 font-['Outfit']">
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white font-semibold flex items-center justify-center text-xs shadow-xs shadow-indigo-600/20">
             {row.user?.first_name?.charAt(0)}{row.user?.last_name?.charAt(0)}
           </div>
           <div>
-            <div className="font-semibold text-slate-900 font-['Outfit']">{row.user?.first_name} {row.user?.last_name}</div>
+            <div className="font-semibold text-slate-900">{row.user?.first_name} {row.user?.last_name}</div>
             <div className="text-xs text-slate-500">{row.user?.email}</div>
           </div>
         </div>
@@ -281,7 +281,7 @@ const AccountantList = () => {
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">School Accountants</h1>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">School Accountants</h1>
           <p className="text-xs text-slate-500 mt-1">Manage accountant profiles, logins, and system billing access levels.</p>
         </div>
         <Button variant="primary" size="sm" onClick={() => setModalOpen(true)} className="gap-2 shadow-xs">
@@ -289,9 +289,13 @@ const AccountantList = () => {
         </Button>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-        <Table columns={columns} data={accountants} isLoading={loading} emptyMessage="No accountants registered in database." />
-      </div>
+      <Table 
+        columns={columns} 
+        data={accountants} 
+        isLoading={loading} 
+        pageSize={25}
+        emptyMessage="No accountants registered in database." 
+      />
 
       {/* Register / Edit Accountant Modal */}
       <Modal isOpen={modalOpen} onClose={handleCloseModal} title={editAccountant ? "Edit Accountant Details" : "Register School Accountant"}>
@@ -340,7 +344,7 @@ const AccountantList = () => {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Employee ID *
               </label>
               <div className="flex items-center">
@@ -360,7 +364,7 @@ const AccountantList = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Phone Number
               </label>
               <input
@@ -383,7 +387,7 @@ const AccountantList = () => {
 
           {editAccountant && (
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Account Status
               </label>
               <select
@@ -414,7 +418,7 @@ const AccountantList = () => {
             <Trash2 className="w-6 h-6" />
           </div>
           <div className="space-y-2">
-            <h3 className="text-sm font-bold text-slate-900 font-['Outfit']">Are you absolutely sure?</h3>
+            <h3 className="text-sm font-semibold text-slate-900">Are you absolutely sure?</h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
               This will permanently revoke the accountant profile of <strong className="text-slate-900">"{deleteTarget?.name}"</strong>. They will no longer be able to log in or manage school cash flows. This action cannot be undone.
             </p>

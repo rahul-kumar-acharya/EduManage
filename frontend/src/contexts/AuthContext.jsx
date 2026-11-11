@@ -1,3 +1,4 @@
+/* eslint-disable react/only-export-components */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authService } from '../services/authService';
 import { setCookie, getCookie, eraseCookie } from '../utils/cookies';
@@ -77,7 +78,7 @@ export const AuthProvider = ({ children }) => {
     }
     return null;
   });
-  const [loading, setLoading] = useState(false);
+  const loading = false;
 
   const login = async (email, password, extraData = {}) => {
     const data = await authService.login(email, password, extraData);

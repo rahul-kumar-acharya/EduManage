@@ -5,7 +5,7 @@ import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Modal from '../../components/ui/Modal';
 import Badge from '../../components/ui/Badge';
-import { Calendar, Plus, CheckCircle, Trash2, Star, AlertCircle } from 'lucide-react';
+import { Calendar, Plus, Trash2, Star, AlertCircle } from 'lucide-react';
 
 const Sessions = () => {
   const [sessions, setSessions] = useState([]);
@@ -209,7 +209,7 @@ const Sessions = () => {
           <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs">
             <Calendar className="w-4 h-4" />
           </div>
-          <span className="font-semibold text-slate-900 font-['Outfit']">{row.name}</span>
+          <span className="font-semibold text-slate-900">{row.name}</span>
           {row.is_current && <Badge variant="success">Active Session</Badge>}
         </div>
       )
@@ -257,7 +257,7 @@ const Sessions = () => {
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">Academic Sessions</h1>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Academic Sessions</h1>
           <p className="text-xs text-slate-500 mt-1">Define school years (e.g. 2026-2027) and toggle the current active session.</p>
         </div>
         <Button variant="primary" size="sm" onClick={() => { setValidationError(''); setModalOpen(true); }} className="gap-2 shadow-xs">
@@ -266,7 +266,7 @@ const Sessions = () => {
       </div>
 
       <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-        <Table columns={columns} data={sessions} emptyMessage="No academic sessions configured yet." />
+        <Table columns={columns} data={sessions} loading={loading} emptyMessage="No academic sessions configured yet." />
       </div>
 
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="Add New Academic Session">
@@ -313,7 +313,7 @@ const Sessions = () => {
           </div>
 
           <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 text-[11px] text-slate-600 space-y-1">
-            <div className="font-bold text-slate-800 uppercase tracking-wider font-['Outfit']">Validation Rules Applied:</div>
+            <div className="font-semibold text-slate-800 uppercase tracking-wider">Validation Rules Applied:</div>
             <div>• Session name year range must be <strong>exactly 1 year</strong> (e.g., 2026 - 2027).</div>
             <div>• Multi-year range like <strong>2026 - 2028</strong> is prohibited.</div>
             <div>• Start date must be in the current ongoing year (<strong>{currentYear}</strong>).</div>
@@ -336,7 +336,7 @@ const Sessions = () => {
             <Trash2 className="w-6 h-6" />
           </div>
           <div className="space-y-2">
-            <h3 className="text-sm font-bold text-slate-900 font-['Outfit']">Are you absolutely sure?</h3>
+            <h3 className="text-sm font-semibold text-slate-900">Are you absolutely sure?</h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
               This will permanently delete the academic session <strong className="text-slate-900">"{deleteTarget?.name}"</strong> and all its associated classes, student registers, timetables, fee collections, and report cards. This action cannot be undone.
             </p>

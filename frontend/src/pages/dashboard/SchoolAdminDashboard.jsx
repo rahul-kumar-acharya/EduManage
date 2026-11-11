@@ -11,8 +11,7 @@ import {
   TrendingUp, 
   ArrowUpRight, 
   Plus, 
-  Sparkles,
-  School as SchoolIcon,
+  CheckCircle2,
   Bell
 } from 'lucide-react';
 
@@ -41,6 +40,8 @@ const SchoolAdminDashboard = () => {
     fetchOverview();
   }, []);
 
+  const isFreshTenant = !loading && (stats.total_students === 0 || stats.total_teachers === 0);
+
   return (
     <div className="space-y-8 font-['Inter'] text-slate-800">
 
@@ -48,7 +49,7 @@ const SchoolAdminDashboard = () => {
       <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900">
+            <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
               Welcome back, {user?.first_name || 'Admin'} 👋
             </h1>
             <span className="px-3 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold tracking-wide">
@@ -76,62 +77,132 @@ const SchoolAdminDashboard = () => {
         </div>
       </div>
 
-      {/* 2. Metric Cards Grid */}
+      {/* Quick Launch Checklist for Onboarding */}
+      {isFreshTenant && (
+        <div className="bg-linear-to-br from-indigo-50/70 via-white to-white p-6 sm:p-7 rounded-2xl border border-indigo-100 shadow-xs space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-indigo-600" /> Launch Checklist: Configure Your Workspace
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Complete these initial steps to prepare your school portal for faculty, students, and parents.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+            <Link 
+              to="/dashboard/academics/sessions" 
+              className="p-3.5 bg-white border border-slate-200 hover:border-indigo-300 rounded-xl flex items-center justify-between group transition-all"
+            >
+              <div className="flex items-center gap-2.5 truncate">
+                <div className="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-semibold">1</div>
+                <span className="text-xs font-semibold text-slate-800 group-hover:text-indigo-600 truncate">Academic Sessions</span>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600" />
+            </Link>
+
+            <Link 
+              to="/dashboard/academics/classes" 
+              className="p-3.5 bg-white border border-slate-200 hover:border-indigo-300 rounded-xl flex items-center justify-between group transition-all"
+            >
+              <div className="flex items-center gap-2.5 truncate">
+                <div className="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-semibold">2</div>
+                <span className="text-xs font-semibold text-slate-800 group-hover:text-indigo-600 truncate">Classes & Sections</span>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600" />
+            </Link>
+
+            <Link 
+              to="/dashboard/teachers" 
+              className="p-3.5 bg-white border border-slate-200 hover:border-indigo-300 rounded-xl flex items-center justify-between group transition-all"
+            >
+              <div className="flex items-center gap-2.5 truncate">
+                <div className="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-semibold">3</div>
+                <span className="text-xs font-semibold text-slate-800 group-hover:text-indigo-600 truncate">Add Faculty Staff</span>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600" />
+            </Link>
+
+            <Link 
+              to="/dashboard/notices" 
+              className="p-3.5 bg-white border border-slate-200 hover:border-indigo-300 rounded-xl flex items-center justify-between group transition-all"
+            >
+              <div className="flex items-center gap-2.5 truncate">
+                <div className="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-semibold">4</div>
+                <span className="text-xs font-semibold text-slate-800 group-hover:text-indigo-600 truncate">Notices</span>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600" />
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {/* 2. Metric Cards Grid (Clickable to jump directly to management views) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           {
             title: 'Total Students',
             value: stats.total_students,
-            change: '+12% this month',
-            icon: Users
+            change: 'Enrolled pupils',
+            icon: Users,
+            link: '/dashboard/students'
           },
           {
             title: 'Total Teachers',
             value: stats.total_teachers,
             change: 'Active faculty',
-            icon: UserCheck
+            icon: UserCheck,
+            link: '/dashboard/teachers'
           },
           {
             title: 'Attendance Rate',
             value: `${stats.attendance_rate}%`,
             change: 'Daily average',
-            icon: CalendarCheck
+            icon: CalendarCheck,
+            link: '/dashboard/attendance'
           },
           {
             title: 'Fee Revenue',
             value: `₹${(stats.total_revenue || 0).toLocaleString('en-IN')}`,
             change: 'Current session',
-            icon: Receipt
+            icon: Receipt,
+            link: '/dashboard/fees'
           },
         ].map((card, idx) => {
           const Icon = card.icon;
           return (
-            <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-md transition-all space-y-4">
+            <Link
+              key={idx}
+              to={card.link}
+              className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-300 hover:shadow-md transition-all space-y-4 group cursor-pointer"
+            >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 group-hover:text-indigo-600 transition-colors">
                   {card.title}
                 </span>
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-2xs">
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-2xs group-hover:scale-105 transition-transform">
                   <Icon className="w-5 h-5" />
                 </div>
               </div>
 
               <div>
-                <div className="text-3xl font-['Outfit'] font-bold text-slate-900">
+                <div className="text-2xl font-semibold text-slate-900 font-mono">
                   {card.value}
                 </div>
                 <div className="text-xs text-slate-500 mt-1 flex items-center gap-1 font-medium">
                   <TrendingUp className="w-3.5 h-3.5 text-indigo-600" /> {card.change}
                 </div>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>
 
       {/* 3. Management Modules Quick Access Grid */}
       <div className="space-y-4">
-        <h2 className="text-xl font-['Outfit'] font-bold text-slate-900">
+        <h2 className="text-base font-semibold text-slate-900">
           Management Modules
         </h2>
 
@@ -149,7 +220,7 @@ const SchoolAdminDashboard = () => {
             >
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors font-['Outfit']">
+                  <span className="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
                     {mod.label}
                   </span>
                   <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors" />

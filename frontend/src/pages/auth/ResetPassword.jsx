@@ -16,7 +16,7 @@ const ResetPassword = () => {
     <div className="space-y-6 font-['Inter'] text-slate-800">
       {/* Header */}
       <div className="text-center space-y-2">
-        <h2 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+        <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight">
           Set New Password
         </h2>
         <p className="text-xs sm:text-sm text-slate-500">
@@ -30,7 +30,7 @@ const ResetPassword = () => {
             <CheckCircle2 className="w-6 h-6" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-lg font-['Outfit'] font-bold text-slate-900">
+            <h3 className="text-base font-semibold text-slate-900">
               Password Updated Successfully!
             </h3>
             <p className="text-xs text-slate-500">

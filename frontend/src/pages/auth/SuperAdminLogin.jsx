@@ -23,7 +23,7 @@ const SuperAdminLogin = () => {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { login, logout, isAuthenticated, user, loading } = useAuth();
+  const { login, isAuthenticated, user, loading } = useAuth();
   const navigate = useNavigate();
 
   // Redirect if already authenticated
@@ -84,8 +84,8 @@ const SuperAdminLogin = () => {
             <GraduationCap className="w-5 h-5" />
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-['Outfit'] font-bold text-2xl text-slate-900 tracking-tight">AcharyaCampus</span>
-            <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80">
+            <span className="font-semibold text-lg text-slate-900 tracking-tight">AcharyaCampus</span>
+            <span className="text-[10px] uppercase font-semibold tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80">
               Infrastructure Control
             </span>
           </div>
@@ -110,7 +110,7 @@ const SuperAdminLogin = () => {
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-[11px] font-semibold tracking-wide">
                   <Server className="w-3.5 h-3.5 text-indigo-600" /> System Root Gateway
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900">
+                <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight">
                   Super Admin Console
                 </h2>
                 <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
@@ -123,7 +123,7 @@ const SuperAdminLogin = () => {
                 <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                   <Database className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">Tenant Orchestration</h4>
+                    <h4 className="font-semibold text-sm text-slate-900">Tenant Orchestration</h4>
                     <p className="text-xs text-slate-500 mt-0.5">Automated database isolation & domain aliases.</p>
                   </div>
                 </div>
@@ -131,7 +131,7 @@ const SuperAdminLogin = () => {
                 <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                   <Cpu className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">System Metrics & Billing</h4>
+                    <h4 className="font-semibold text-sm text-slate-900">System Metrics & Billing</h4>
                     <p className="text-xs text-slate-500 mt-0.5">Real-time health monitoring and plan controls.</p>
                   </div>
                 </div>
@@ -158,7 +158,7 @@ const SuperAdminLogin = () => {
                   <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-['Outfit'] font-bold text-slate-900">Root Access Verification</h3>
+                  <h3 className="text-sm font-semibold text-slate-900">Root Access Verification</h3>
                   <p className="text-xs text-slate-500">Requires platform administrator privileges</p>
                 </div>
               </div>

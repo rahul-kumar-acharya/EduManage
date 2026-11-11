@@ -52,7 +52,7 @@ const About = () => {
             <Building2 className="w-4 h-4 text-indigo-600" />
             <span>Our Mission & Vision</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
             About AcharyaCampus School OS
           </h1>
           <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
@@ -62,7 +62,7 @@ const About = () => {
 
         {/* Story & Vision */}
         <div className="bg-white p-8 sm:p-12 rounded-2xl border border-slate-200 shadow-sm space-y-6">
-          <h2 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900">
+          <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight">
             Empowering Modern Educational Institutions
           </h2>
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
@@ -77,7 +77,7 @@ const About = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {milestones.map((m, idx) => (
             <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 text-center shadow-2xs hover:border-indigo-200 hover:shadow-md transition-all">
-              <p className="text-3xl sm:text-4xl font-['Outfit'] font-bold text-slate-900">
+              <p className="text-2xl sm:text-3xl font-semibold text-slate-900">
                 {m.number}
               </p>
               <p className="text-xs sm:text-sm font-medium text-slate-500 mt-1">
@@ -90,7 +90,7 @@ const About = () => {
         {/* Core Pillars Grid */}
         <div className="space-y-8 max-w-5xl mx-auto">
           <div className="text-center space-y-2">
-            <h2 className="text-3xl font-['Outfit'] font-bold text-slate-900">
+            <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight">
               Our Core Architecture Values
             </h2>
             <p className="text-slate-500 text-sm max-w-lg mx-auto">
@@ -107,7 +107,7 @@ const About = () => {
                     <Icon className="w-5 h-5" />
                   </div>
                   <div className="space-y-1">
-                    <h3 className="text-sm font-['Outfit'] font-bold text-slate-900">{v.title}</h3>
+                    <h3 className="text-sm font-semibold text-slate-900">{v.title}</h3>
                     <p className="text-xs text-slate-500 leading-relaxed">{v.desc}</p>
                   </div>
                 </div>

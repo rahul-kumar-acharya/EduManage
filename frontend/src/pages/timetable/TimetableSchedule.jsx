@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { timetableService } from '../../services/timetableService';
 import { academicService } from '../../services/academicService';
 import { teacherService } from '../../services/teacherService';
 import Button from '../../components/ui/Button';
-import Input from '../../components/ui/Input';
 import Modal from '../../components/ui/Modal';
 import Badge from '../../components/ui/Badge';
-import { Clock, Plus, Trash2, Calendar, Printer, Save, MapPin, Search, AlertCircle, UserCheck } from 'lucide-react';
+import { Clock, Plus, Trash2, Printer, Save, MapPin, Search, AlertCircle, UserCheck } from 'lucide-react';
 
 const DAYS = [
   { code: 'MON', name: 'Monday' },
@@ -32,7 +31,6 @@ const PERIOD_TEMPLATES = [
 
 const TimetableSchedule = () => {
   const { user } = useAuth();
-  const canManageTimetable = user?.permissions?.manage_timetable ?? false;
   const [periods, setPeriods] = useState([]);
   const [sections, setSections] = useState([]);
   const [subjects, setSubjects] = useState([]);
@@ -43,6 +41,7 @@ const TimetableSchedule = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [conflictError, setConflictError] = useState(null);
+  const [mobileDay, setMobileDay] = useState('MON');
 
   // Free Period / Substitute Teacher Finder State
   const [substituteModalOpen, setSubstituteModalOpen] = useState(false);
@@ -62,7 +61,7 @@ const TimetableSchedule = () => {
   });
 
 
-  const fetchDropdowns = async () => {
+  const fetchDropdowns = useCallback(async () => {
     try {
       const secRes = await academicService.getSections();
       const secList = secRes.results || secRes;
@@ -88,9 +87,9 @@ const TimetableSchedule = () => {
     } catch (err) {
       console.error("Failed to fetch dropdowns:", err);
     }
-  };
+  }, [user?.role]);
 
-  const fetchPeriods = async () => {
+  const fetchPeriods = useCallback(async () => {
     if (!selectedSection) return;
     setLoading(true);
     try {
@@ -114,17 +113,17 @@ const TimetableSchedule = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedSection, user?.teacher_profile_id, user?.id, teachers]);
 
   useEffect(() => {
     fetchDropdowns();
-  }, []);
+  }, [fetchDropdowns]);
 
   useEffect(() => {
     if (selectedSection) {
       fetchPeriods();
     }
-  }, [selectedSection, teachers]);
+  }, [selectedSection, fetchPeriods]);
 
   // Reload subjects dynamically when selected section changes to ensure class level subjects are shown
   useEffect(() => {
@@ -184,7 +183,7 @@ const TimetableSchedule = () => {
     if (periods.length > 0 && modalOpen) {
       populateBulkForm(bulkFormData.day_of_week);
     }
-  }, [periods, modalOpen]);
+  }, [periods, modalOpen, bulkFormData.day_of_week]);
 
   const openBulkScheduler = (day = 'MON') => {
     populateBulkForm(day);
@@ -302,8 +301,8 @@ const TimetableSchedule = () => {
       {/* Main Title & Action Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4 print:hidden">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Class Timetable Schedule</h1>
-          <p className="text-sm text-slate-500 mt-1">Manage daily subject routines, faculty assignments, and weekly class periods.</p>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Class Timetable Schedule</h1>
+          <p className="text-xs text-slate-500 mt-1">Manage daily subject routines, faculty assignments, and weekly class periods.</p>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline" size="sm" onClick={handleOpenSubstituteFinder} className="gap-2 shadow-xs">
@@ -361,7 +360,7 @@ const TimetableSchedule = () => {
           {/* Section Selector Dropdown (when inspecting Class Routines) */}
           {selectedSection !== 'MY_SCHEDULE' && (
             <div className="flex items-center gap-3 w-full md:w-auto">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider whitespace-nowrap font-['Outfit']">
+              <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider whitespace-nowrap">
                 Select Class:
               </label>
               <select
@@ -387,10 +386,10 @@ const TimetableSchedule = () => {
       {selectedSection === 'MY_SCHEDULE' ? (
         <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4 print:border-none print:shadow-none print:bg-transparent">
           <div>
-            <div className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest font-['Outfit']">
+            <div className="text-[10px] font-semibold text-indigo-600 uppercase tracking-widest">
               Faculty Routine Summary
             </div>
-            <h2 className="text-xl font-bold text-slate-900 font-['Outfit']">
+            <h2 className="text-lg font-semibold text-slate-900">
               Personal Teaching Schedule — {user?.first_name} {user?.last_name}
             </h2>
           </div>
@@ -403,10 +402,10 @@ const TimetableSchedule = () => {
       ) : selectedSectionDetails && (
         <div className="bg-slate-50 p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4 print:border-none print:shadow-none print:bg-transparent">
           <div>
-            <div className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest font-['Outfit']">
+            <div className="text-[10px] font-semibold text-indigo-600 uppercase tracking-widest">
               Weekly Routine Presentation
             </div>
-            <h2 className="text-xl font-bold text-slate-900 font-['Outfit']">
+            <h2 className="text-lg font-semibold text-slate-900">
               {selectedSectionDetails.class_name} — Section {selectedSectionDetails.name}
             </h2>
             <div className="text-xs text-slate-500 mt-0.5">
@@ -427,8 +426,135 @@ const TimetableSchedule = () => {
         </div>
       )}
 
-      {/* Timetable Weekly Matrix Grid */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden print:border-black">
+      {/* Mobile Responsive Daily Routine Cards (Visible on screens < lg) */}
+      <div className="lg:hidden space-y-4 print:hidden">
+        {/* Mobile Day Selector Tabs */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+          {DAYS.map((day) => {
+            const dayPeriods = periods.filter((p) => p.day_of_week === day.code);
+            const isSelected = mobileDay === day.code;
+            return (
+              <button
+                key={day.code}
+                type="button"
+                onClick={() => setMobileDay(day.code)}
+                className={`px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                  isSelected
+                    ? 'bg-indigo-600 text-white shadow-xs'
+                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                }`}
+              >
+                <span>{day.name}</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                  isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                }`}>
+                  {dayPeriods.length}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Action button for active mobile day */}
+        {canManageCurrentSection && (
+          <div className="flex items-center justify-between bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs">
+            <span className="text-xs font-semibold text-slate-700">
+              Manage {DAYS.find(d => d.code === mobileDay)?.name}
+            </span>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => openBulkScheduler(mobileDay)}
+              className="gap-1 text-xs py-1"
+            >
+              <Plus className="w-3.5 h-3.5 text-indigo-600" /> Edit Schedule
+            </Button>
+          </div>
+        )}
+
+        {/* Mobile Period Cards */}
+        <div className="space-y-2.5">
+          {PERIOD_TEMPLATES.map((slot, sIdx) => {
+            if (slot.isBreak) {
+              return (
+                <div key={sIdx} className="p-3 rounded-xl bg-amber-50/80 border border-amber-200/80 flex items-center justify-between text-amber-900">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold uppercase tracking-wider">Lunch Break</span>
+                  </div>
+                  <span className="font-mono text-xs text-amber-800 font-semibold">{slot.start} - {slot.end}</span>
+                </div>
+              );
+            }
+
+            const dayPeriods = periods.filter((p) => p.day_of_week === mobileDay);
+            const period = dayPeriods.find(
+              (p) => p.start_time.startsWith(slot.start) && p.end_time.startsWith(slot.end)
+            );
+
+            return (
+              <div
+                key={sIdx}
+                className={`p-4 rounded-xl border transition-all ${
+                  period 
+                    ? 'bg-white border-slate-200 shadow-2xs space-y-2' 
+                    : 'bg-slate-50/60 border-dashed border-slate-200'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-semibold text-[11px]">
+                      Period {slot.num}
+                    </span>
+                    <span className="font-mono text-xs text-slate-500">
+                      {slot.start} - {slot.end}
+                    </span>
+                  </div>
+                  {period && canManageCurrentSection && (
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(period.id)}
+                      className="p-1 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
+                      title="Remove Slot"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                {period ? (
+                  <div className="pt-1">
+                    <div className="font-semibold text-slate-900 text-sm">
+                      {period.subject_details?.name || 'Subject'}
+                    </div>
+                    <div className="text-xs text-slate-600 mt-0.5">
+                      Teacher: <span className="font-semibold text-slate-800">{period.teacher_details?.user?.first_name} {period.teacher_details?.user?.last_name}</span>
+                    </div>
+                    <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 border border-slate-200 text-[10px] font-semibold text-slate-700 mt-2">
+                      <MapPin className="w-3 h-3 text-indigo-600" />
+                      <span>{period.room_number || 'Main Classroom'}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-xs text-slate-400 italic pt-1 flex items-center justify-between">
+                    <span>No subject scheduled</span>
+                    {canManageCurrentSection && (
+                      <button
+                        onClick={() => openBulkScheduler(mobileDay)}
+                        className="text-indigo-600 font-semibold hover:underline text-xs"
+                      >
+                        + Assign
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Timetable Weekly Matrix Grid (Desktop: screens >= lg) */}
+      <div className="hidden lg:block bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden print:block print:border-black">
         {loading ? (
           <div className="py-20 text-center text-xs text-slate-400 font-medium animate-pulse print:hidden">
             Synchronizing class schedules and routine matrix...
@@ -438,14 +564,14 @@ const TimetableSchedule = () => {
             <table className="w-full border-collapse text-left min-w-250 table-fixed">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200 print:bg-gray-100 print:border-black">
-                  <th className="px-4 py-3.5 text-xs font-bold text-slate-800 border-r border-slate-200 w-35 print:text-black print:border-black font-['Outfit']">
+                  <th className="px-4 py-3.5 text-xs font-semibold text-slate-800 border-r border-slate-200 w-35 print:text-black print:border-black">
                     Day / Time
                   </th>
                   {PERIOD_TEMPLATES.map((slot, index) => {
                     if (slot.isBreak) {
                       return (
                         <th key={index} className="px-4 py-3.5 text-center border-r border-slate-200 w-24 bg-amber-50 print:bg-gray-200 print:border-black">
-                          <div className="text-[10px] font-bold text-amber-800 uppercase tracking-wider print:text-black font-['Outfit']">
+                          <div className="text-[10px] font-semibold text-amber-800 uppercase tracking-wider print:text-black">
                             LUNCH
                           </div>
                           <div className="text-[9px] text-slate-500 font-mono mt-0.5 print:text-black">
@@ -456,7 +582,7 @@ const TimetableSchedule = () => {
                     }
                     return (
                       <th key={index} className="px-4 py-3.5 text-center border-r border-slate-200 last:border-r-0 print:border-black">
-                        <div className="text-[10px] font-bold text-slate-700 uppercase tracking-wider print:text-black font-['Outfit']">
+                        <div className="text-[10px] font-semibold text-slate-700 uppercase tracking-wider print:text-black">
                           Period {slot.num}
                         </div>
                         <div className="text-[9px] text-slate-500 font-mono mt-0.5 print:text-black">
@@ -473,8 +599,8 @@ const TimetableSchedule = () => {
                   return (
                     <tr key={day.code} className="border-b border-slate-100 last:border-b-0 hover:bg-slate-50/50 transition-colors print:border-black">
                       {/* Day Column */}
-                      <td className="px-4 py-4 font-bold text-slate-900 bg-slate-50/70 border-r border-slate-200 flex-col justify-center print:bg-gray-50 print:text-black print:border-black">
-                        <div className="text-xs font-bold text-slate-900 font-['Outfit']">{day.name}</div>
+                      <td className="px-4 py-4 font-semibold text-slate-900 bg-slate-50/70 border-r border-slate-200 flex-col justify-center print:bg-gray-50 print:text-black print:border-black">
+                        <div className="text-xs font-semibold text-slate-900">{day.name}</div>
                         <div className="text-[10px] text-slate-500 font-medium mt-0.5 font-mono print:text-black">
                           {dayPeriods.length} slots
                         </div>
@@ -512,7 +638,7 @@ const TimetableSchedule = () => {
                           >
                             {period ? (
                               <div className="bg-indigo-50/60 border border-indigo-100 rounded-xl p-2.5 space-y-1 relative group-hover:bg-indigo-50 hover:shadow-xs transition-all print:bg-transparent print:border-none">
-                                <div className="text-xs font-bold text-indigo-950 font-['Outfit'] print:text-black">
+                                <div className="text-xs font-semibold text-indigo-950 print:text-black">
                                   {period.subject_details?.name || 'Subject'}
                                 </div>
                                 {selectedSection === 'MY_SCHEDULE' ? (
@@ -586,7 +712,7 @@ const TimetableSchedule = () => {
 
           <div className="flex items-center justify-between pb-3 border-b border-slate-200">
             <div className="flex items-center gap-3">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider font-['Outfit']">
+              <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
                 Selecting Target Day:
               </label>
               <select
@@ -610,7 +736,7 @@ const TimetableSchedule = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Morning Session Column (Periods 1-4) */}
             <div className="space-y-2.5 bg-slate-50/60 p-3 rounded-xl border border-slate-200">
-              <div className="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between font-['Outfit']">
+              <div className="text-xs font-semibold text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
                 <span>Morning Session</span>
                 <span className="text-[10px] text-slate-500 font-normal">Periods 1 – 4</span>
               </div>
@@ -669,7 +795,7 @@ const TimetableSchedule = () => {
 
             {/* Afternoon Session Column (Periods 5-8) */}
             <div className="space-y-2.5 bg-slate-50/60 p-3 rounded-xl border border-slate-200">
-              <div className="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between font-['Outfit']">
+              <div className="text-xs font-semibold text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-1.5 flex items-center justify-between">
                 <span>Afternoon Session</span>
                 <span className="text-[10px] text-slate-500 font-normal">Periods 5 – 8</span>
               </div>
@@ -747,7 +873,7 @@ const TimetableSchedule = () => {
 
           <div className="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
             <div>
-              <label className="text-[10px] font-bold text-slate-700 uppercase tracking-wider block mb-1 font-['Outfit']">
+              <label className="text-[10px] font-semibold text-slate-700 uppercase tracking-wider block mb-1">
                 Select Day
               </label>
               <select
@@ -762,7 +888,7 @@ const TimetableSchedule = () => {
             </div>
 
             <div>
-              <label className="text-[10px] font-bold text-slate-700 uppercase tracking-wider block mb-1 font-['Outfit']">
+              <label className="text-[10px] font-semibold text-slate-700 uppercase tracking-wider block mb-1">
                 Select Period Slot
               </label>
               <select
@@ -783,7 +909,7 @@ const TimetableSchedule = () => {
           </div>
 
           <div className="space-y-2">
-            <div className="text-xs font-bold text-slate-800 flex items-center justify-between font-['Outfit']">
+            <div className="text-xs font-semibold text-slate-800 flex items-center justify-between">
               <span>Available Unassigned Faculty ({freeTeachers.length})</span>
               {loadingFreeTeachers && <span className="text-[10px] text-slate-400 animate-pulse">Searching...</span>}
             </div>
@@ -797,7 +923,7 @@ const TimetableSchedule = () => {
                 {freeTeachers.map((t) => (
                   <div key={t.id} className="bg-white p-3 rounded-xl border border-slate-200 flex items-center justify-between shadow-2xs">
                     <div>
-                      <div className="text-xs font-bold text-slate-900 font-['Outfit']">
+                      <div className="text-xs font-semibold text-slate-900">
                         {t.user?.first_name} {t.user?.last_name}
                       </div>
                       <div className="text-[10px] text-slate-500">

@@ -63,7 +63,7 @@ const SuperAdminLayout = () => {
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h2 className="text-base font-['Outfit'] font-bold text-slate-900 tracking-tight">AcharyaCampus</h2>
+                  <h2 className="text-sm font-semibold text-slate-900 tracking-tight">AcharyaCampus</h2>
                 </div>
                 <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-[10px] font-semibold border border-indigo-200/80">
                   <ShieldCheck className="w-3 h-3 text-indigo-600" /> Super Admin
@@ -182,7 +182,7 @@ const SuperAdminLayout = () => {
             </button>
 
             <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-500 truncate">
-              <span className="font-bold text-slate-900 font-['Outfit'] truncate">Super Admin</span>
+              <span className="font-semibold text-slate-900 truncate">Super Admin</span>
               <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               <span className="text-indigo-600 font-medium truncate">
                 {location.pathname === '/super-admin' ? 'Tenant Schools' :

@@ -15,7 +15,7 @@ const ForgotPassword = () => {
       
       {/* Header */}
       <div className="text-center space-y-2">
-        <h2 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+        <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight">
           Reset Password
         </h2>
         <p className="text-xs sm:text-sm text-slate-500">
@@ -29,7 +29,7 @@ const ForgotPassword = () => {
             <CheckCircle2 className="w-6 h-6" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-lg font-['Outfit'] font-bold text-slate-900">
+            <h3 className="text-base font-semibold text-slate-900">
               Recovery Link Sent!
             </h3>
             <p className="text-xs text-slate-500 max-w-xs mx-auto">

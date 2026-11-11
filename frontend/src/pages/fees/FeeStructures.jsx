@@ -72,8 +72,8 @@ const FeeStructures = () => {
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Fee Structures & Billing Setup</h1>
-          <p className="text-sm text-slate-500 mt-1">Configure tuition fees, exam fees, activity charges, and set payment due dates.</p>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Fee Structures & Billing Setup</h1>
+          <p className="text-xs text-slate-500 mt-1">Configure tuition fees, exam fees, activity charges, and set payment due dates.</p>
         </div>
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <Link to="/dashboard/fees/collection" className="flex-1 sm:flex-none">
@@ -99,8 +99,8 @@ const FeeStructures = () => {
               </div>
 
               <div>
-                <h3 className="text-sm font-bold font-['Outfit'] text-slate-900">{st.name}</h3>
-                <div className="text-xl font-bold font-mono text-emerald-600 mt-1">₹{parseFloat(st.amount || 0).toLocaleString('en-IN')}</div>
+                <h3 className="text-sm font-semibold text-slate-900">{st.name}</h3>
+                <div className="text-xl font-semibold font-mono text-emerald-600 mt-1">₹{parseFloat(st.amount || 0).toLocaleString('en-IN')}</div>
               </div>
             </div>
 

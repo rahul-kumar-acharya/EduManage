@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import Table from '../../components/ui/Table';
-import { Users, Shield, Plus, Mail, CheckCircle2, UserCheck, ShieldAlert, KeyRound, Search, Lock, RefreshCw, X, AlertCircle } from 'lucide-react';
+import { Shield, Plus, CheckCircle2, Search, RefreshCw, X } from 'lucide-react';
 
 const SuperAdminUsers = () => {
   const [adminUsers, setAdminUsers] = useState([]);
@@ -74,11 +74,11 @@ const SuperAdminUsers = () => {
       accessor: 'first_name',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs shadow-indigo-600/20 font-['Outfit']">
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-semibold text-xs shrink-0 shadow-xs shadow-indigo-600/20">
             {row.first_name ? row.first_name.charAt(0).toUpperCase() : 'A'}
           </div>
           <div>
-            <div className="font-semibold text-slate-900 font-['Outfit']">{row.first_name} {row.last_name}</div>
+            <div className="font-semibold text-slate-900">{row.first_name} {row.last_name}</div>
             <div className="text-[11px] text-slate-500 font-mono">{row.email}</div>
           </div>
         </div>
@@ -142,7 +142,7 @@ const SuperAdminUsers = () => {
       <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-1.5">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+            <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
               Global Platform Users & Roles
             </h1>
             <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold uppercase tracking-wider">
@@ -174,7 +174,7 @@ const SuperAdminUsers = () => {
       {/* Users List Table */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <h2 className="text-lg font-['Outfit'] font-bold text-slate-900">Active Platform Administrators ({adminUsers.length})</h2>
+          <h2 className="text-base font-semibold text-slate-900">Active Platform Administrators ({adminUsers.length})</h2>
           
           <div className="relative w-full sm:w-64">
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -204,7 +204,7 @@ const SuperAdminUsers = () => {
                   <Shield className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-['Outfit'] font-bold text-slate-900">Provision Super Admin</h3>
+                  <h3 className="text-base font-semibold text-slate-900">Provision Super Admin</h3>
                   <p className="text-xs text-slate-500">Grants root administrative privileges to platform staff.</p>
                 </div>
               </div>

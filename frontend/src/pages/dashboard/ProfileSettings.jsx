@@ -4,7 +4,7 @@ import { authService } from '../../services/authService';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Modal from '../../components/ui/Modal';
-import { User, Key, Save, CheckCircle2, ShieldAlert, Camera, Crop } from 'lucide-react';
+import { User, Key, Save, CheckCircle2, ShieldAlert, Crop } from 'lucide-react';
 
 const ProfileSettings = () => {
   const { user, refreshUser, updateLocalAvatar } = useAuth();
@@ -229,7 +229,7 @@ const ProfileSettings = () => {
       </div>
 
       <div className="border-b border-slate-200 pb-4">
-        <h1 className="text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">Profile & Security Settings</h1>
+        <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight">Profile & Security Settings</h1>
         <p className="text-xs text-slate-500 mt-1">Configure your personal contact details, workspace fields, and authentication passwords.</p>
       </div>
 
@@ -261,7 +261,7 @@ const ProfileSettings = () => {
                     className="w-20 h-20 rounded-2xl object-cover border border-slate-200 shadow-xs"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-3xl font-bold font-['Outfit'] shadow-xs shadow-indigo-600/20">
+                  <div className="w-20 h-20 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-2xl font-semibold shadow-xs shadow-indigo-600/20">
                     {user?.first_name?.[0]?.toUpperCase() || 'U'}
                   </div>
                 )}
@@ -293,7 +293,7 @@ const ProfileSettings = () => {
             </div>
 
             <div className="space-y-1 w-full pt-2">
-              <h3 className="text-base font-bold text-slate-900 font-['Outfit']">{user?.first_name} {user?.last_name}</h3>
+              <h3 className="text-sm font-semibold text-slate-900">{user?.first_name} {user?.last_name}</h3>
               <p className="text-xs text-slate-500 truncate w-full max-w-50">{user?.email}</p>
             </div>
             
@@ -324,7 +324,7 @@ const ProfileSettings = () => {
           
           {/* Section 1: Profile Details */}
           <div className="space-y-4">
-            <h4 className="text-xs font-bold text-indigo-700 uppercase tracking-wider border-b border-slate-100 pb-2 font-['Outfit']">
+            <h4 className="text-xs font-semibold text-indigo-700 uppercase tracking-wider border-b border-slate-100 pb-2">
               Personal Information
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -377,7 +377,7 @@ const ProfileSettings = () => {
 
           {/* Section 2: Password Details */}
           <div className="space-y-4 pt-4 border-t border-slate-100">
-            <div className="flex items-center gap-2 text-xs font-bold text-indigo-700 uppercase tracking-wider border-b border-slate-100 pb-2 font-['Outfit']">
+            <div className="flex items-center gap-2 text-xs font-semibold text-indigo-700 uppercase tracking-wider border-b border-slate-100 pb-2">
               <Key className="w-4 h-4 text-indigo-600" />
               <span>Change Security Password</span>
             </div>

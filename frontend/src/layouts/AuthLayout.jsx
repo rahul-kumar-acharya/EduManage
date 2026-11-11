@@ -23,10 +23,10 @@ const AuthLayout = () => {
                 <GraduationCap className="w-6 h-6" />
               </div>
               <div className="text-left">
-                <span className="text-2xl font-['Outfit'] font-bold text-slate-900 tracking-tight block leading-none">
+                <span className="text-xl font-semibold text-slate-900 tracking-tight block leading-none">
                   AcharyaCampus
                 </span>
-                <span className="block text-[10px] uppercase font-bold tracking-wider text-indigo-600 mt-1">
+                <span className="block text-[10px] uppercase font-semibold tracking-wider text-indigo-600 mt-1">
                   School OS Engine
                 </span>
               </div>

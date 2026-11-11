@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import Table from '../../components/ui/Table';
-import { CreditCard, DollarSign, TrendingUp, Users, CheckCircle2, Shield, Calendar, ExternalLink, RefreshCw, Settings2 } from 'lucide-react';
+import { CreditCard, DollarSign, TrendingUp, Users, Calendar, RefreshCw, Settings2 } from 'lucide-react';
 
 const SuperAdminPlans = () => {
   const [schools, setSchools] = useState([]);
@@ -50,11 +50,11 @@ const SuperAdminPlans = () => {
       accessor: 'name',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs shadow-indigo-600/20 font-['Outfit']">
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-semibold text-xs shrink-0 shadow-xs shadow-indigo-600/20">
             {row.name.charAt(0)}
           </div>
           <div>
-            <div className="font-semibold text-slate-900 font-['Outfit']">{row.name}</div>
+            <div className="font-semibold text-slate-900">{row.name}</div>
             <div className="text-[11px] text-indigo-600 font-mono font-medium">{row.subdomain}.campus.acharyarahul.in</div>
           </div>
         </div>
@@ -65,7 +65,7 @@ const SuperAdminPlans = () => {
       accessor: 'plan',
       render: (row) => (
         <div>
-          <span className="text-xs font-semibold text-slate-900 block font-['Outfit']">{row.plan}</span>
+          <span className="text-xs font-semibold text-slate-900 block">{row.plan}</span>
           <span className="text-[11px] text-slate-500 block font-mono">{row.studentQuota}</span>
         </div>
       )
@@ -111,7 +111,7 @@ const SuperAdminPlans = () => {
       <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-1.5">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+            <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
               Tenant Subscription Operations
             </h1>
             <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold uppercase tracking-wider">
@@ -136,8 +136,8 @@ const SuperAdminPlans = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-[11px] uppercase font-bold tracking-wider text-slate-500 block">Monthly Recurring (MRR)</span>
-            <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">₹{totalMRR.toLocaleString('en-IN')}</strong>
+            <span className="text-[11px] uppercase font-semibold tracking-wider text-slate-500 block">Monthly Recurring (MRR)</span>
+            <strong className="text-2xl font-semibold font-mono text-slate-900 block mt-1">₹{totalMRR.toLocaleString('en-IN')}</strong>
             <span className="text-[11px] text-emerald-700 font-semibold flex items-center gap-1">
               <TrendingUp className="w-3 h-3 text-emerald-600" /> Active Recurring Cashflow
             </span>
@@ -149,8 +149,8 @@ const SuperAdminPlans = () => {
 
         <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-[11px] uppercase font-bold tracking-wider text-slate-500 block">Annual Recurring (ARR)</span>
-            <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">₹{(totalMRR * 12).toLocaleString('en-IN')}</strong>
+            <span className="text-[11px] uppercase font-semibold tracking-wider text-slate-500 block">Annual Recurring (ARR)</span>
+            <strong className="text-2xl font-semibold font-mono text-slate-900 block mt-1">₹{(totalMRR * 12).toLocaleString('en-IN')}</strong>
             <span className="text-xs text-slate-500 block">Projected Annual Run-rate</span>
           </div>
           <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs">
@@ -160,8 +160,8 @@ const SuperAdminPlans = () => {
 
         <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-[11px] uppercase font-bold tracking-wider text-slate-500 block">Active Paid Subscribers</span>
-            <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">{subscriptions.length} Schools</strong>
+            <span className="text-[11px] uppercase font-semibold tracking-wider text-slate-500 block">Active Paid Subscribers</span>
+            <strong className="text-2xl font-semibold font-mono text-slate-900 block mt-1">{subscriptions.length} Schools</strong>
             <span className="text-xs text-emerald-700 font-semibold block">100% Payment Uptime</span>
           </div>
           <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs">
@@ -171,8 +171,8 @@ const SuperAdminPlans = () => {
 
         <div className="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
-            <span className="text-[11px] uppercase font-bold tracking-wider text-slate-500 block">Default Trial Period</span>
-            <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">14 Days</strong>
+            <span className="text-[11px] uppercase font-semibold tracking-wider text-slate-500 block">Default Trial Period</span>
+            <strong className="text-2xl font-semibold font-mono text-slate-900 block mt-1">14 Days</strong>
             <span className="text-xs text-slate-500 block">On New Registrations</span>
           </div>
           <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-xs">
@@ -183,7 +183,7 @@ const SuperAdminPlans = () => {
 
       {/* Active Subscriptions Table */}
       <div className="space-y-4">
-        <h2 className="text-lg font-['Outfit'] font-bold text-slate-900">Active School Subscriptions & Invoices ({subscriptions.length})</h2>
+        <h2 className="text-base font-semibold text-slate-900">Active School Subscriptions & Invoices ({subscriptions.length})</h2>
         <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
           <Table columns={columns} data={subscriptions} emptyMessage="No active school subscriptions." />
         </div>

@@ -43,7 +43,7 @@ const DashboardNavbar = ({ onToggleMobileSidebar }) => {
         </button>
 
         <div className="flex items-center gap-1.5 sm:gap-2 text-xs text-slate-500 truncate">
-          <span className="font-bold text-slate-900 font-['Outfit'] truncate max-w-30 sm:max-w-none">{school?.name || 'AcharyaCampus'}</span>
+          <span className="font-semibold text-slate-900 truncate max-w-30 sm:max-w-none">{school?.name || 'AcharyaCampus'}</span>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
           <span className="text-indigo-600 font-medium truncate max-w-32.5 sm:max-w-none">{getBreadcrumbTitle()}</span>
         </div>

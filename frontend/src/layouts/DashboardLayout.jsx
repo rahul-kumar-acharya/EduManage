@@ -65,14 +65,14 @@ const DashboardLayout = () => {
                   <SchoolIcon className="w-5 h-5" />
                 </div>
                 <div className="truncate">
-                  <h2 className="text-sm font-['Outfit'] font-bold text-slate-900 truncate leading-tight">{school.name}</h2>
+                  <h2 className="text-sm font-semibold text-slate-900 truncate leading-tight">{school.name}</h2>
                   <p className="text-[10px] text-indigo-600 font-mono font-medium truncate mt-0.5">{school.subdomain}.campus.acharyarahul.in</p>
                 </div>
               </div>
             ) : (
               <div className="flex items-center gap-2 text-indigo-600">
                 <Shield className="w-5 h-5 shrink-0" />
-                <span className="text-xs font-bold uppercase tracking-wider font-['Outfit']">School Portal</span>
+                <span className="text-xs font-semibold uppercase tracking-wider">School Portal</span>
               </div>
             )}
             

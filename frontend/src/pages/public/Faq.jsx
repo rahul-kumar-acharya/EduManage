@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { ChevronDown, HelpCircle, ArrowRight, ShieldCheck, Sparkles, Building2, CreditCard } from 'lucide-react';
+import { ChevronDown, HelpCircle, ArrowRight, ShieldCheck, Building2, CreditCard } from 'lucide-react';
 
 const Faq = () => {
   const [openIndex, setOpenIndex] = useState('0-0');
@@ -68,7 +68,7 @@ const Faq = () => {
             <HelpCircle className="w-4 h-4 text-indigo-600" />
             <span>Help Center & Knowledge Base</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
             Frequently Asked Questions
           </h1>
           <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
@@ -84,7 +84,7 @@ const Faq = () => {
               <div key={catIdx} className="space-y-4">
                 <div className="flex items-center gap-2.5 border-b border-slate-200 pb-3">
                   <Icon className="w-5 h-5 text-indigo-600" />
-                  <h2 className="text-xl font-['Outfit'] font-bold text-slate-900">
+                  <h2 className="text-lg font-semibold text-slate-900 tracking-tight">
                     {cat.category}
                   </h2>
                 </div>
@@ -96,14 +96,17 @@ const Faq = () => {
                     return (
                       <div key={qIdx} className="bg-white rounded-2xl border border-slate-200 shadow-2xs overflow-hidden transition-all">
                         <button
+                          type="button"
                           onClick={() => toggleFaq(uniqueId)}
-                          className="w-full text-left p-5 flex items-center justify-between font-['Outfit'] font-semibold text-slate-900 text-base hover:bg-slate-50/80 transition-colors cursor-pointer"
+                          aria-expanded={isOpen}
+                          aria-controls={`faq-body-${uniqueId}`}
+                          className="w-full text-left p-5 flex items-center justify-between font-medium text-slate-900 text-sm sm:text-base hover:bg-slate-50/80 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                         >
                           <span>{item.q}</span>
                           <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                         </button>
                         {isOpen && (
-                          <div className="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                          <div id={`faq-body-${uniqueId}`} role="region" className="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
                             {item.a}
                           </div>
                         )}
@@ -118,7 +121,7 @@ const Faq = () => {
 
         {/* Still Have Questions Box */}
         <div className="bg-white p-8 sm:p-10 rounded-2xl border border-slate-200 text-center space-y-4 shadow-2xs">
-          <h3 className="text-2xl font-['Outfit'] font-bold text-slate-900">
+          <h3 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
             Still Have Questions?
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto">

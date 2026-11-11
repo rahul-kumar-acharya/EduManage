@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useSchool } from '../../contexts/SchoolContext';
 import { feeService } from '../../services/feeService';
 import { academicService } from '../../services/academicService';
 import { 
@@ -15,8 +13,6 @@ import {
 import { Link } from 'react-router-dom';
 
 const AccountantDashboard = () => {
-  const { user } = useAuth();
-  const { school } = useSchool();
   const [payments, setPayments] = useState([]);
   const [dues, setDues] = useState([]);
   const [structures, setStructures] = useState([]);
@@ -70,7 +66,7 @@ const AccountantDashboard = () => {
       <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-['Outfit'] font-bold text-slate-900">
+            <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
               Financial Control Board 👋
             </h1>
             <span className="px-3 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-xs font-semibold tracking-wide">
@@ -109,8 +105,8 @@ const AccountantDashboard = () => {
               return (
                 <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-md transition-all flex items-center justify-between">
                   <div className="space-y-1">
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500 block">{m.title}</span>
-                    <strong className="text-2xl font-['Outfit'] font-bold text-slate-900 block mt-1">{m.value}</strong>
+                    <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-500 block">{m.title}</span>
+                    <strong className="text-2xl font-semibold font-mono text-slate-900 block mt-1">{m.value}</strong>
                     <span className="text-[11px] text-slate-500 block">{m.desc}</span>
                   </div>
                   <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-2xs">
@@ -127,7 +123,7 @@ const AccountantDashboard = () => {
             {/* Left Side recent ledger table */}
             <div className="lg:col-span-8 space-y-6">
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                   <Receipt className="w-4.5 h-4.5 text-indigo-600" /> Recent Receipts Issued
                 </h3>
 
@@ -152,12 +148,12 @@ const AccountantDashboard = () => {
                       ) : (
                         payments.slice(0, 5).map((row, i) => (
                           <tr key={i} className="hover:bg-slate-50/60 transition-colors">
-                            <td className="py-3.5 font-bold font-mono text-emerald-600">{row.receipt_number}</td>
-                            <td className="py-3.5 text-slate-900 font-bold">
+                            <td className="py-3.5 font-semibold font-mono text-emerald-600">{row.receipt_number}</td>
+                            <td className="py-3.5 text-slate-900 font-medium">
                               {row.student?.user?.first_name} {row.student?.user?.last_name}
                             </td>
                             <td className="py-3.5">{row.fee_structure_name || row.fee_structure?.name}</td>
-                            <td className="py-3.5 font-mono font-bold text-slate-900">
+                            <td className="py-3.5 font-mono font-medium text-slate-900">
                               {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(row.amount_paid)}
                             </td>
                             <td className="py-3.5">
@@ -177,7 +173,7 @@ const AccountantDashboard = () => {
             {/* Right Side Quick Operations */}
             <div className="lg:col-span-4 space-y-6">
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                   <Layers className="w-4 h-4 text-indigo-600" /> Fast Action Portal
                 </h3>
 
@@ -188,7 +184,7 @@ const AccountantDashboard = () => {
                   >
                     <div className="flex items-center gap-3">
                       <Receipt className="w-4 h-4 text-emerald-600" />
-                      <span className="text-xs font-bold text-slate-900">Collect Student Fee</span>
+                      <span className="text-xs font-semibold text-slate-900">Collect Student Fee</span>
                     </div>
                     <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors" />
                   </Link>
@@ -199,7 +195,7 @@ const AccountantDashboard = () => {
                   >
                     <div className="flex items-center gap-3">
                       <Layers className="w-4 h-4 text-indigo-600" />
-                      <span className="text-xs font-bold text-slate-900">Fee Structure Editor</span>
+                      <span className="text-xs font-semibold text-slate-900">Fee Structure Editor</span>
                     </div>
                     <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors" />
                   </Link>
@@ -210,7 +206,7 @@ const AccountantDashboard = () => {
                   >
                     <div className="flex items-center gap-3">
                       <ArrowDownCircle className="w-4 h-4 text-rose-600" />
-                      <span className="text-xs font-bold text-slate-900">Due Outstanding Audits</span>
+                      <span className="text-xs font-semibold text-slate-900">Due Outstanding Audits</span>
                     </div>
                     <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 transition-colors" />
                   </Link>
@@ -218,16 +214,16 @@ const AccountantDashboard = () => {
               </div>
 
               <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-                <h3 className="text-base font-['Outfit'] font-bold text-slate-900 flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-indigo-600" /> Academic Billing Session
                 </h3>
                 
                 <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-2">
-                  <div className="flex justify-between items-center text-[10px] text-slate-500 uppercase font-bold tracking-wider">
+                  <div className="flex justify-between items-center text-[10px] text-slate-500 uppercase font-semibold tracking-wider">
                     <span>Active Session</span>
                     <span className="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-full border border-indigo-100 text-[9px] font-semibold">Current</span>
                   </div>
-                  <p className="text-slate-900 font-bold text-sm font-['Outfit']">
+                  <p className="text-slate-900 font-semibold text-sm">
                     {currentSession ? currentSession.name : 'No Active Session'}
                   </p>
                   <div className="text-[10px] text-slate-500 leading-relaxed">

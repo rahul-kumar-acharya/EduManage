@@ -7,7 +7,7 @@ import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Modal from '../../components/ui/Modal';
 import Badge from '../../components/ui/Badge';
-import { UserCheck, Plus, Trash2, Edit2, Shield, Mail, Phone, CheckCircle2 } from 'lucide-react';
+import { UserCheck, Plus, Trash2, Edit2, Shield, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const CLASS_ORDER = [
@@ -332,11 +332,11 @@ const TeacherList = () => {
         accessor: 'user',
         render: (row) => (
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shrink-0 shadow-xs shadow-indigo-600/20 font-['Outfit']">
+            <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white font-semibold flex items-center justify-center text-xs shrink-0 shadow-xs shadow-indigo-600/20">
               {row.user?.first_name?.charAt(0)}{row.user?.last_name?.charAt(0)}
             </div>
             <div>
-              <div className="font-semibold text-slate-900 font-['Outfit']">{row.user?.first_name} {row.user?.last_name}</div>
+              <div className="font-semibold text-slate-900">{row.user?.first_name} {row.user?.last_name}</div>
               <div className="text-xs text-slate-500">{row.user?.email}</div>
             </div>
           </div>
@@ -459,7 +459,7 @@ const TeacherList = () => {
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">Faculty Members</h1>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Faculty Members</h1>
           <p className="text-xs text-slate-500 mt-1">Manage teaching staff profiles, employee IDs, and section assignments.</p>
         </div>
         {isAdmin && (
@@ -473,30 +473,30 @@ const TeacherList = () => {
       <div className="flex border-b border-slate-200 gap-4 sm:gap-8 text-xs font-semibold overflow-x-auto pb-0.5 whitespace-nowrap scrollbar-none">
         <button
           onClick={() => setActiveTab('all')}
-          className={`pb-3 transition-colors border-b-2 font-['Outfit'] cursor-pointer ${
+          className={`pb-3 transition-colors border-b-2 cursor-pointer ${
             activeTab === 'all'
-              ? 'border-indigo-600 text-indigo-600 font-bold'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'border-indigo-600 text-indigo-600 font-semibold'
+              : 'border-transparent text-slate-500 hover:text-slate-900 font-medium'
           }`}
         >
           All Teachers ({teachers.length})
         </button>
         <button
           onClick={() => setActiveTab('class_teachers')}
-          className={`pb-3 transition-colors border-b-2 font-['Outfit'] cursor-pointer ${
+          className={`pb-3 transition-colors border-b-2 cursor-pointer ${
             activeTab === 'class_teachers'
-              ? 'border-indigo-600 text-indigo-600 font-bold'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'border-indigo-600 text-indigo-600 font-semibold'
+              : 'border-transparent text-slate-500 hover:text-slate-900 font-medium'
           }`}
         >
           Class Teachers ({classTeachers.length})
         </button>
         <button
           onClick={() => setActiveTab('subject_teachers')}
-          className={`pb-3 transition-colors border-b-2 font-['Outfit'] cursor-pointer ${
+          className={`pb-3 transition-colors border-b-2 cursor-pointer ${
             activeTab === 'subject_teachers'
-              ? 'border-indigo-600 text-indigo-600 font-bold'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'border-indigo-600 text-indigo-600 font-semibold'
+              : 'border-transparent text-slate-500 hover:text-slate-900 font-medium'
           }`}
         >
           Subject Teachers ({nonClassTeachers.length})
@@ -504,14 +504,13 @@ const TeacherList = () => {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-        <Table
-          columns={getColumns()}
-          data={getFilteredData()}
-          isLoading={loading}
-          emptyMessage="No faculty members found in the directory."
-        />
-      </div>
+      <Table
+        columns={getColumns()}
+        data={getFilteredData()}
+        isLoading={loading}
+        pageSize={25}
+        emptyMessage="No faculty members found in the directory."
+      />
 
       {/* Register/Edit Teacher Modal */}
       <Modal 
@@ -564,7 +563,7 @@ const TeacherList = () => {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Employee ID *
               </label>
               <div className="flex items-center">
@@ -584,7 +583,7 @@ const TeacherList = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Phone Number
               </label>
               <input
@@ -606,7 +605,7 @@ const TeacherList = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
               Assign Class Section (Optional)
             </label>
             <select
@@ -640,7 +639,7 @@ const TeacherList = () => {
 
           {editTeacher && (
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                 Account Status
               </label>
               <select
@@ -671,7 +670,7 @@ const TeacherList = () => {
             <Trash2 className="w-6 h-6" />
           </div>
           <div className="space-y-2">
-            <h3 className="text-sm font-bold text-slate-900 font-['Outfit']">Are you absolutely sure?</h3>
+            <h3 className="text-sm font-semibold text-slate-900">Are you absolutely sure?</h3>
             <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
               This will permanently remove the teacher profile of <strong className="text-slate-900">"{deleteTarget?.name}"</strong>. This will also remove them from all assigned sections, timetables, and subjects. This action cannot be undone.
             </p>

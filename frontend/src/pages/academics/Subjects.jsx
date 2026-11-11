@@ -31,7 +31,6 @@ const Subjects = () => {
   const isSchoolAdmin = user?.role === 'SCHOOL_ADMIN';
 
   const [subjects, setSubjects] = useState([]);
-  const [classLevels, setClassLevels] = useState([]);
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
@@ -48,13 +47,11 @@ const Subjects = () => {
   const fetchSubjects = async () => {
     setLoading(true);
     try {
-      const [subData, classRes, secRes] = await Promise.all([
+      const [subData, secRes] = await Promise.all([
         academicService.getSubjects(),
-        academicService.getClasses(),
         academicService.getSections(),
       ]);
       setSubjects(subData.results || subData);
-      setClassLevels(classRes.results || classRes);
       setSections(secRes.results || secRes);
     } catch (err) {
       console.error("Failed to fetch subjects:", err);
@@ -187,7 +184,7 @@ const Subjects = () => {
           <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center font-bold shadow-xs">
             <BookOpen className="w-4 h-4" />
           </div>
-          <span className="font-semibold text-slate-900 font-['Outfit']">{row.name}</span>
+          <span className="font-semibold text-slate-900">{row.name}</span>
         </div>
       )
     },
@@ -196,7 +193,7 @@ const Subjects = () => {
       accessor: 'class_name',
       render: (row) => (
         <div className="flex flex-col">
-          <span className="font-semibold text-xs text-indigo-600 font-['Outfit']">
+          <span className="font-semibold text-xs text-indigo-600">
             {row.class_name || row.class_level_name || 'Class'}
           </span>
           <span className="text-[11px] font-medium text-slate-500">
@@ -268,7 +265,7 @@ const Subjects = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-3xl font-['Outfit'] font-bold text-slate-900 tracking-tight">Subjects</h1>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Subjects</h1>
           <p className="text-xs text-slate-500 mt-1">Configure subjects assigned to class sections.</p>
         </div>
         {canCreateSubject && (
@@ -281,7 +278,7 @@ const Subjects = () => {
       {/* Filter Section Dropdown */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          <label className="text-xs font-bold text-slate-600 uppercase tracking-wider shrink-0 font-['Outfit']">
+          <label className="text-xs font-semibold text-slate-600 uppercase tracking-wider shrink-0">
             Filter Section:
           </label>
           <select
@@ -298,8 +295,8 @@ const Subjects = () => {
           </select>
         </div>
 
-        <div className="text-xs font-bold text-slate-500 hidden sm:block">
-          Total Subjects: <span className="text-indigo-600 font-extrabold">{getDisplaySubjects().length}</span>
+        <div className="text-xs font-medium text-slate-500 hidden sm:block">
+          Total Subjects: <span className="text-indigo-600 font-semibold">{getDisplaySubjects().length}</span>
         </div>
       </div>
 
@@ -331,21 +328,21 @@ const Subjects = () => {
           {/* Target Class & Section Display */}
           {formData.section ? (
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
                 Target Class & Section
               </label>
-              <div className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-indigo-700 flex items-center justify-between shadow-xs">
+              <div className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-indigo-700 flex items-center justify-between shadow-xs">
                 <span>
                   {sections.find((s) => s.id.toString() === formData.section)?.class_name || 'Class'} — Section {sections.find((s) => s.id.toString() === formData.section)?.name || ''}
                 </span>
-                <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-bold">
+                <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-semibold">
                   ✓ Auto-Bound
                 </span>
               </div>
             </div>
           ) : (
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 font-['Outfit']">
+              <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
                 Target Class & Section
               </label>
               <select

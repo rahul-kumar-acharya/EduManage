@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { schoolService } from '../../services/schoolService';
+import { getTenantUrl } from '../../utils/subdomain';
 import { 
   Building2, 
   Globe, 
@@ -15,7 +16,6 @@ import {
   Sparkles,
   Phone,
   Clock,
-  HelpCircle,
   FileText,
   MapPin,
   Eye,
@@ -25,6 +25,7 @@ import {
 const RegisterSchool = () => {
   const [searchParams] = useSearchParams();
   const initialSubdomain = searchParams.get('subdomain') || '';
+  const initialPlan = searchParams.get('plan') || '';
 
   const [formData, setFormData] = useState({
     name: '',
@@ -65,7 +66,7 @@ const RegisterSchool = () => {
         } else {
           setSubdomainStatus({ checking: false, available: false, message: 'Subdomain already taken or reserved.' });
         }
-      } catch (err) {
+      } catch {
         setSubdomainStatus({ checking: false, available: false, message: 'Unavailable or reserved subdomain.' });
       }
     }, 400);
@@ -131,7 +132,7 @@ const RegisterSchool = () => {
       errors.admin_password = 'Password must contain at least one uppercase letter (A-Z).';
     } else if (!/[a-z]/.test(password)) {
       errors.admin_password = 'Password must contain at least one lowercase letter (a-z).';
-    } else if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) {
+    } else if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
       errors.admin_password = 'Password must contain at least one special character (!@#$%^&* etc.).';
     }
 
@@ -199,7 +200,7 @@ const RegisterSchool = () => {
               <CheckCircle2 className="w-10 h-10" />
             </div>
             <div className="space-y-2">
-              <h2 className="text-3xl font-['Outfit'] font-bold text-slate-900">School Portal Created!</h2>
+              <h2 className="text-xl font-semibold text-slate-900 tracking-tight">School Portal Created!</h2>
               <p className="text-sm text-slate-500">
                 <strong className="text-slate-900">{successResult.name}</strong> is ready on subdomain:
               </p>
@@ -221,7 +222,7 @@ const RegisterSchool = () => {
 
             <div className="pt-4 space-y-3">
               <a
-                href={`http://${successResult.subdomain}.localhost:5173/login`}
+                href={getTenantUrl(successResult.subdomain, '/login')}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl transition-all shadow-sm shadow-indigo-600/25 cursor-pointer active:scale-[0.99]"
@@ -229,7 +230,7 @@ const RegisterSchool = () => {
                 Launch School Portal <ArrowRight className="w-4 h-4" />
               </a>
               <p className="text-xs text-slate-400">
-                (For dev testing, log in directly via browser at {successResult.portal_url})
+                Direct access URL: {getTenantUrl(successResult.subdomain, '/login')}
               </p>
             </div>
           </div>
@@ -248,12 +249,20 @@ const RegisterSchool = () => {
             <Sparkles className="w-4 h-4 text-indigo-600" />
             <span>Instant Provisioning Engine</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-['Outfit'] font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
             Register Your Institution
           </h1>
           <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
             Set up your school management workspace and dedicated subdomain portal in under 60 seconds.
           </p>
+          {initialPlan && (
+            <div className="pt-1">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                Selected Package: {initialPlan.toUpperCase()} Plan (14-Day Free Trial)
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Two-Column Layout */}
@@ -263,7 +272,7 @@ const RegisterSchool = () => {
           <div className="lg:col-span-5 bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
             <div className="space-y-6">
               <div className="space-y-2">
-                <h3 className="text-2xl font-['Outfit'] font-bold text-slate-900">
+                <h3 className="text-lg font-semibold text-slate-900 tracking-tight">
                   Why Choose AcharyaCampus?
                 </h3>
                 <p className="text-slate-500 text-sm leading-relaxed">
@@ -276,7 +285,7 @@ const RegisterSchool = () => {
                 <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                   <Globe className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                   <div className="space-y-0.5">
-                    <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">Dedicated Subdomain</h4>
+                    <h4 className="font-semibold text-sm text-slate-900">Dedicated Subdomain</h4>
                     <p className="text-xs text-slate-500 leading-relaxed">Your school gets its own unique portal URL (e.g., yourschool.campus.acharyarahul.in) for students, staff, and parents.</p>
                   </div>
                 </div>
@@ -284,7 +293,7 @@ const RegisterSchool = () => {
                 <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                   <ShieldCheck className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                   <div className="space-y-0.5">
-                    <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">Query-Level Data Security</h4>
+                    <h4 className="font-semibold text-sm text-slate-900">Query-Level Data Security</h4>
                     <p className="text-xs text-slate-500 leading-relaxed">Bank-grade data encryption and strict row-level database security guarantee complete student privacy.</p>
                   </div>
                 </div>
@@ -292,7 +301,7 @@ const RegisterSchool = () => {
                 <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                   <Zap className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
                   <div className="space-y-0.5">
-                    <h4 className="font-['Outfit'] font-bold text-sm text-slate-900">Instant 14-Day Free Trial</h4>
+                    <h4 className="font-semibold text-sm text-slate-900">Instant 14-Day Free Trial</h4>
                     <p className="text-xs text-slate-500 leading-relaxed">Full platform access with zero setup fees and no credit card required to start.</p>
                   </div>
                 </div>

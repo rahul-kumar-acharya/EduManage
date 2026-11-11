@@ -102,8 +102,8 @@ const DueFeesList = () => {
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold font-['Outfit'] text-slate-900 tracking-tight">Student Due Balances Audit</h1>
-          <p className="text-sm text-slate-500 mt-1">Audit outstanding fee balances, pending dues, and issue payment reminders.</p>
+          <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Student Due Balances Audit</h1>
+          <p className="text-xs text-slate-500 mt-1">Audit outstanding fee balances, pending dues, and issue payment reminders.</p>
         </div>
         <Button variant="secondary" size="sm" onClick={fetchDues} loading={loading} className="gap-2 shadow-xs">
           <RefreshCw className="w-4 h-4 text-slate-600" /> Refresh Audit
