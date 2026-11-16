@@ -43,8 +43,8 @@ const About = () => {
   ];
 
   return (
-    <div className="space-y-20 font-['Inter'] text-slate-800">
-      <div className="max-w-7xl mx-auto px-6 space-y-16">
+    <div className="space-y-16 sm:space-y-20 font-['Inter'] text-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12 sm:space-y-16">
         
         {/* Page Header */}
         <div className="text-center space-y-4">
@@ -55,13 +55,13 @@ const About = () => {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
             About AcharyaCampus School OS
           </h1>
-          <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-slate-500 text-sm sm:text-base lg:text-lg max-w-xl mx-auto leading-relaxed">
             Building the world's most elegant multi-tenant operating system for schools, academies, and educational groups.
           </p>
         </div>
 
         {/* Story & Vision */}
-        <div className="bg-white p-8 sm:p-12 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+        <div className="bg-white p-6 sm:p-12 rounded-2xl border border-slate-200 shadow-sm space-y-6">
           <h2 className="text-xl sm:text-2xl font-semibold text-slate-900 tracking-tight">
             Empowering Modern Educational Institutions
           </h2>
@@ -74,10 +74,10 @@ const About = () => {
         </div>
 
         {/* Impact Numbers Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 max-w-5xl mx-auto">
           {milestones.map((m, idx) => (
-            <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 text-center shadow-2xs hover:border-indigo-200 hover:shadow-md transition-all">
-              <p className="text-2xl sm:text-3xl font-semibold text-slate-900">
+            <div key={idx} className="bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 text-center shadow-2xs hover:border-indigo-200 hover:shadow-md transition-all">
+              <p className="text-xl sm:text-3xl font-semibold text-slate-900">
                 {m.number}
               </p>
               <p className="text-xs sm:text-sm font-medium text-slate-500 mt-1">

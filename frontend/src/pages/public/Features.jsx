@@ -44,8 +44,8 @@ const Features = () => {
   ];
 
   return (
-    <div className="space-y-20 font-['Inter'] text-slate-800">
-      <div className="max-w-7xl mx-auto px-6 space-y-12">
+    <div className="space-y-16 sm:space-y-20 font-['Inter'] text-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
         
         {/* Page Header */}
         <div className="text-center space-y-4">
@@ -56,7 +56,7 @@ const Features = () => {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
             Full Feature Overview
           </h1>
-          <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-slate-500 text-sm sm:text-base lg:text-lg max-w-xl mx-auto leading-relaxed">
             Built from the ground up for modern educational governance, multi-tenant isolation, and daily operational ease.
           </p>
         </div>
@@ -68,7 +68,7 @@ const Features = () => {
             return (
               <div 
                 key={idx} 
-                className="bg-white p-7 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-lg transition-all space-y-4"
+                className="bg-white p-5 sm:p-7 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-lg transition-all space-y-4"
               >
                 <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-2xs">
                   <Icon className="w-5 h-5" />

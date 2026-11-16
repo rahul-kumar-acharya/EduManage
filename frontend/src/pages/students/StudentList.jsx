@@ -524,11 +524,11 @@ Vikram,Singh,Rajesh Singh,9876543212,parent3@gmail.com,`;
           <p className="text-xs text-slate-500 mt-1">Manage student enrollments, sections, and guardian contacts.</p>
         </div>
         {(canManageStudents || user?.role === 'SUPER_ADMIN') && (
-          <div className="flex items-center gap-2">
-            <Button variant="secondary" size="sm" onClick={openBulkModal} className="gap-2 shadow-xs">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+            <Button variant="secondary" size="sm" onClick={openBulkModal} className="flex-1 sm:flex-none gap-2 shadow-xs">
               <Upload className="w-4 h-4 text-indigo-600" /> Bulk Upload (CSV)
             </Button>
-            <Button variant="primary" size="sm" onClick={openEnrollModal} className="gap-2 shadow-xs">
+            <Button variant="primary" size="sm" onClick={openEnrollModal} className="flex-1 sm:flex-none gap-2 shadow-xs">
               <Plus className="w-4 h-4" /> Enroll Student
             </Button>
           </div>

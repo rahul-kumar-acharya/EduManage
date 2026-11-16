@@ -36,8 +36,8 @@ const Contact = () => {
   };
 
   return (
-    <div className="space-y-20 font-['Inter'] text-slate-800">
-      <div className="max-w-7xl mx-auto px-6 space-y-12">
+    <div className="space-y-16 sm:space-y-20 font-['Inter'] text-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
         
         {/* Page Header */}
         <div className="text-center space-y-4">
@@ -48,31 +48,31 @@ const Contact = () => {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
             Get in Touch
           </h1>
-          <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-slate-500 text-sm sm:text-base lg:text-lg max-w-xl mx-auto leading-relaxed">
             Have questions about our multi-tenant SaaS platform? Our support engineering team is here to help.
           </p>
         </div>
 
         {/* Grid Section with Equal Height Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto">
           
           {/* Contact Information Card */}
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
+          <div className="bg-white p-5 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
             <div className="space-y-6">
               <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-slate-900 tracking-tight">
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">
                   Contact Information
                 </h3>
-                <p className="text-slate-500 text-sm leading-relaxed">
+                <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">
                   Reach out to our dedicated team for platform onboarding, technical support, or custom domain routing assistance.
                 </p>
               </div>
 
               {/* Direct Channels */}
               <div className="space-y-3 text-sm text-slate-700">
-                <div className="flex items-center gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <div className="flex items-center gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200 overflow-hidden">
                   <Mail className="w-5 h-5 text-indigo-600 shrink-0" />
-                  <span className="font-semibold text-xs sm:text-sm text-slate-900">support.acharyacampus@gmail.com</span>
+                  <span className="font-semibold text-xs sm:text-sm text-slate-900 break-all sm:break-normal">support.acharyacampus@gmail.com</span>
                 </div>
                 <div className="flex items-center gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                   <Phone className="w-5 h-5 text-indigo-600 shrink-0" />
@@ -88,7 +88,7 @@ const Contact = () => {
             {/* Support Hours */}
             <div className="pt-4 border-t border-slate-100 space-y-3">
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                <Clock className="w-4 h-4 text-indigo-600" />
+                <Clock className="w-4 h-4 text-indigo-600 shrink-0" />
                 <span>Support Availability: Mon – Sat (24/6 SLA)</span>
               </div>
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-2.5">
@@ -101,7 +101,7 @@ const Contact = () => {
           </div>
 
           {/* Contact Form Card */}
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
+          <div className="bg-white p-5 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between">
             {submitted ? (
               <div className="text-center py-12 space-y-4 my-auto">
                 <div className="w-12 h-12 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-600 mx-auto flex items-center justify-center">

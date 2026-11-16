@@ -60,7 +60,7 @@ const Faq = () => {
 
   return (
     <div className="space-y-16 font-['Inter'] text-slate-800">
-      <div className="max-w-4xl mx-auto px-6 space-y-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-12">
         
         {/* Page Header */}
         <div className="text-center space-y-4">
@@ -100,13 +100,13 @@ const Faq = () => {
                           onClick={() => toggleFaq(uniqueId)}
                           aria-expanded={isOpen}
                           aria-controls={`faq-body-${uniqueId}`}
-                          className="w-full text-left p-5 flex items-center justify-between font-medium text-slate-900 text-sm sm:text-base hover:bg-slate-50/80 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                          className="w-full text-left p-4 sm:p-5 flex items-center justify-between font-medium text-slate-900 text-sm sm:text-base hover:bg-slate-50/80 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                         >
                           <span>{item.q}</span>
                           <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                         </button>
                         {isOpen && (
-                          <div id={`faq-body-${uniqueId}`} role="region" className="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                          <div id={`faq-body-${uniqueId}`} role="region" className="px-4 sm:px-5 pb-4 sm:pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
                             {item.a}
                           </div>
                         )}

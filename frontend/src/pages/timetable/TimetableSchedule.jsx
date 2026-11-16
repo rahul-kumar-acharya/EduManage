@@ -304,7 +304,7 @@ const TimetableSchedule = () => {
           <h1 className="text-lg sm:text-xl font-semibold text-slate-900 tracking-tight">Class Timetable Schedule</h1>
           <p className="text-xs text-slate-500 mt-1">Manage daily subject routines, faculty assignments, and weekly class periods.</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
           <Button variant="outline" size="sm" onClick={handleOpenSubstituteFinder} className="gap-2 shadow-xs">
             <Search className="w-4 h-4 text-slate-600" /> Substitute Finder
           </Button>
@@ -710,7 +710,7 @@ const TimetableSchedule = () => {
             </div>
           )}
 
-          <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
             <div className="flex items-center gap-3">
               <label className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
                 Selecting Target Day:
@@ -751,7 +751,7 @@ const TimetableSchedule = () => {
                       <span className="text-[10px] text-slate-500 font-mono font-medium">{slot.start} - {slot.end}</span>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                       <select
                         value={pData.subject}
                         onChange={(e) => handleBulkPeriodChange(num, 'subject', e.target.value)}
@@ -810,7 +810,7 @@ const TimetableSchedule = () => {
                       <span className="text-[10px] text-slate-500 font-mono font-medium">{slot.start} - {slot.end}</span>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                       <select
                         value={pData.subject}
                         onChange={(e) => handleBulkPeriodChange(num, 'subject', e.target.value)}

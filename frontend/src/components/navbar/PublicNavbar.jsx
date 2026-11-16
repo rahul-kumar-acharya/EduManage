@@ -25,18 +25,18 @@ const PublicNavbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-md border-b border-slate-200/80 font-['Inter'] transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 py-3 sm:py-3.5 flex items-center justify-between">
         
         {/* Brand Logo */}
-        <Link to="/" onClick={closeMenu} className="flex items-center gap-2.5 sm:gap-3 group">
-          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-linear-to-br from-indigo-600 to-indigo-700 flex items-center justify-center text-white shadow-sm shadow-indigo-500/25 group-hover:scale-105 transition-transform shrink-0">
-            <GraduationCap className="w-5 h-5" />
+        <Link to="/" onClick={closeMenu} className="flex items-center gap-2 sm:gap-3 group shrink-0">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-linear-to-br from-indigo-600 to-indigo-700 flex items-center justify-center text-white shadow-sm shadow-indigo-500/25 group-hover:scale-105 transition-transform shrink-0">
+            <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <div>
-            <span className="text-base sm:text-lg font-semibold text-slate-900 tracking-tight block leading-none">
+            <span className="text-sm sm:text-base md:text-lg font-semibold text-slate-900 tracking-tight block leading-none">
               AcharyaCampus
             </span>
-            <span className="block text-[9px] sm:text-[10px] uppercase font-semibold tracking-wider text-indigo-600 mt-1">
+            <span className="block text-[8px] sm:text-[10px] uppercase font-semibold tracking-wider text-indigo-600 mt-0.5 sm:mt-1">
               School OS Engine
             </span>
           </div>
@@ -97,8 +97,9 @@ const PublicNavbar = () => {
               </Link>
 
               <Link to="/register-school">
-                <button className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold transition-all shadow-sm shadow-indigo-600/20 active:scale-[0.99] cursor-pointer">
-                  Register School
+                <button className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold transition-all shadow-sm shadow-indigo-600/20 active:scale-[0.99] cursor-pointer">
+                  <span className="hidden sm:inline">Register School</span>
+                  <span className="inline sm:hidden">Register</span>
                 </button>
               </Link>
             </>

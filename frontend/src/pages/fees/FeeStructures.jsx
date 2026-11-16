@@ -136,7 +136,7 @@ const FeeStructures = () => {
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
           />
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
               label="Amount (₹)"
               type="number"

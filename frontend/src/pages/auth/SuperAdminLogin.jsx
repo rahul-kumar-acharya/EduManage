@@ -75,7 +75,7 @@ const SuperAdminLogin = () => {
   };
 
   return (
-    <div className="h-screen w-screen bg-[#F8FAFC] text-slate-800 flex flex-col justify-between overflow-hidden font-['Inter'] p-6 lg:p-8 selection:bg-indigo-600 selection:text-white">
+    <div className="min-h-screen w-full bg-[#F8FAFC] text-slate-800 flex flex-col justify-between font-['Inter'] p-4 sm:p-6 lg:p-8 selection:bg-indigo-600 selection:text-white">
       
       {/* Fixed Top Header */}
       <header className="max-w-7xl mx-auto w-full flex items-center justify-between shrink-0 pb-4">
@@ -100,11 +100,11 @@ const SuperAdminLogin = () => {
       </header>
 
       {/* Main Centered Container */}
-      <main className="max-w-5xl mx-auto w-full flex-1 flex items-center justify-center my-auto overflow-hidden">
+      <main className="max-w-5xl mx-auto w-full flex-1 flex items-center justify-center my-4 sm:my-auto">
         <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-stretch w-full justify-center">
           
           {/* Left Column: Streamlined Info */}
-          <div className="lg:col-span-5 bg-white p-6 lg:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-5 bg-white p-5 sm:p-6 lg:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
             <div className="space-y-5">
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/80 text-[11px] font-semibold tracking-wide">
@@ -150,7 +150,7 @@ const SuperAdminLogin = () => {
           </div>
 
           {/* Right Column: Master Authentication Form */}
-          <div className="lg:col-span-5 bg-white p-6 lg:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-5 bg-white p-5 sm:p-6 lg:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
             
             <div className="space-y-5">
               <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">

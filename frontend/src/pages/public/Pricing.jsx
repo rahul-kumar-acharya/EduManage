@@ -65,8 +65,8 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="space-y-20 font-['Inter'] text-slate-800">
-      <div className="max-w-7xl mx-auto px-6 space-y-12">
+    <div className="space-y-16 sm:space-y-20 font-['Inter'] text-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
         
         {/* Page Header */}
         <div className="text-center space-y-4">
@@ -77,12 +77,12 @@ const Pricing = () => {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-900 tracking-tight">
             Simple, Transparent SaaS Pricing
           </h1>
-          <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-slate-500 text-sm sm:text-base lg:text-lg max-w-xl mx-auto leading-relaxed">
             Start with a 14-day free trial. Upgrade or cancel anytime. No hidden setup fees.
           </p>
 
           {/* Monthly / Yearly Billing Toggle */}
-          <div className="pt-4 flex items-center justify-center gap-3">
+          <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
             <span className={`text-sm font-semibold ${!isYearly ? 'text-slate-900' : 'text-slate-500'}`}>
               Monthly Billing
             </span>
@@ -108,11 +108,11 @@ const Pricing = () => {
         </div>
 
         {/* Pricing Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
           {plans.map((p, idx) => (
             <div
               key={idx}
-              className={`bg-white p-8 rounded-2xl border flex flex-col justify-between transition-all relative ${
+              className={`bg-white p-6 sm:p-8 rounded-2xl border flex flex-col justify-between transition-all relative ${
                 p.highlighted
                   ? 'border-indigo-600 shadow-xl shadow-indigo-500/10 ring-2 ring-indigo-600'
                   : 'border-slate-200 shadow-2xs hover:border-slate-300'

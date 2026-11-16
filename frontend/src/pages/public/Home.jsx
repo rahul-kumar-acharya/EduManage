@@ -59,11 +59,11 @@ const Home = () => {
   };
 
   return (
-    <div className="space-y-24 font-['Inter'] text-slate-800">
+    <div className="space-y-16 sm:space-y-24 font-['Inter'] text-slate-800">
       
       {/* 1. Hero Section */}
-      <section className="max-w-7xl mx-auto px-6 pt-4">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center">
           
           {/* Left Column: Heading, CTA & Subdomain Form */}
           <div className="lg:col-span-7 space-y-6 text-left">
@@ -73,14 +73,14 @@ const Home = () => {
             </div>
 
             {/* Bold Modern Heading */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 leading-[1.18] tracking-tight">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-semibold text-slate-900 leading-[1.2] sm:leading-[1.18] tracking-tight">
               Manage Your Entire School System on <br />
               <span className="bg-clip-text text-transparent bg-linear-to-r from-indigo-600 to-violet-600">
                 Your Dedicated Subdomain
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-2xl">
+            <p className="text-sm sm:text-base lg:text-lg text-slate-600 font-normal leading-relaxed max-w-2xl">
               Empower administrators, faculty teachers, students, and parents with an intuitive cloud platform. Streamline admissions, daily attendance, timetables, and fee billing effortlessly.
             </p>
 
@@ -88,7 +88,7 @@ const Home = () => {
             {isAuthenticated ? (
               <div className="pt-2">
                 <Link to={user?.role === 'SUPER_ADMIN' ? '/super-admin' : '/dashboard'}>
-                  <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-base px-8 py-3.5 rounded-xl transition-all shadow-md shadow-indigo-600/25 hover:shadow-lg flex items-center gap-2 cursor-pointer active:scale-[0.99]">
+                  <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm sm:text-base px-6 sm:px-8 py-3.5 rounded-xl transition-all shadow-md shadow-indigo-600/25 hover:shadow-lg flex items-center gap-2 cursor-pointer active:scale-[0.99]">
                     {user?.role === 'SUPER_ADMIN' ? 'Go to Super Admin Board' : 'Go to Dashboard'} <ArrowRight className="w-5 h-5" />
                   </button>
                 </Link>
@@ -98,21 +98,21 @@ const Home = () => {
                 onSubmit={handleSubdomainCheck} 
                 className="flex flex-col sm:flex-row gap-2.5 p-2 bg-white rounded-2xl border border-slate-200 shadow-sm max-w-xl"
               >
-                <div className="flex-1 flex items-center px-3.5 bg-slate-50 rounded-xl border border-slate-200 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-500/15 transition-all">
+                <div className="flex-1 min-w-0 flex items-center px-3 sm:px-3.5 bg-slate-50 rounded-xl border border-slate-200 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-500/15 transition-all overflow-hidden">
                   <Globe className="w-4 h-4 text-slate-400 mr-2 shrink-0" />
                   <input
                     type="text"
                     placeholder="your-school-name"
                     value={desiredSubdomain}
                     onChange={(e) => setDesiredSubdomain(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
-                    className="w-full bg-transparent py-3 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none font-medium"
+                    className="w-full min-w-0 bg-transparent py-2.5 sm:py-3 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none font-medium"
                     required
                   />
-                  <span className="text-xs font-mono text-indigo-600 font-semibold">.campus.acharyarahul.in</span>
+                  <span className="text-[10px] sm:text-xs font-mono text-indigo-600 font-semibold shrink-0">.campus.acharyarahul.in</span>
                 </div>
                 <button 
                   type="submit" 
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-6 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm shadow-indigo-600/25 whitespace-nowrap active:scale-[0.99] cursor-pointer"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm shadow-indigo-600/25 whitespace-nowrap active:scale-[0.99] cursor-pointer shrink-0"
                 >
                   Claim Subdomain <ArrowRight className="w-4 h-4" />
                 </button>
@@ -120,7 +120,7 @@ const Home = () => {
             )}
 
             {/* Trust Badges */}
-            <div className="pt-2 flex items-center gap-6 text-xs text-slate-500 font-medium">
+            <div className="pt-2 flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-slate-500 font-medium">
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Wildcard SSL Secured
               </span>
@@ -167,25 +167,25 @@ const Home = () => {
         </div>
 
         {/* Live Metrics Bar */}
-        <div className="pt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        <div className="pt-12 sm:pt-16 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 max-w-5xl mx-auto">
           {[
             { value: stats.total_schools, label: 'Institutions Onboarded' },
             { value: stats.total_students, label: 'Active Students' },
             { value: '99.99%', label: 'Uptime SLA' },
             { value: 'Instant', label: 'Tenant Provisioning' },
           ].map((stat, i) => (
-            <div key={i} className="bg-white p-6 rounded-2xl text-center border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-md transition-all">
-              <div className="text-2xl sm:text-3xl font-semibold text-slate-900">
+            <div key={i} className="bg-white p-4 sm:p-6 rounded-2xl text-center border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-md transition-all">
+              <div className="text-xl sm:text-3xl font-semibold text-slate-900">
                 {stat.value}
               </div>
-              <div className="text-xs font-medium text-slate-500 mt-1">{stat.label}</div>
+              <div className="text-[11px] sm:text-xs font-medium text-slate-500 mt-1">{stat.label}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* 2. Key Features Grid */}
-      <section className="max-w-7xl mx-auto px-6 space-y-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
         <div className="text-center space-y-3">
           <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">Everything Your Institution Needs</h2>
           <p className="text-slate-500 text-sm max-w-xl mx-auto">
@@ -193,7 +193,7 @@ const Home = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {[
             {
               icon: Globe,
@@ -215,7 +215,7 @@ const Home = () => {
             return (
               <div 
                 key={idx} 
-                className="bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-lg transition-all space-y-4"
+                className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs hover:border-indigo-200 hover:shadow-lg transition-all space-y-4"
               >
                 <div className="w-12 h-12 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-2xs">
                   <Icon className="w-6 h-6" />
@@ -229,7 +229,7 @@ const Home = () => {
       </section>
 
       {/* 3. Interactive Workspace Preview */}
-      <section className="max-w-7xl mx-auto px-6 space-y-8">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
         <div className="text-center space-y-3">
           <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">Designed for Every Stakeholder</h2>
           <p className="text-slate-500 text-sm max-w-xl mx-auto">
@@ -238,7 +238,7 @@ const Home = () => {
         </div>
 
         {/* Tab Selection */}
-        <div className="flex justify-center border-b border-slate-200">
+        <div className="flex sm:justify-center overflow-x-auto no-scrollbar border-b border-slate-200 gap-1 sm:gap-0 pb-0.5">
           {[
             { id: 'admin', label: 'Admin Workspace' },
             { id: 'teacher', label: 'Teacher Portal' },
@@ -247,7 +247,7 @@ const Home = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-3 text-sm font-semibold transition-colors border-b-2 -mb-px ${
+              className={`px-4 sm:px-6 py-3 text-xs sm:text-sm font-semibold transition-colors border-b-2 -mb-px whitespace-nowrap cursor-pointer shrink-0 ${
                 activeTab === tab.id
                   ? 'border-indigo-600 text-indigo-600'
                   : 'border-transparent text-slate-500 hover:text-slate-900'
@@ -259,7 +259,7 @@ const Home = () => {
         </div>
 
         {/* Workspace Display Container */}
-        <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm max-w-5xl mx-auto">
+        <div className="bg-white p-5 sm:p-8 rounded-2xl border border-slate-200 shadow-sm max-w-5xl mx-auto">
           {activeTab === 'admin' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
@@ -344,7 +344,7 @@ const Home = () => {
       </section>
 
       {/* 4. Security & Compliance Badges */}
-      <section className="max-w-7xl mx-auto px-6 py-6 bg-white rounded-2xl border border-slate-200 shadow-2xs">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-6 bg-white rounded-2xl border border-slate-200 shadow-2xs">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
           <div className="p-4 space-y-2">
             <ShieldCheck className="w-6 h-6 text-indigo-600 mx-auto" />
@@ -365,7 +365,7 @@ const Home = () => {
       </section>
 
       {/* 5. FAQs Accordion */}
-      <section className="max-w-4xl mx-auto px-6 space-y-8">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 space-y-8">
         <div className="text-center space-y-2">
           <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">Frequently Asked Questions</h2>
           <p className="text-slate-500 text-sm">Everything you need to know about getting started.</p>
@@ -392,13 +392,13 @@ const Home = () => {
                 onClick={() => toggleFaq(i)}
                 aria-expanded={openFaq === i}
                 aria-controls={`faq-answer-${i}`}
-                className="w-full text-left p-5 flex items-center justify-between font-medium text-slate-900 text-sm sm:text-base cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                className="w-full text-left p-4 sm:p-5 flex items-center justify-between font-medium text-slate-900 text-sm sm:text-base cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
               >
                 <span>{faq.q}</span>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${openFaq === i ? 'rotate-180' : ''}`} />
               </button>
               {openFaq === i && (
-                <div id={`faq-answer-${i}`} role="region" className="px-5 pb-5 text-sm text-slate-500 leading-relaxed border-t border-slate-100 pt-3">
+                <div id={`faq-answer-${i}`} role="region" className="px-4 sm:px-5 pb-4 sm:pb-5 text-sm text-slate-500 leading-relaxed border-t border-slate-100 pt-3">
                   {faq.a}
                 </div>
               )}
@@ -408,8 +408,8 @@ const Home = () => {
       </section>
 
       {/* 6. Final Call to Action Box */}
-      <section className="max-w-7xl mx-auto px-6">
-        <div className="bg-linear-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-8 sm:p-14 text-center space-y-6 text-white shadow-xl border border-slate-800">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="bg-linear-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-14 text-center space-y-6 text-white shadow-xl border border-slate-800">
           <div className="w-12 h-12 rounded-xl bg-white/10 border border-white/20 text-white mx-auto flex items-center justify-center">
             <Building2 className="w-6 h-6 text-indigo-300" />
           </div>
@@ -420,13 +420,13 @@ const Home = () => {
           <div className="pt-2 flex justify-center">
             {isAuthenticated ? (
               <Link to={user?.role === 'SUPER_ADMIN' ? '/super-admin' : '/dashboard'}>
-                <button className="bg-white hover:bg-slate-100 text-slate-900 font-semibold text-sm px-8 py-3.5 rounded-xl transition-all shadow-md flex items-center gap-2 cursor-pointer active:scale-[0.99]">
+                <button className="bg-white hover:bg-slate-100 text-slate-900 font-semibold text-sm px-6 sm:px-8 py-3.5 rounded-xl transition-all shadow-md flex items-center gap-2 cursor-pointer active:scale-[0.99]">
                   {user?.role === 'SUPER_ADMIN' ? 'Go to Super Admin Board' : 'Go to Dashboard'} <ArrowRight className="w-4 h-4" />
                 </button>
               </Link>
             ) : (
               <Link to="/register-school">
-                <button className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-8 py-3.5 rounded-xl transition-all shadow-md shadow-indigo-500/25 flex items-center gap-2 active:scale-[0.99]">
+                <button className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-6 sm:px-8 py-3.5 rounded-xl transition-all shadow-md shadow-indigo-500/25 flex items-center gap-2 active:scale-[0.99]">
                   Get Started Free <ArrowRight className="w-4 h-4" />
                 </button>
               </Link>

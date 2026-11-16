@@ -444,18 +444,18 @@ const AttendanceSheet = () => {
               </div>
 
               {canMarkCurrentSection ? (
-                <div className="flex items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-slate-200">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-slate-200 w-full sm:w-auto">
                   <button
                     type="button"
                     onClick={() => markAllStatus('PRESENT')}
-                    className="px-3.5 py-2 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-xs flex items-center gap-1.5"
+                    className="px-3.5 py-2 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <UserCheck className="w-4 h-4" /> Mark All Present
                   </button>
                   <button
                     type="button"
                     onClick={() => markAllStatus('ABSENT')}
-                    className="px-3.5 py-2 bg-rose-600 text-white rounded-lg text-xs font-semibold hover:bg-rose-700 transition-colors shadow-xs flex items-center gap-1.5"
+                    className="px-3.5 py-2 bg-rose-600 text-white rounded-lg text-xs font-semibold hover:bg-rose-700 transition-colors shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <UserX className="w-4 h-4" /> Mark All Absent
                   </button>
@@ -478,10 +478,10 @@ const AttendanceSheet = () => {
             <table className="w-full text-left text-xs font-medium text-slate-800">
               <thead className="bg-slate-50 text-[10px] font-semibold text-slate-600 uppercase tracking-wider border-b border-slate-200 select-none">
                 <tr>
-                  <th className="px-5 py-3.5">Roll No.</th>
-                  <th className="px-5 py-3.5">Student Name</th>
-                  <th className="px-5 py-3.5">Admission No.</th>
-                  <th className="px-5 py-3.5 text-right">Attendance Status</th>
+                  <th className="px-5 py-3.5 whitespace-nowrap">Roll No.</th>
+                  <th className="px-5 py-3.5 whitespace-nowrap">Student Name</th>
+                  <th className="px-5 py-3.5 whitespace-nowrap">Admission No.</th>
+                  <th className="px-5 py-3.5 whitespace-nowrap text-right">Attendance Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-slate-600">

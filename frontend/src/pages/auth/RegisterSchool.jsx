@@ -269,7 +269,7 @@ const RegisterSchool = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Left Side Content Column */}
-          <div className="lg:col-span-5 bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-5 bg-white p-5 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
             <div className="space-y-6">
               <div className="space-y-2">
                 <h3 className="text-lg font-semibold text-slate-900 tracking-tight">
@@ -336,7 +336,7 @@ const RegisterSchool = () => {
           </div>
 
           {/* Right Side Form Column */}
-          <div className="lg:col-span-7 bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
+          <div className="lg:col-span-7 bg-white p-5 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
             
             {error && (
               <div className="p-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-medium">
@@ -375,7 +375,7 @@ const RegisterSchool = () => {
                     <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                       Subdomain URL
                     </label>
-                    <div className="relative flex items-center">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center bg-white border border-slate-200 rounded-xl focus-within:border-indigo-600 focus-within:ring-3 focus-within:ring-indigo-500/15 transition-all overflow-hidden">
                       <input
                         type="text"
                         name="subdomain"
@@ -383,9 +383,11 @@ const RegisterSchool = () => {
                         value={formData.subdomain}
                         onChange={handleChange}
                         required
-                        className="w-full bg-white border border-slate-200 rounded-xl pl-4 pr-48 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-3 focus:ring-indigo-500/15 transition-all"
+                        className="w-full min-w-0 bg-transparent px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
                       />
-                      <span className="absolute right-3.5 text-xs font-mono text-indigo-600 font-semibold">.campus.acharyarahul.in</span>
+                      <span className="px-3.5 py-2 sm:py-2.5 text-xs font-mono text-indigo-600 font-semibold bg-indigo-50/60 sm:bg-transparent border-t sm:border-t-0 sm:border-l border-slate-200 sm:border-slate-100 shrink-0 text-center sm:text-right">
+                        .campus.acharyarahul.in
+                      </span>
                     </div>
 
                     {formData.subdomain && (
@@ -449,7 +451,7 @@ const RegisterSchool = () => {
                   </div>
 
                   {/* State, District, Pincode Grid */}
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                         State

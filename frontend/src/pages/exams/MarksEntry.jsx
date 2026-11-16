@@ -219,12 +219,12 @@ const MarksEntry = () => {
         <table className="w-full text-left text-xs text-slate-900">
           <thead className="bg-slate-50 text-[10px] font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 select-none">
             <tr>
-              <th className="px-6 py-4">Student</th>
-              <th className="px-6 py-4">Admission No.</th>
-              <th className="px-6 py-4">Marks Obtained</th>
-              <th className="px-6 py-4">Max Marks</th>
-              <th className="px-6 py-4">Percentage</th>
-              <th className="px-6 py-4">Grade</th>
+              <th className="px-6 py-4 whitespace-nowrap">Student</th>
+              <th className="px-6 py-4 whitespace-nowrap">Admission No.</th>
+              <th className="px-6 py-4 whitespace-nowrap">Marks Obtained</th>
+              <th className="px-6 py-4 whitespace-nowrap">Max Marks</th>
+              <th className="px-6 py-4 whitespace-nowrap">Percentage</th>
+              <th className="px-6 py-4 whitespace-nowrap">Grade</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 text-slate-600">

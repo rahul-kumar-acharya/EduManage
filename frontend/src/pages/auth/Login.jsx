@@ -99,7 +99,7 @@ const Login = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         
         {/* Left Feature Column */}
-        <div className="lg:col-span-5 bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
+        <div className="lg:col-span-5 bg-white p-5 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
           <div className="space-y-6">
             <div className="space-y-2">
               <h3 className="text-lg font-semibold text-slate-900 tracking-tight">
@@ -150,7 +150,7 @@ const Login = () => {
         </div>
 
         {/* Right Form Column */}
-        <div className="lg:col-span-7 bg-white p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
+        <div className="lg:col-span-7 bg-white p-5 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs flex flex-col justify-between space-y-6">
           
           <div className="space-y-6">
             
@@ -159,7 +159,7 @@ const Login = () => {
               <label className="block text-xs font-semibold text-slate-700">
                 Select Account Type
               </label>
-              <div className="grid grid-cols-4 gap-1.5 p-1.5 bg-slate-100 rounded-xl border border-slate-200/80">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1.5 bg-slate-100 rounded-xl border border-slate-200/80">
                 {[
                   { id: 'ADMIN', label: 'School Admin' },
                   { id: 'TEACHER', label: 'Faculty' },
