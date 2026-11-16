@@ -7,32 +7,44 @@ export const getSubdomain = () => {
     return devSubdomain;
   }
 
-  // Exact main domain matches
+  // Exact main domain matches (Always show Home page)
   if (
     hostname === 'localhost' ||
     hostname === '127.0.0.1' ||
     hostname === 'campus.acharyarahul.in' ||
-    hostname === 'www.campus.acharyarahul.in'
+    hostname === 'www.campus.acharyarahul.in' ||
+    hostname === 'acharyarahul.in' ||
+    hostname === 'www.acharyarahul.in'
   ) {
     return null;
   }
 
   const parts = hostname.split('.');
 
-  // e.g. abcschool.localhost -> ['abcschool', 'localhost']
+  // Localhost tenant subdomains (e.g. dps.localhost -> ['dps', 'localhost'])
   if (parts.length === 2 && parts[1] === 'localhost') {
     return parts[0] === 'www' ? null : parts[0];
   }
 
-  // e.g. abcschool.campus.acharyarahul.in -> ['abcschool', 'campus', 'acharyarahul', 'in']
+  // Production tenant subdomains (e.g. dps.campus.acharyarahul.in -> ['dps', 'campus', 'acharyarahul', 'in'])
   if (parts.length >= 4 && parts.slice(-3).join('.') === 'campus.acharyarahul.in') {
-    if (parts[0] === 'www') return null;
+    if (parts[0] === 'www' || parts[0] === 'api' || parts[0] === 'campus') return null;
     return parts[0];
+  }
+
+  // Vercel deployment & preview domains (e.g. edumanage.vercel.app, project-xyz.vercel.app)
+  // Direct vercel.app domains (3 parts) are main marketing sites -> show Home page!
+  if (hostname.endsWith('.vercel.app')) {
+    if (parts.length <= 3) {
+      return null;
+    }
+    // Subdomain testing on vercel (4+ parts, e.g. dps.edumanage.vercel.app)
+    return parts[0] === 'www' || parts[0] === 'api' ? null : parts[0];
   }
 
   // Fallback for custom domains or other multi-level subdomains
   if (parts.length >= 3) {
-    if (parts[0] === 'www' || parts[0] === 'campus') return null;
+    if (parts[0] === 'www' || parts[0] === 'api' || parts[0] === 'campus') return null;
     return parts[0];
   }
 
@@ -60,12 +72,18 @@ export const getTenantUrl = (tenantSubdomain, path = '') => {
     return `${protocol}//${tenantSubdomain}.localhost${port}${cleanPath}`;
   }
 
-  // Production environment on campus.acharyarahul.in
-  const parts = hostname.split('.');
-  if (parts.length >= 4 && parts.slice(-3).join('.') === 'campus.acharyarahul.in') {
-    return `${protocol}//${tenantSubdomain}.campus.acharyarahul.in${port}${cleanPath}`;
+  // Production environment or Vercel preview (target campus.acharyarahul.in)
+  if (
+    hostname === 'campus.acharyarahul.in' ||
+    hostname === 'www.campus.acharyarahul.in' ||
+    hostname.endsWith('.campus.acharyarahul.in') ||
+    hostname.endsWith('.vercel.app') ||
+    hostname.endsWith('acharyarahul.in')
+  ) {
+    return `https://${tenantSubdomain}.campus.acharyarahul.in${cleanPath}`;
   }
 
+  const parts = hostname.split('.');
   if (parts.length >= 2) {
     const rootDomain = parts.slice(-2).join('.');
     return `${protocol}//${tenantSubdomain}.${rootDomain}${port}${cleanPath}`;
