@@ -42,9 +42,16 @@ class TenantInfoView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
-        if not request.school:
+        school = getattr(request, 'school', None)
+        if not school and request.user and request.user.is_authenticated:
+            school = getattr(request.user, 'school', None)
+        if not school:
+            subdomain = request.query_params.get('subdomain') or request.headers.get('X-Tenant-Subdomain')
+            if subdomain:
+                school = School.objects.filter(subdomain=subdomain, is_active=True).first()
+        if not school:
             return Response({'error': 'No active school tenant found for this subdomain context.'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = SchoolSerializer(request.school)
+        serializer = SchoolSerializer(school)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class SchoolListView(generics.ListAPIView):

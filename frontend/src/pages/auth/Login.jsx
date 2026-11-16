@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useSchool } from '../../contexts/SchoolContext';
-import { getSubdomain } from '../../utils/subdomain';
+import { getSubdomain, getTenantUrl } from '../../utils/subdomain';
 import { Mail, Lock, Globe, UserCheck, ShieldCheck, HelpCircle, ShieldAlert, ArrowRight, KeyRound, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
@@ -35,26 +35,14 @@ const Login = () => {
         selected_role: selectedRole
       });
 
-      // Redirect to correct subdomain if not already on it
+      // Redirect to correct subdomain if user is already on a different tenant subdomain
       const currentSub = getSubdomain();
       const userSub = user.school?.subdomain;
       
-      if (userSub && currentSub !== userSub) {
-        const port = window.location.port ? `:${window.location.port}` : '';
-        const hostParts = window.location.hostname.split('.');
-        let targetHost = '';
-        
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-          targetHost = `${userSub}.localhost${port}`;
-        } else {
-          const rootDomain = hostParts.slice(-2).join('.');
-          targetHost = `${userSub}.${rootDomain}${port}`;
-        }
-        
+      if (userSub && currentSub && currentSub !== userSub) {
         const currentToken = localStorage.getItem('token');
         const encodedUser = encodeURIComponent(JSON.stringify(user));
-        
-        window.location.href = `http://${targetHost}/dashboard?sso_token=${currentToken}&sso_user=${encodedUser}`;
+        window.location.href = getTenantUrl(userSub, `/dashboard?sso_token=${currentToken}&sso_user=${encodedUser}`);
         return;
       }
 

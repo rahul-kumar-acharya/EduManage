@@ -86,6 +86,8 @@ class HasTenantAccess(BasePermission):
             return False
         if request.user.role == UserRole.SUPER_ADMIN:
             return True
+        if not getattr(request, 'school', None) and getattr(request.user, 'school', None):
+            request.school = request.user.school
         if request.school and request.user.school_id == request.school.id:
             return True
         return False

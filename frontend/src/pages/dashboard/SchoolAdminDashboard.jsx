@@ -30,7 +30,13 @@ const SchoolAdminDashboard = () => {
     const fetchOverview = async () => {
       try {
         const data = await schoolService.getSchoolOverview();
-        setStats(data);
+        const overview = data?.overview || data;
+        setStats({
+          total_students: overview?.total_students ?? 0,
+          total_teachers: overview?.total_teachers ?? 0,
+          attendance_rate: overview?.overall_attendance_rate ?? overview?.attendance_rate ?? 0,
+          total_revenue: overview?.total_revenue ?? 0,
+        });
       } catch (err) {
         console.error("Failed to load school overview stats:", err);
       } finally {

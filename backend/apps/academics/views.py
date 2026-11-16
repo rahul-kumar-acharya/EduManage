@@ -13,6 +13,11 @@ from apps.common.permissions import HasTenantAccess
 class BaseTenantViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, HasTenantAccess]
 
+    def initial(self, request, *args, **kwargs):
+        super().initial(request, *args, **kwargs)
+        if not getattr(request, 'school', None) and getattr(request.user, 'school', None):
+            request.school = request.user.school
+
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy', 'set_current']:
             from apps.common.permissions import IsSchoolAdmin
@@ -20,12 +25,16 @@ class BaseTenantViewSet(viewsets.ModelViewSet):
         return [permissions.IsAuthenticated(), HasTenantAccess()]
 
     def get_queryset(self):
-        if hasattr(self.request, 'school') and self.request.school:
-            return self.queryset.filter(school=self.request.school)
+        school = getattr(self.request, 'school', None) or getattr(self.request.user, 'school', None)
+        if school:
+            if not getattr(self.request, 'school', None):
+                self.request.school = school
+            return self.queryset.filter(school=school)
         return self.queryset.none()
 
     def perform_create(self, serializer):
-        serializer.save(school=self.request.school)
+        school = getattr(self.request, 'school', None) or getattr(self.request.user, 'school', None)
+        serializer.save(school=school)
 
 class AcademicSessionViewSet(BaseTenantViewSet):
     queryset = AcademicSession.objects.all().order_by('-start_date')

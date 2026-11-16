@@ -20,6 +20,19 @@ export const schoolService = {
     return response.data;
   },
 
+  getSchoolOverview: async () => {
+    const response = await api.get('/reports/overview/');
+    const data = response.data;
+    if (data && data.overview) {
+      return {
+        ...data.overview,
+        attendance_rate: data.overview.overall_attendance_rate ?? data.overview.attendance_rate ?? 0,
+        ...data,
+      };
+    }
+    return data;
+  },
+
   getPublicStats: async () => {
     const response = await api.get('/schools/public-stats/');
     return response.data;

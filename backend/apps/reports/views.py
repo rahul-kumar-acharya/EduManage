@@ -17,7 +17,7 @@ class OverviewReportView(APIView):
     permission_classes = [permissions.IsAuthenticated, HasTenantAccess]
 
     def get(self, request):
-        school = request.school
+        school = getattr(request, 'school', None) or getattr(request.user, 'school', None)
         if not school:
             return Response({'error': 'No active tenant found'}, status=status.HTTP_400_BAD_REQUEST)
 

@@ -17,7 +17,21 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    const subdomain = getSubdomain();
+    let subdomain = getSubdomain();
+    if (!subdomain) {
+      try {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const parsed = JSON.parse(storedUser);
+          if (parsed?.school?.subdomain) {
+            subdomain = parsed.school.subdomain;
+          }
+        }
+      } catch {
+        // Ignore parse error
+      }
+    }
+
     if (subdomain) {
       config.headers['X-Tenant-Subdomain'] = subdomain;
     }

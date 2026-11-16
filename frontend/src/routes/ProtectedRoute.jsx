@@ -3,6 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useSchool } from '../contexts/SchoolContext';
 import { getCookie } from '../utils/cookies';
+import { getTenantUrl } from '../utils/subdomain';
 
 const ProtectedRoute = () => {
   const { isAuthenticated, loading: authLoading, user } = useAuth();
@@ -38,18 +39,13 @@ const ProtectedRoute = () => {
   if (user?.role === 'SUPER_ADMIN') {
     return <Navigate to="/super-admin" replace />;
   }
- else {
-    // School staff/students/parents redirect guard
-    if (!subdomain || subdomain === 'admin') {
-      if (user?.school?.subdomain) {
-        const port = window.location.port ? `:${window.location.port}` : '';
-        const token = localStorage.getItem('token') || getCookie('token') || '';
-        const encodedUser = encodeURIComponent(JSON.stringify(user));
-        window.location.href = `${window.location.protocol}//${user.school.subdomain}.localhost${port}/dashboard?sso_token=${token}&sso_user=${encodedUser}`;
-        return null;
-      }
-      return <Navigate to="/" replace />;
-    }
+  // School staff/students/parents redirect guard:
+  // Only redirect if user is actively on another tenant's distinct subdomain
+  if (subdomain && user?.school?.subdomain && subdomain !== user.school.subdomain && subdomain !== 'admin') {
+    const token = localStorage.getItem('token') || getCookie('token') || '';
+    const encodedUser = encodeURIComponent(JSON.stringify(user));
+    window.location.href = getTenantUrl(user.school.subdomain, `/dashboard?sso_token=${token}&sso_user=${encodedUser}`);
+    return null;
   }
 
   return <Outlet />;

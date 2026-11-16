@@ -13,7 +13,11 @@ def extract_subdomain(host):
     host_without_port = host.split(':')[0].lower()
 
     # Ignored exact hosts
-    if host_without_port in ['localhost', '127.0.0.1', 'campus.acharyarahul.in', 'www.campus.acharyarahul.in', 'admin.campus.acharyarahul.in']:
+    if host_without_port in [
+        'localhost', '127.0.0.1',
+        'campus.acharyarahul.in', 'www.campus.acharyarahul.in',
+        'admin.campus.acharyarahul.in', 'api.campus.acharyarahul.in'
+    ]:
         return None
 
     parts = host_without_port.split('.')
@@ -24,12 +28,12 @@ def extract_subdomain(host):
 
     # e.g., abcschool.campus.acharyarahul.in -> ['abcschool', 'campus', 'acharyarahul', 'in']
     if len(parts) >= 4 and parts[-3:] == ['campus', 'acharyarahul', 'in']:
-        if parts[0] != 'www' and parts[0] != 'admin':
+        if parts[0] not in ['www', 'admin', 'api', 'campus']:
             return parts[0]
 
     # Generic fallback
     if len(parts) >= 3:
-        if parts[0] != 'www' and parts[0] != 'admin' and parts[0] != 'campus':
+        if parts[0] not in ['www', 'admin', 'api', 'campus']:
             return parts[0]
 
     return None
